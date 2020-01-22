@@ -1,0 +1,57 @@
+import 'package:app_tcc/models/settingsFormOrientacao.dart';
+import 'package:app_tcc/models/user.dart';
+import 'package:app_tcc/screens/aluno/enviarOrientacao.dart';
+import 'package:app_tcc/screens/authenticate/register.dart';
+import 'package:app_tcc/screens/authenticate/registerProfessor.dart';
+import 'package:app_tcc/screens/authenticate/sign_in.dart';
+import 'package:app_tcc/screens/authenticate/tipoUsuario.dart';
+import 'package:app_tcc/screens/coordenacao/validarPedidoOrientacao.dart';
+import 'package:app_tcc/screens/home/home.dart';
+import 'package:app_tcc/screens/home/homeCoordenacao.dart';
+import 'package:app_tcc/screens/home/homeProfessor.dart';
+import 'package:app_tcc/screens/professor/formularioOrientacao.dart';
+import 'package:app_tcc/screens/professor/pedidosDeOrientacao.dart';
+import 'package:flutter/material.dart';
+
+class Router {
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+
+    Object args;
+    ScreenArguments args2;
+    if(settings.name == '/formularioOrientacao')
+      args2 = settings.arguments;
+    else
+      args = settings.arguments;
+
+    switch (settings.name) {
+      case '/':
+        return MaterialPageRoute(builder: (_) => SignIn());
+      case '/tipoUsuario':
+        return MaterialPageRoute(builder: (_) => TipoUsuario());
+      case '/registroAluno':
+        return MaterialPageRoute(builder: (_) => Register());
+      case '/registroProfessor':
+        return MaterialPageRoute(builder: (_) => RegisterProfessor());
+      case '/home':
+        return MaterialPageRoute(builder: (_) => Home(user: args));
+      case '/homeCoordenacao':
+        return MaterialPageRoute(builder: (_) => HomeCoordenacao(user: args));
+      case '/homeProfessor':
+        return MaterialPageRoute(builder: (_) => HomeProfessor(user: args));
+      case '/enviarOrientacao':
+        return MaterialPageRoute(builder: (_) => EnviarOrientacao(user: args));
+      case '/validarPedidoOrientacao':
+        return MaterialPageRoute(builder: (_) => ValidarOrientacao(user: args));
+      case '/pedidosDeOrientacao':
+        return MaterialPageRoute(builder: (_) => PedidosDeOrientacao(user: args));
+      case '/formularioOrientacao':
+        return MaterialPageRoute(builder: (_) => FormularioOrientacao(user: args2.professor, aluno: args2.professor,));
+      default:
+        return MaterialPageRoute(
+            builder: (_) => Scaffold(
+                  body: Center(
+                      child: Text('No route defined for ${settings.name}')),
+                ));
+    }
+  }
+}
