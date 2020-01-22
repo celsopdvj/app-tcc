@@ -61,7 +61,7 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                       SizedBox(height: 20.0),
                       Row(
                         children: <Widget>[
-                          Text("Escolha o dia da semana:   "),
+                          Text("Dia da semana:   "),
                           DropdownButton(
                             hint: Text(diaDaSemana),
                             items: diasDaSemana.map((String diaEscolhido){
@@ -82,7 +82,7 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                       SizedBox(height: 20.0),
                       Row(
                         children: <Widget>[
-                          Text("Escolha o horário:   "),
+                          Text("Horário:   "),
                           FlatButton(
                               child: horario == null ? Text("Selecione")
                                                       :Text(horario.format(context)),
