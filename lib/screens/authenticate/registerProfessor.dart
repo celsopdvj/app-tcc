@@ -1,4 +1,3 @@
-import 'package:app_tcc/screens/authenticate/sign_in.dart';
 import 'package:app_tcc/shared/constants.dart';
 import 'package:app_tcc/shared/loading.dart';
 import 'package:flutter/material.dart';

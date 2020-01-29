@@ -1,4 +1,5 @@
 import 'package:app_tcc/models/user.dart';
+import 'package:app_tcc/services/database.dart';
 import 'package:app_tcc/shared/constants.dart';
 import 'package:app_tcc/shared/loading.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,8 @@ import 'package:flutter/material.dart';
 class FormularioOrientacao extends StatefulWidget {
   final User user;
   final User aluno;
-  FormularioOrientacao({Key key, @required this.user, @required this.aluno}):super(key:key);
+  final String pedidoUid;
+  FormularioOrientacao({Key key, @required this.user, @required this.aluno, @required this.pedidoUid}):super(key:key);
   @override
   _FormularioOrientacaoState createState() => _FormularioOrientacaoState();
 }
@@ -14,9 +16,10 @@ class FormularioOrientacao extends StatefulWidget {
 class _FormularioOrientacaoState extends State<FormularioOrientacao> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
+  DatabaseService banco = new DatabaseService();
   var diasDaSemana = ['Segunda','Terça','Quarta','Quinta','Sexta'];
-  List<int> horas = new List<int>.generate(25, (i) => i);
-  List<int> minutos = new List<int>.generate(61, (i) => i);
+  //List<int> horas = new List<int>.generate(25, (i) => i);
+  //List<int> minutos = new List<int>.generate(61, (i) => i);
 
   String curso = ''; // pegar do aluno
   String disciplina = 'CMP1071'; // pegar do banco
@@ -38,7 +41,6 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
       setState(() {
         horario = horario;
       });
-      print(horario);
     }
     
   }
@@ -61,7 +63,7 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                       SizedBox(height: 20.0),
                       Row(
                         children: <Widget>[
-                          Text("Dia da semana:   "),
+                          Text("Dia da semana:   ", style: TextStyle(fontSize: 16)),
                           DropdownButton(
                             hint: Text(diaDaSemana),
                             items: diasDaSemana.map((String diaEscolhido){
@@ -82,9 +84,9 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                       SizedBox(height: 20.0),
                       Row(
                         children: <Widget>[
-                          Text("Horário:   "),
+                          Text("Horário:   ", style: TextStyle(fontSize: 16),),
                           FlatButton(
-                              child: horario == null ? Text("Selecione")
+                              child: horario == null ? Text("Selecione...", style: TextStyle(fontSize: 16, color: Colors.black38))
                                                       :Text(horario.format(context)),
                               onPressed: () => _selectedTime(context)
                           ),
@@ -104,18 +106,35 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                             "Confirmar",
                             style: TextStyle(color: Colors.white),
                           ),
-                          onPressed: () {
+                          onPressed: () async{
                             if (_formKey.currentState.validate()) {
-                              
-                              print(professor = widget.user.nome);
-                              print(curso = widget.user.curso);
-                              print(matriculaAluno = widget.aluno.matricula);
-                              print(nomeAluno = widget.aluno.nome);
+                              setState(()=>loading=true);
+                              curso = widget.aluno.curso;
+                              professor = widget.user.nome;
+                              matriculaAluno = widget.aluno.matricula;
+                              nomeAluno = widget.aluno.nome;
 
                               //pegar contador do banco e montar turma
-                              
-                              //metodo do database para salvar orientação
+                              int aux = await banco.getTurma();
+                              print(aux);
+                              turma = "A" + aux.toString().padLeft(2,'0');
+                              print(turma);
 
+                              //metodo do database para salvar orientação
+                              //passar uid do pedido para remove-lo (excluido = 1)
+                              try{
+                                banco.salvarOrientacao(curso, disciplina, turma, diaDaSemana, horario.format(context).toString()
+                                                      , professor, matriculaAluno, nomeAluno, observacoes, widget.aluno.uid, widget.user.uid);
+                                banco.deletarPedido(widget.pedidoUid);
+                                Navigator.of(context).pop();
+                              }
+                              catch(e){
+                                setState(() {
+                                  error = 'Erro ao salvar orientação!';
+                                  print(e);
+                                  loading = false;
+                                });
+                              }
                             }
                           }),
                       SizedBox(height: 12.0),

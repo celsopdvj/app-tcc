@@ -1,10 +1,11 @@
 import 'package:app_tcc/models/settingsFormOrientacao.dart';
-import 'package:app_tcc/models/user.dart';
 import 'package:app_tcc/screens/aluno/enviarOrientacao.dart';
+import 'package:app_tcc/screens/authenticate/digitarEmail.dart';
 import 'package:app_tcc/screens/authenticate/register.dart';
 import 'package:app_tcc/screens/authenticate/registerProfessor.dart';
 import 'package:app_tcc/screens/authenticate/sign_in.dart';
 import 'package:app_tcc/screens/authenticate/tipoUsuario.dart';
+import 'package:app_tcc/screens/coordenacao/exibirOrientacoes.dart';
 import 'package:app_tcc/screens/coordenacao/validarPedidoOrientacao.dart';
 import 'package:app_tcc/screens/home/home.dart';
 import 'package:app_tcc/screens/home/homeCoordenacao.dart';
@@ -28,6 +29,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => SignIn());
       case '/tipoUsuario':
         return MaterialPageRoute(builder: (_) => TipoUsuario());
+      case '/resetarSenha':
+        return MaterialPageRoute(builder: (_) => DigitarEmail());
       case '/registroAluno':
         return MaterialPageRoute(builder: (_) => Register());
       case '/registroProfessor':
@@ -45,7 +48,9 @@ class Router {
       case '/pedidosDeOrientacao':
         return MaterialPageRoute(builder: (_) => PedidosDeOrientacao(user: args));
       case '/formularioOrientacao':
-        return MaterialPageRoute(builder: (_) => FormularioOrientacao(user: args2.professor, aluno: args2.professor,));
+        return MaterialPageRoute(builder: (_) => FormularioOrientacao(user: args2.professor, aluno: args2.aluno, pedidoUid: args2.pedidoUid,));
+      case '/exibirOrientacoes':
+        return MaterialPageRoute(builder: (_) => ExibirOrientacoes());
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

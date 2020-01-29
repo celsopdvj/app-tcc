@@ -1,4 +1,3 @@
-import 'package:flushbar/flushbar.dart';
 import 'package:app_tcc/models/user.dart';
 import 'package:app_tcc/services/auth.dart';
 import 'package:app_tcc/services/database.dart';
@@ -21,6 +20,7 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
   String nomeProfessor = '';
   String nomeAluno = '';
   bool _botaoEnviarDesabilitado ;
+  
 
 
   void showInSnackBar(String value) {
@@ -31,11 +31,31 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
   }
 
   void enviarPedido() async{
-    _botaoEnviarDesabilitado = await DatabaseService(uid: widget.user.uid).getPedidoPendente(widget.user.uid);
-    if(_botaoEnviarDesabilitado)
-      mostrarModal();
-    else
-      DatabaseService().updatePedidoPendente(widget.user.uid, _professorAtual, widget.user.nome, nomeProfessor);
+    if(_professorAtual != ''){
+      _botaoEnviarDesabilitado = await DatabaseService(uid: widget.user.uid).getPedidoPendente(widget.user.uid);
+      if(_botaoEnviarDesabilitado)
+        mostrarModal();
+      else{
+        _scaffoldKey.currentState.showSnackBar(
+          SnackBar(
+            content: new Text("Pedido enviado."),
+            duration: Duration(seconds: 3),
+            backgroundColor: Colors.green,
+          )
+        );
+        DatabaseService().updatePedidoPendente(widget.user.uid, _professorAtual, widget.user.nome, nomeProfessor);
+        _professorAtual = '';
+      }
+    }
+    else{
+      _scaffoldKey.currentState.showSnackBar(
+          SnackBar(
+            content: new Text("Escolha um professor."),
+            duration: Duration(seconds: 3),
+            backgroundColor: Colors.red,
+          )
+        );
+    }
   }
 
   void mostrarModal(){
@@ -43,7 +63,7 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
             color: Colors.blue[300],
             child: Text("Sim",style: TextStyle(color: Colors.white),),
             onPressed: (){
-              DatabaseService().deletaPedidoPendente(widget.user.uid);
+              DatabaseService().deletaPedidoPendenteDoAluno(widget.user.uid);
               Navigator.of(context).pop();
               _scaffoldKey.currentState.showSnackBar(
                 SnackBar(

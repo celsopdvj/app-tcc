@@ -9,9 +9,10 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 String nome = '';
 String matricula = '';
 String curso = '';
+String email = '';
 
 User _userFromFireBase(FirebaseUser user){
-  return user != null ? User(uid: user.uid, nome: nome, matricula: matricula, curso: curso) : null;
+  return user != null ? User(uid: user.uid, nome: nome, matricula: matricula, curso: curso, email: email) : null;
 }
   //auth change user stream
 
@@ -24,7 +25,7 @@ User _userFromFireBase(FirebaseUser user){
   Future logInComMatriculaESenha(String uid, String senha) async{
     try{
       final snapShot = await Firestore.instance.collection('usuario').document(uid).get();
-      String email = snapShot.data['email'];
+      email = snapShot.data['email'];
       nome = snapShot.data['nome'];
       matricula = snapShot.data['matricula'];
       curso = snapShot.data['curso'];
@@ -47,6 +48,7 @@ User _userFromFireBase(FirebaseUser user){
         this.nome = nome;
         this.matricula = matricula;
         this.curso = curso;
+        this.email = email;
         AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: senha);
         FirebaseUser user = result.user;
         await DatabaseService(uid: user.uid).updateUserData(matricula, senha, nome, email, curso, telefone,tipoUsuario, areaAtuacao, pedidoPendente);
@@ -72,13 +74,14 @@ User _userFromFireBase(FirebaseUser user){
      }
    }
 
-   Future getTipoUsuario(String uid) async{
+   //resetar senha
+
+   Future resetarSenha(String email) async{
      try{
-       final snapShot = await Firestore.instance.collection('usuario').document(uid).get();
-       return snapShot.data['tipo'];
-     }
-     catch(e){
+      return await _auth.sendPasswordResetEmail(email: email);
+     }catch(e){
        print(e.toString());
+       return 1;
      }
    }
 }

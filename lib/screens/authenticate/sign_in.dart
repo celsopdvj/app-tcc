@@ -77,9 +77,8 @@ String error = '';
                       ),
                       onPressed: () async{
                         if(_formKey.currentState.validate()){
-                          final doc = await Firestore.instance.collection('usuario').where("matricula", isEqualTo: matricula).getDocuments();
-                          //print(doc.documents.first.documentID);
                           setState(()=>loading=true);
+                          final doc = await Firestore.instance.collection('usuario').where("matricula", isEqualTo: matricula).getDocuments();
                           dynamic result = await _auth.logInComMatriculaESenha(doc.documents.first.documentID, password);
                           if(result == null){
                             setState(() {
@@ -112,6 +111,14 @@ String error = '';
                   )
                 ],
               ),
+              SizedBox(height: 20.0),
+              OutlineButton(
+                child: Text('Recuperar senha', style: TextStyle(fontSize: 14, color: Colors.black)),
+                onPressed: (){
+                  Navigator.pushNamed(context, '/resetarSenha');
+                },
+              )
+              ,
               SizedBox(height: 12.0),
                       Text(error,
                           style: TextStyle(color: Colors.red, fontSize: 14.0))

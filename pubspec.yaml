@@ -27,7 +27,9 @@ dependencies:
   cloud_firestore: ^0.13.0+1
   provider: ^3.2.0
   flutter_spinkit: ^4.1.1+1
-  flushbar: ^1.9.1
+  csv: ^4.0.3
+  path_provider: ^1.5.1
+  mailer2: ^1.2.5
 
 
 dev_dependencies:

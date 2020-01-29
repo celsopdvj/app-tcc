@@ -18,14 +18,23 @@ class _PedidosDeOrientacaoState extends State<PedidosDeOrientacao> {
   DatabaseService banco = new DatabaseService();
   Map<String, bool> listaPedidosMarcados = new Map<String,bool>();
   String _alunoUid = '';
-  String _alunoNome = '';
-  String _alunoMatricula = '';
-  String _alunoCurso = '';
+  String _pedidoUid = '';
 
-  void aceitarPedido(){
+  void aceitarPedido() async{
     print(_alunoUid);
-    User aluno = new User(uid: _alunoUid, nome: _alunoNome, matricula: _alunoMatricula, curso: _alunoCurso);
-    Navigator.pushNamed(context, '/formularioOrientacao', arguments: ScreenArguments(widget.user, aluno));
+    if(_alunoUid != ''){
+      User aluno = await banco.getUser(_alunoUid);
+      Navigator.pushNamed(context, '/formularioOrientacao', arguments: ScreenArguments(widget.user, aluno, _pedidoUid));
+      _alunoUid = '';
+    }
+  }
+
+  void recusarPedido(){
+    print(_alunoUid);
+    if(_alunoUid != ''){
+      banco.deletaPedidoPendenteDoAluno(_alunoUid);
+      _alunoUid = '';
+    }
   }
 
   @override
@@ -53,7 +62,9 @@ class _PedidosDeOrientacaoState extends State<PedidosDeOrientacao> {
       body: StreamBuilder(
       stream: Firestore.instance.collection('pedidoPendente')
                                 .where('validado' ,isEqualTo: true)
-                                .where('uidProfessor', isEqualTo: widget.user.uid).snapshots(),
+                                .where('uidProfessor', isEqualTo: widget.user.uid)
+                                .where('excluido', isEqualTo: 0)
+                                .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Loading();
         return Column(
@@ -70,9 +81,7 @@ class _PedidosDeOrientacaoState extends State<PedidosDeOrientacao> {
                       onChanged: (val){
                         setState((){ 
                           _alunoUid = val.toString();
-                          _alunoCurso = document['curso'];
-                          _alunoMatricula = document['matricula'];
-                          _alunoNome = document['nome'];
+                          _pedidoUid = document.documentID;
                         });
                         print(val);
                       },
@@ -83,11 +92,20 @@ class _PedidosDeOrientacaoState extends State<PedidosDeOrientacao> {
               
               Align(
                   alignment: Alignment.bottomCenter,
-                  child: RaisedButton(
-                  color: Colors.blue,
-                  child: Text("Aceitar",style: TextStyle(color: Colors.white)),
-                  onPressed: aceitarPedido,
-                ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+                    children: <Widget>[
+                      RaisedButton(
+                      color: Colors.blue,
+                      child: Text("Aceitar",style: TextStyle(color: Colors.white)),
+                      onPressed: aceitarPedido,
+                      ),
+                      RaisedButton(color: Colors.red,
+                      child: Text("Recusar",style: TextStyle(color: Colors.white)),
+                      onPressed: recusarPedido,)
+                    ],
+                  ),
               ),
             ],
           );

@@ -16,6 +16,7 @@ class _ValidarOrientacaoState extends State<ValidarOrientacao> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   DatabaseService banco = new DatabaseService();
   Map<String, bool> listaPedidosMarcados = new Map<String,bool>();
+  bool loading = false;
 
 
   void validarPedidos(){
@@ -25,6 +26,17 @@ class _ValidarOrientacaoState extends State<ValidarOrientacao> {
         banco.validaPedidoPendente(k);
       }
     });
+    listaPedidosMarcados.clear();
+  }
+
+  void recusarPedidos(){
+    print(listaPedidosMarcados);
+    listaPedidosMarcados.forEach((k,v){
+      if(v){
+        banco.deletarPedido(k);
+      }
+    });
+    listaPedidosMarcados.clear();
   }
 
   @override
@@ -32,7 +44,7 @@ class _ValidarOrientacaoState extends State<ValidarOrientacao> {
     final AuthService _auth = AuthService();
     ScrollController _controller = new ScrollController();
     
-    return  Scaffold(
+    return loading ? Loading() : Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Pedidos'),
@@ -76,11 +88,29 @@ class _ValidarOrientacaoState extends State<ValidarOrientacao> {
               ),
               
               Align(
-                  alignment: Alignment.bottomCenter,
-                  child: RaisedButton(
-                  color: Colors.blue,
-                  child: Text("Validar",style: TextStyle(color: Colors.white)),
-                  onPressed: validarPedidos,
+                alignment: Alignment.bottomCenter,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    RaisedButton(
+                      color: Colors.blue,
+                      child: Text("Validar",style: TextStyle(color: Colors.white)),
+                      onPressed: (){
+                        setState(() =>loading = true);
+                        validarPedidos();
+                        setState(() =>loading = false);
+                      }
+                    ),
+                    RaisedButton(
+                      color: Colors.red,
+                      child: Text("Recusar",style: TextStyle(color: Colors.white)),
+                      onPressed: (){
+                        setState(() =>loading = true);
+                        recusarPedidos();
+                        setState(() =>loading = false);
+                      }
+                    ),
+                  ],
                 ),
               ),
             ],
