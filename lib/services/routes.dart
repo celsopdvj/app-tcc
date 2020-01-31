@@ -10,6 +10,8 @@ import 'package:app_tcc/screens/coordenacao/validarPedidoOrientacao.dart';
 import 'package:app_tcc/screens/home/home.dart';
 import 'package:app_tcc/screens/home/homeCoordenacao.dart';
 import 'package:app_tcc/screens/home/homeProfessor.dart';
+import 'package:app_tcc/screens/professor/agendarDefesa.dart';
+import 'package:app_tcc/screens/professor/formularioDeDefesa.dart';
 import 'package:app_tcc/screens/professor/formularioOrientacao.dart';
 import 'package:app_tcc/screens/professor/pedidosDeOrientacao.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +21,7 @@ class Router {
 
     Object args;
     ScreenArguments args2;
-    if(settings.name == '/formularioOrientacao')
+    if(settings.name == '/formularioOrientacao' || settings.name == '/formularioDeDefesa')
       args2 = settings.arguments;
     else
       args = settings.arguments;
@@ -51,6 +53,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => FormularioOrientacao(user: args2.professor, aluno: args2.aluno, pedidoUid: args2.pedidoUid,));
       case '/exibirOrientacoes':
         return MaterialPageRoute(builder: (_) => ExibirOrientacoes());
+      case '/agendarDefesa':
+        return MaterialPageRoute(builder: (_) => AgendarDefesa(user: args));
+      case '/formularioDeDefesa':
+        return MaterialPageRoute(builder: (_) => FormularioDeDefesa(user: args2.professor, aluno: args2.aluno,));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

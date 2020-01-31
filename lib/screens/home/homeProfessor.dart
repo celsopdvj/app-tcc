@@ -56,11 +56,11 @@ class HomeProfessor extends StatelessWidget {
                 child: RaisedButton(
                   color: Colors.red[300],
                   child: Text(
-                    "Botão 2",
+                    "Agendar defesa",
                     style: textStyle.copyWith(),
                   ),
                   onPressed: () {
-                    
+                    Navigator.pushNamed(context, '/agendarDefesa', arguments: user);
                   },
               ),
             )

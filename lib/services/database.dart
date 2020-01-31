@@ -9,6 +9,7 @@ class DatabaseService {
   final CollectionReference pedidoPendente = Firestore.instance.collection('pedidoPendente');
   final CollectionReference orientacao = Firestore.instance.collection('orientacao');
   final CollectionReference orientacoes = Firestore.instance.collection('orientacao/turmas/orientacoes');
+  final CollectionReference defesa = Firestore.instance.collection('defesa');
 
   Future updateUserData(String matricula, String senha, String nome,
       String email, String curso, String telefone, String tipoUsuario, String areaAtuacao, bool pedidoPendente) async {
@@ -22,7 +23,9 @@ class DatabaseService {
         'telefone': telefone,
         'tipo': tipoUsuario,
         'areaAtuacao': areaAtuacao,
-        'pedidoPendente': pedidoPendente
+        'pedidoPendente': pedidoPendente,
+        'defesaAgendada': "",
+        'disciplina' : 'CMP1071'
       });
     }
     else{
@@ -81,7 +84,8 @@ class DatabaseService {
 
   Future getUser (String uid) async{
     final result = await usuario.document(uid).get();
-    return new User(uid: uid ,curso: result.data['curso'], matricula: result.data['matricula'], nome: result.data['nome']);
+    return new User(uid: uid ,curso: result.data['curso'], matricula: result.data['matricula'],
+     nome: result.data['nome'], email: result.data['email'], disciplina: result.data['disciplina']);
   }
 
   Future getTurma() async{
@@ -107,7 +111,7 @@ class DatabaseService {
       'uidProfessor': uidProfessor
     });
     usuario.document(uidAluno).updateData({
-      'orientador': nomeProfessor
+      'orientador': uidProfessor
     });
   }
 
@@ -127,5 +131,29 @@ class DatabaseService {
   Future getOrientacoes() async{
     final result = await orientacoes.getDocuments();  
     return result.documents;
+  }
+
+  void salvarDefesa(String nomeAluno, String matriculaAluno, String uidAluno, String disciplina, String curso, String titulo, 
+                    String orientador, String uidOrientador, String coOrientador, String uidCoorientador, String data, String horario, 
+                    String sala, String membroDaBanca1, String membroDaBanca2, String membroDaBanca3) async{
+    await defesa.document().setData({
+      'nomeAluno': nomeAluno,
+      'matriculaAluno': matriculaAluno,
+      'uidAluno': uidAluno,
+      'disciplina': disciplina,
+      'curso': curso,
+      'titulo': titulo,
+      'orientador': orientador,
+      'uidOrientador': uidOrientador,
+      'coOrientador': coOrientador,
+      'uidCoorientador': uidCoorientador,
+      'data': data,
+      'horario': horario,
+      'sala': sala,
+      'membroDaBanca1': membroDaBanca1,
+      'membroDaBanca2': membroDaBanca2,
+      'membroDaBanca3': membroDaBanca3,
+      'excluido': false
+    });
   }
 }

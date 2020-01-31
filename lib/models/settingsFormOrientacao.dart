@@ -5,5 +5,5 @@ class ScreenArguments {
   final User aluno;
   final String pedidoUid;
 
-  ScreenArguments(this.professor, this.aluno, this.pedidoUid);
+  ScreenArguments({this.professor, this.aluno, this.pedidoUid});
 }

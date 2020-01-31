@@ -6,37 +6,27 @@ import 'package:app_tcc/shared/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class PedidosDeOrientacao extends StatefulWidget {
+class AgendarDefesa extends StatefulWidget {
   final User user;
-  PedidosDeOrientacao({Key key, @required this.user}):super(key:key);
+  AgendarDefesa({Key key, @required this.user}):super(key:key);
   @override
-  _PedidosDeOrientacaoState createState() => _PedidosDeOrientacaoState();
+  _AgendarDefesaState createState() => _AgendarDefesaState();
 }
 
-class _PedidosDeOrientacaoState extends State<PedidosDeOrientacao> {
+class _AgendarDefesaState extends State<AgendarDefesa> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   DatabaseService banco = new DatabaseService();
   String _alunoUid = '';
-  String _pedidoUid = '';
 
-  void aceitarPedido() async{
-    print(_alunoUid);
+  void agendarDefesa( )async{
     if(_alunoUid != ''){
       User aluno = await banco.getUser(_alunoUid);
-      Navigator.pushNamed(context, '/formularioOrientacao', arguments: ScreenArguments(professor: widget.user,aluno: aluno,pedidoUid: _pedidoUid));
+      Navigator.pushNamed(context, '/formularioDeDefesa', arguments: ScreenArguments(professor: widget.user, aluno:aluno));
       _alunoUid = '';
     }
   }
 
-  void recusarPedido(){
-    print(_alunoUid);
-    if(_alunoUid != ''){
-      banco.deletaPedidoPendenteDoAluno(_alunoUid);
-      _alunoUid = '';
-    }
-  }
-
-  @override
+   @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
     ScrollController _controller = new ScrollController();
@@ -44,7 +34,7 @@ class _PedidosDeOrientacaoState extends State<PedidosDeOrientacao> {
     return  Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Pedidos'),
+        title: Text('Escolha um aluno para agendar defesa'),
         elevation: 0.0,
         actions: <Widget>[
           FlatButton.icon(
@@ -59,10 +49,8 @@ class _PedidosDeOrientacaoState extends State<PedidosDeOrientacao> {
         ],
       ),
       body: StreamBuilder(
-      stream: Firestore.instance.collection('pedidoPendente')
-                                .where('validado' ,isEqualTo: true)
-                                .where('uidProfessor', isEqualTo: widget.user.uid)
-                                .where('excluido', isEqualTo: 0)
+      stream: Firestore.instance.collection('usuario')
+                                .where('orientador' ,isEqualTo: widget.user.uid)
                                 .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Loading();
@@ -75,12 +63,11 @@ class _PedidosDeOrientacaoState extends State<PedidosDeOrientacao> {
                   children: snapshot.data.documents.map((document) {
                     return new RadioListTile(
                       groupValue: _alunoUid,
-                      value: document['uidAluno'],
-                      title: new Text(document['nomeAluno']),
+                      value: document.documentID,
+                      title: new Text(document['nome']),
                       onChanged: (val){
                         setState((){ 
                           _alunoUid = val.toString();
-                          _pedidoUid = document.documentID;
                         });
                         print(val);
                       },
@@ -93,16 +80,12 @@ class _PedidosDeOrientacaoState extends State<PedidosDeOrientacao> {
                   alignment: Alignment.bottomCenter,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
                     children: <Widget>[
                       RaisedButton(
                       color: Colors.blue,
-                      child: Text("Aceitar",style: TextStyle(color: Colors.white)),
-                      onPressed: aceitarPedido,
-                      ),
-                      RaisedButton(color: Colors.red,
-                      child: Text("Recusar",style: TextStyle(color: Colors.white)),
-                      onPressed: recusarPedido,)
+                      child: Text("Agendar",style: TextStyle(color: Colors.white)),
+                      onPressed: agendarDefesa,
+                      )
                     ],
                   ),
               ),

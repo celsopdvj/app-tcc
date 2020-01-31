@@ -4,6 +4,7 @@ class User{
   final String matricula;
   final String curso;
   final String email;
+  final String disciplina;
 
-  User({this.uid, this.nome, this.matricula, this.curso, this.email});
+  User({this.uid, this.nome, this.matricula, this.curso, this.email, this.disciplina});
 }
