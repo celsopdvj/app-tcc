@@ -133,10 +133,10 @@ class DatabaseService {
     return result.documents;
   }
 
-  void salvarDefesa(String nomeAluno, String matriculaAluno, String uidAluno, String disciplina, String curso, String titulo, 
+  Future salvarDefesa(String nomeAluno, String matriculaAluno, String uidAluno, String disciplina, String curso, String titulo, 
                     String orientador, String uidOrientador, String coOrientador, String uidCoorientador, String data, String horario, 
-                    String sala, String membroDaBanca1, String membroDaBanca2, String membroDaBanca3) async{
-    await defesa.document().setData({
+                    String sala, String membroDaBanca1, String membroDaBanca2, String membroDaBanca3, String membroDaBanca4, String membroDaBanca5) async{
+    var result = await defesa.add({
       'nomeAluno': nomeAluno,
       'matriculaAluno': matriculaAluno,
       'uidAluno': uidAluno,
@@ -153,7 +153,19 @@ class DatabaseService {
       'membroDaBanca1': membroDaBanca1,
       'membroDaBanca2': membroDaBanca2,
       'membroDaBanca3': membroDaBanca3,
+      'membroDaBanca4': membroDaBanca4,
+      'membroDaBanca5': membroDaBanca5,
       'excluido': false
     });
+    await usuario.document(uidAluno).updateData({
+      'defesaAgendada': result.documentID
+    });
+  }
+
+  Future getProfessores()async{
+    final result = await usuario.where('tipo', isEqualTo:"Professor").getDocuments();
+    return result.documents.map((doc){
+      return new User(uid: doc.documentID, nome: doc.data['nome']);
+    }).toList();
   }
 }

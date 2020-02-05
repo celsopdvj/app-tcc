@@ -45,7 +45,10 @@ String error = '';
                   hintText: 'Matrícula'),
                 validator: (val) => val.isEmpty ? 'Digite uma matrícula.' : null,
                 onChanged: (val){
-                  setState(() => matricula=val);
+                  setState(() { 
+                    matricula=val;
+                    error = '';
+                  });
                 }
               ),
               SizedBox(height: 20.0),
@@ -62,10 +65,13 @@ String error = '';
                 validator: (val) => val.length <6 ? 'Digite uma senha com mais de 6 caracteres.' : null,
                 obscureText: true,
                 onChanged: (val){
-                  setState(() => password=val);
+                  setState(() { 
+                    password=val;
+                    error = '';
+                  });
                 }
               ),
-              SizedBox(height: 20.0),
+              SizedBox(height: 18.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -77,24 +83,33 @@ String error = '';
                       ),
                       onPressed: () async{
                         if(_formKey.currentState.validate()){
+                          dynamic result;
                           setState(()=>loading=true);
                           final doc = await Firestore.instance.collection('usuario').where("matricula", isEqualTo: matricula).getDocuments();
-                          dynamic result = await _auth.logInComMatriculaESenha(doc.documents.first.documentID, password);
-                          if(result == null){
+                          if(doc.documents.length == 0){
                             setState(() {
-                               error = 'Usuário ou senha inválido.';
-                               loading = false;
+                              error = 'Matrícula não cadastrada.';
+                              loading = false;
                             });
                           }
                           else{
-                            if(doc.documents.first.data["tipo"] == "Aluno"){
-                            Navigator.pushReplacementNamed(context, '/home', arguments: result);
-                          }
-                          else if(doc.documents.first.data['tipo'] == "Professor"){
-                            Navigator.pushReplacementNamed(context, '/homeProfessor',arguments: result);
-                          }
-                          else
-                            Navigator.pushReplacementNamed(context, '/homeCoordenacao',arguments: result);
+                            result = await _auth.logInComMatriculaESenha(doc.documents.first.documentID, password);
+                            if(result == null){
+                              setState(() {
+                                error = 'Usuário ou senha inválido.';
+                                loading = false;
+                              });
+                            }
+                            else{
+                              if(doc.documents.first.data["tipo"] == "Aluno"){
+                              Navigator.pushReplacementNamed(context, '/home', arguments: result);
+                            }
+                            else if(doc.documents.first.data['tipo'] == "Professor"){
+                              Navigator.pushReplacementNamed(context, '/homeProfessor',arguments: result);
+                            }
+                            else
+                              Navigator.pushReplacementNamed(context, '/homeCoordenacao',arguments: result);
+                            }
                           }
                         }
                       }
@@ -111,7 +126,7 @@ String error = '';
                   )
                 ],
               ),
-              SizedBox(height: 20.0),
+              //SizedBox(height: 10.0),
               OutlineButton(
                 child: Text('Recuperar senha', style: TextStyle(fontSize: 14, color: Colors.black)),
                 onPressed: (){

@@ -7,6 +7,7 @@ import 'package:app_tcc/screens/authenticate/sign_in.dart';
 import 'package:app_tcc/screens/authenticate/tipoUsuario.dart';
 import 'package:app_tcc/screens/coordenacao/exibirOrientacoes.dart';
 import 'package:app_tcc/screens/coordenacao/validarPedidoOrientacao.dart';
+import 'package:app_tcc/screens/geral/exibirDefesas.dart';
 import 'package:app_tcc/screens/home/home.dart';
 import 'package:app_tcc/screens/home/homeCoordenacao.dart';
 import 'package:app_tcc/screens/home/homeProfessor.dart';
@@ -53,6 +54,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => FormularioOrientacao(user: args2.professor, aluno: args2.aluno, pedidoUid: args2.pedidoUid,));
       case '/exibirOrientacoes':
         return MaterialPageRoute(builder: (_) => ExibirOrientacoes());
+      case '/exibirDefesas':
+        return MaterialPageRoute(builder: (_) => ExibirDefesas());
       case '/agendarDefesa':
         return MaterialPageRoute(builder: (_) => AgendarDefesa(user: args));
       case '/formularioDeDefesa':

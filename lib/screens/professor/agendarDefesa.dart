@@ -51,6 +51,7 @@ class _AgendarDefesaState extends State<AgendarDefesa> {
       body: StreamBuilder(
       stream: Firestore.instance.collection('usuario')
                                 .where('orientador' ,isEqualTo: widget.user.uid)
+                                .where('defesaAgendada', isEqualTo: "" )
                                 .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Loading();

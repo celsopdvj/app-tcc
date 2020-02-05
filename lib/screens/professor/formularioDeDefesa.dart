@@ -1,4 +1,5 @@
 import 'package:app_tcc/models/user.dart';
+import 'package:app_tcc/services/database.dart';
 import 'package:app_tcc/shared/constants.dart';
 import 'package:app_tcc/shared/loading.dart';
 import 'package:flutter/material.dart';
@@ -15,20 +16,38 @@ class FormularioDeDefesa extends StatefulWidget {
 class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
+  DatabaseService banco = new DatabaseService();
+
   String nomeAluno = ''; //tem aluno selecionado
   String matriculaAluno = ''; //tem aluno selecionado
   String disciplina = ''; //tem aluno selecionado
   String curso = ''; //tem aluno selecionado
   String titulo = '';
   String orientador = ''; //tem aluno selecionado
+  String uidCoorientador = '';
   String coorientador = '';
   TimeOfDay horario;
   DateTime data;
   String sala = '';
-  String membroDaBanca1 = '';
-  String membroDaBanca2 = '';
-  String membroDabanca3 = '';
+  User membroDaBanca1 = new User(nome: 'Selecione...');
+  User membroDaBanca2 = new User(nome: 'Selecione...');
+  User membroDaBanca3 = new User(nome: 'Selecione...');
+  User membroDaBanca4 = new User(nome: 'Selecione...');
+  User membroDaBanca5 = new User(nome: 'Selecione...');
   String error = '';
+  List<User> professores = new List<User>();
+
+  @override
+  void initState(){
+    super.initState();
+    
+      setState(() =>loading = true);
+      banco.getProfessores().then((onValue){
+        setState(()=>professores = onValue);
+      });
+      setState(() =>loading = false);
+
+  }
 
   Future<Null> _selectedTime(BuildContext context) async {
       horario = await showTimePicker(
@@ -53,6 +72,14 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
         });
       }
     }
+
+  void agendarDefesa() async{
+    await banco.salvarDefesa(nomeAluno, matriculaAluno, widget.aluno.uid, disciplina, curso,
+     titulo, orientador, widget.user.uid, coorientador, uidCoorientador,
+      formatDate(data,[dd, '-', mm, '-', yyyy]), horario.format(context),
+       sala, membroDaBanca1.nome, membroDaBanca2.nome, membroDaBanca3.nome ,
+       membroDaBanca4.nome == 'Selecione...'? '' : membroDaBanca4.nome ,membroDaBanca5.nome == 'Selecione...'? '' : membroDaBanca5.nome);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,52 +161,121 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                           setState(() => sala = val);
                         }),
                       SizedBox(height: 20.0),
-                      TextFormField(
-                        decoration: textInputDecoration.copyWith(hintText: 'Primeiro membro da banca',
-                          enabledBorder: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.horizontal(),
-                            borderSide: new BorderSide()),
-                          border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.horizontal(),
-                            ),
-                        ),
-                        validator: (val) =>
-                              val.isEmpty ? 'Digite o primeiro membro da banca.' : null, //professor?
-                        onChanged: (val) {
-                          setState(() => membroDaBanca1 = val);
-                        }),
+                      Row(
+                        children: <Widget>[
+                          Text('Primeiro membro da banca: '),
+                          SizedBox(width: 4,),
+                          DropdownButton(
+                            hint: Text(membroDaBanca1.nome),
+                            items: professores.map((membroEscolhido){
+                              return DropdownMenuItem<User>(
+                                value: membroEscolhido,
+                                child: Text(membroEscolhido.nome)
+                              );
+                            }).toList(),
+                            onChanged:(val){ 
+                              setState(() {
+                                professores.remove(val);
+                                if(membroDaBanca1.nome != 'Selecione...')
+                                  professores.add(membroDaBanca1);
+                                membroDaBanca1 = val;
+                              });
+                            },
+                          )
+                        ],
+                      ),
                       SizedBox(height: 20.0),
-                      TextFormField(
-                        decoration: textInputDecoration.copyWith(hintText: 'Segundo membro da banca',
-                          enabledBorder: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.horizontal(),
-                            borderSide: new BorderSide()),
-                          border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.horizontal(),
-                            ),
-                        ),
-                        validator: (val) =>
-                              val.isEmpty ? 'Digite o segundo membro da banca.' : null,
-                        onChanged: (val) {
-                          setState(() => membroDaBanca2 = val);
-                        }),
+                      Row(
+                        children: <Widget>[
+                          Text('Segundo membro da banca:  '),
+                          DropdownButton(
+                            hint: Text(membroDaBanca2.nome),
+                            items: professores.map((membroEscolhido){
+                              return DropdownMenuItem<User>(
+                                value: membroEscolhido,
+                                child: Text(membroEscolhido.nome)
+                              );
+                            }).toList(),
+                            onChanged:(val){ 
+                              setState(() {
+                                professores.remove(val);
+                                if(membroDaBanca2.nome != 'Selecione...')
+                                  professores.add(membroDaBanca2);
+                                membroDaBanca2 = val;
+                              });
+                            },
+                          )
+                        ],
+                      ),
                       SizedBox(height: 20.0),
-                      TextFormField(
-                        decoration: textInputDecoration.copyWith(hintText: 'Terceiro membro da banca',
-                          enabledBorder: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.horizontal(),
-                            borderSide: new BorderSide()),
-                          border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.horizontal(),
-                            ),
-                        ),
-                        validator: (val) {
-                          if(widget.aluno.disciplina != "CMP1071")
-                            return 'Digite o terceiro membro da banca.';
-                        },
-                        onChanged: (val) {
-                          setState(() => membroDabanca3 = val);
-                        }),
+                      Row(
+                        children: <Widget>[
+                          Text('Terceiro membro da banca: '),
+                          DropdownButton(
+                            hint: Text(membroDaBanca3.nome),
+                            items: professores.map((membroEscolhido){
+                              return DropdownMenuItem<User>(
+                                value: membroEscolhido,
+                                child: Text(membroEscolhido.nome)
+                              );
+                            }).toList(),
+                            onChanged:(val){ 
+                              setState(() {
+                                professores.remove(val);
+                                if(membroDaBanca3.nome != 'Selecione...')
+                                  professores.add(membroDaBanca3);
+                                membroDaBanca3 = val;
+                              });
+                            },
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 20.0),
+                      Row(
+                        children: <Widget>[
+                          Text('Quarto membro da banca: '),
+                          DropdownButton(
+                            hint: Text(membroDaBanca4.nome),
+                            items: professores.map((membroEscolhido){
+                              return DropdownMenuItem<User>(
+                                value: membroEscolhido,
+                                child: Text(membroEscolhido.nome)
+                              );
+                            }).toList(),
+                            onChanged:(val){ 
+                              setState(() {
+                                professores.remove(val);
+                                if(membroDaBanca4.nome != 'Selecione...')
+                                  professores.add(membroDaBanca4);
+                                membroDaBanca4 = val;
+                              });
+                            },
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 20.0),
+                      Row(
+                        children: <Widget>[
+                          Text('Quinto membro da banca: '),
+                          DropdownButton(
+                            hint: Text(membroDaBanca5.nome),
+                            items: professores.map((membroEscolhido){
+                              return DropdownMenuItem<User>(
+                                value: membroEscolhido,
+                                child: Text(membroEscolhido.nome)
+                              );
+                            }).toList(),
+                            onChanged:(val){ 
+                              setState(() {
+                                professores.remove(val);
+                                if(membroDaBanca5.nome != 'Selecione...')
+                                  professores.add(membroDaBanca5);
+                                membroDaBanca5 = val;
+                              });
+                            },
+                          )
+                        ],
+                      ),
                       SizedBox(height: 20.0),
                       RaisedButton(
                           color: Colors.blue,
@@ -189,12 +285,20 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                           ),
                           onPressed: () {
                             if (_formKey.currentState.validate()) {
-                              //setState(()=>loading=true);
-                              nomeAluno = widget.aluno.nome;
-                              matriculaAluno = widget.aluno.matricula;
-                              disciplina = widget.aluno.disciplina;
-                              curso = widget.aluno.curso;
-                              orientador = widget.user.nome;
+                              setState(()=>loading=true);
+                              if(membroDaBanca1.nome == 'Selecione...' ||
+                              membroDaBanca2.nome == 'Selecione...' || (membroDaBanca3.nome == 'Selecione...' && widget.aluno.disciplina != "CMP1071"))
+                                setState(() =>error = 'Selecione mais membros pra banca.');
+                              else{
+                                nomeAluno = widget.aluno.nome;
+                                matriculaAluno = widget.aluno.matricula;
+                                disciplina = widget.aluno.disciplina;
+                                curso = widget.aluno.curso;
+                                orientador = widget.user.nome;
+                                agendarDefesa();
+                              }
+                              setState(()=>loading=false);
+                              //Navigator.pop(context);
                             }
                           }),
                       SizedBox(height: 12.0),

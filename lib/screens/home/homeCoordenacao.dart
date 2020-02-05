@@ -91,11 +91,26 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                 ),
                 onPressed: () async {
                   setState(()  => loading = true);
-                  await getCsv(widget.user.email, _scaffoldKey);
+                  await getCsvOrientacao(widget.user.email, _scaffoldKey);
                   setState(()  => loading = false);
                 },
               ),
-            )
+            ),
+            SizedBox(height: 20.0),
+            ButtonTheme(
+                minWidth: 300.0,
+                height: 50.0,
+                child: RaisedButton(
+                color: Colors.blue[300],
+                child: Text(
+                  "Exibir Defesas",
+                  style: textStyle.copyWith(),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/exibirDefesas');
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -104,7 +119,7 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
 }
 
 //Envio do email com planilha
-getCsv(String email, GlobalKey<ScaffoldState> _scaffoldKey) async{
+getCsvOrientacao(String email, GlobalKey<ScaffoldState> _scaffoldKey) async{
   DatabaseService banco = new DatabaseService();
   List<Orientacao> lista = new List<Orientacao>();
   List<DocumentSnapshot> result = await banco.getOrientacoes();

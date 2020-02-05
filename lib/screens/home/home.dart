@@ -73,16 +73,16 @@ class Home extends StatelessWidget {
                 minWidth: 300.0,
                 height: 50.0,
                 child: RaisedButton(
-                  color: Colors.red[300],
-                  child: Text(
-                    "Exibir defesas",
-                    style: textStyle.copyWith(),
-                  ),
-                  onPressed: () {
-                    
-                  },
+                color: Colors.blue[300],
+                child: Text(
+                  "Exibir Defesas",
+                  style: textStyle.copyWith(),
                 ),
-            )
+                onPressed: () {
+                  Navigator.pushNamed(context, '/exibirDefesas');
+                },
+              ),
+            ),
           ],
         ),
       ),

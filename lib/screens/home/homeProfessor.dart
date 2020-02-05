@@ -54,7 +54,22 @@ class HomeProfessor extends StatelessWidget {
                 minWidth: 300.0,
                 height: 50.0,
                 child: RaisedButton(
-                  color: Colors.red[300],
+                color: Colors.blue[300],
+                child: Text(
+                  "Exibir Defesas",
+                  style: textStyle.copyWith(),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/exibirDefesas');
+                },
+              ),
+            ),
+            SizedBox(height: 20.0),
+            ButtonTheme(
+                minWidth: 300.0,
+                height: 50.0,
+                child: RaisedButton(
+                  color: Colors.blue[300],
                   child: Text(
                     "Agendar defesa",
                     style: textStyle.copyWith(),
@@ -63,7 +78,7 @@ class HomeProfessor extends StatelessWidget {
                     Navigator.pushNamed(context, '/agendarDefesa', arguments: user);
                   },
               ),
-            )
+            ),
           ],
         ),
       ),
