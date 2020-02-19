@@ -12,19 +12,19 @@ class ExibirDefesas extends StatefulWidget {
 
 class _ExibirDefesasState extends State<ExibirDefesas> {
   final AuthService _auth = AuthService();
-  List<Defesas> listaDefesas = new List<Defesas>();
+  List<Defesa> listaDefesas = new List<Defesa>();
   
 
-  List<Defesas> criarlistaDefesas(QuerySnapshot snapshot){
+  List<Defesa> criarlistaDefesas(QuerySnapshot snapshot){
     for(DocumentSnapshot doc in snapshot.documents){
-      listaDefesas.add(new Defesas(data: doc.data['data'], horario: doc['horario'], local: doc['sala'], disciplina: doc['disciplina'],nomeAluno: doc.data['nomeAluno'],titulo: doc.data['titulo'] ,orientador: doc.data['orientador'],));
+      listaDefesas.add(new Defesa(data: doc.data['data'], horario: doc['horario'], local: doc['sala'], disciplina: doc['disciplina'],nomeAluno: doc.data['nomeAluno'],titulo: doc.data['titulo'] ,orientador: doc.data['orientador'],));
     }
     return listaDefesas;
   }
 
-  List<DataRow> _createRows2(List<Defesas> lista){
+  List<DataRow> _createRows2(List<Defesa> lista){
     List<DataRow> newlist = new List<DataRow>();
-    for(Defesas defesas in lista){
+    for(Defesa defesas in lista){
       List<DataCell> newListCell = new List<DataCell>();
       newListCell.add(DataCell(Text(defesas.data, style: textStyle,)));
       newListCell.add(DataCell(Text(defesas.horario, style: textStyle,)));

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:app_tcc/models/defesas.dart';
 import 'package:app_tcc/models/orientacoes.dart';
 import 'package:app_tcc/models/user.dart';
 import 'package:app_tcc/services/auth.dart';
@@ -111,6 +112,24 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                 },
               ),
             ),
+            SizedBox(height: 20.0),
+            ButtonTheme(
+                minWidth: 300.0,
+                height: 50.0,
+                child: RaisedButton(
+                color: Colors.blue[300],
+                child: Text(
+                  "Gerar planilha de defesas",
+                  style: textStyle.copyWith(),
+                ),
+                onPressed: () async {
+                  setState(()  => loading = true);
+                  await getCsvDefesas(widget.user.email, _scaffoldKey);
+                  setState(()  => loading = false);
+                },
+              ),
+            ),
+            SizedBox(height: 20.0),
           ],
         ),
       ),
@@ -168,6 +187,78 @@ getCsvOrientacao(String email, GlobalKey<ScaffoldState> _scaffoldKey) async{
     ..subject = 'Planilha de Orientações'
     ..attachments.add(new Attachment(file: myFile))
     ..text = 'Planilha de Orientações no anexo';
+
+
+  emailTransport.send(envelope)
+    .then((envelope) { 
+      print('Email sent!');
+      _scaffoldKey.currentState.showSnackBar(
+                      SnackBar(
+                        content: new Text("Planilha foi enviada!"),
+                        duration: Duration(seconds: 3),
+                        backgroundColor: Colors.green,
+                      )
+      );
+    })
+    .catchError((e){ 
+      print('Error occurred: $e');
+      _scaffoldKey.currentState.showSnackBar(
+                      SnackBar(
+                        content: new Text("Ocorreu um erro e a planilha não foi enviada."),
+                        duration: Duration(seconds: 3),
+                        backgroundColor: Colors.red,
+                      )
+      );
+    });
+}
+
+getCsvDefesas(String email, GlobalKey<ScaffoldState> _scaffoldKey) async{
+  DatabaseService banco = new DatabaseService();
+  List<Defesa> lista = new List<Defesa>();
+  List<DocumentSnapshot> result = await banco.getDefesas();
+
+  for (DocumentSnapshot doc in result) {
+      Defesa defesa = new Defesa(data: doc.data['data'], horario: doc.data['horario'], local: doc.data['sala'],
+                              disciplina: doc.data['disciplina'], nomeAluno: doc.data['nomeAluno'], titulo: doc.data['titulo'],
+                              orientador: doc.data['orientador']);
+      lista.add(defesa);
+  }
+  String dir = (await getExternalStorageDirectory()).absolute.path + "/planilha_de_defesas_";
+  String file = "$dir";
+
+  File myFile = new File(file +"${DateTime.now()}.csv");
+
+  List primeiraLinha = ['Data','Horário','Local','Disciplina','Aluno','Título','Orientador'];
+  List<List> rows =new List<List>();
+  rows.add(primeiraLinha);
+  for (Defesa def in lista) {
+    List row = new List();
+    row.add(def.data);
+    row.add(def.horario);
+    row.add(def.local);
+    row.add(def.disciplina);
+    row.add(def.nomeAluno);
+    row.add(def.titulo);
+    row.add(def.orientador);
+    rows.add(row);
+  }
+ 
+  
+  String csv = const ListToCsvConverter().convert(rows);
+  myFile.writeAsString(csv);
+
+  var options = new GmailSmtpOptions()
+    ..username = 'puc.go.apptcc@gmail.com'
+    ..password = 'pucgo123';
+
+  var emailTransport = new SmtpTransport(options);
+
+  var envelope = new Envelope()
+    ..from = 'puc.go.apptcc@gmail.com'
+    ..recipients.add('gjorgec@gmail.com')
+    ..subject = 'Planilha de Defesas'
+    ..attachments.add(new Attachment(file: myFile))
+    ..text = 'Planilha de Defesas no anexo';
 
 
   emailTransport.send(envelope)

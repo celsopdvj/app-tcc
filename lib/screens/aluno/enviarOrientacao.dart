@@ -43,7 +43,7 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
             backgroundColor: Colors.green,
           )
         );
-        DatabaseService().updatePedidoPendente(widget.user.uid, _professorAtual, widget.user.nome, nomeProfessor);
+        DatabaseService().updatePedidoPendente(widget.user.uid, _professorAtual, widget.user.nome, nomeProfessor, widget.user.disciplina);
         _professorAtual = '';
       }
     }
@@ -62,12 +62,15 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
     Widget botaoSim = RaisedButton(
             color: Colors.blue[300],
             child: Text("Sim",style: TextStyle(color: Colors.white),),
-            onPressed: (){
-              DatabaseService().deletaPedidoPendenteDoAluno(widget.user.uid);
+            onPressed: () async{
+              await DatabaseService().deletaPedidoPendenteDoAluno(widget.user.uid);
+              await DatabaseService().updatePedidoPendente(widget.user.uid, _professorAtual, widget.user.nome, nomeProfessor, widget.user.disciplina);
+              _professorAtual = '';
+              DatabaseService().desabilitaPedidoPendente(widget.user.uid);
               Navigator.of(context).pop();
               _scaffoldKey.currentState.showSnackBar(
                 SnackBar(
-                  content: new Text("Pedido cancelado.", style: TextStyle(color: Colors.white),),
+                  content: new Text("Novo pedido enviado.", style: TextStyle(color: Colors.white),),
                   duration: Duration(seconds: 3),
                   backgroundColor: Colors.green,
                   
@@ -82,7 +85,7 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
             },
           );
     AlertDialog alert = AlertDialog(
-      content:  Text('Já possui um pedido pendente. Deseja cancela-lo?'),
+      content:  Text('Já possui um pedido pendente. Deseja cancela-lo e enviar um novo convite para este professor?'),
       actions: <Widget>[
         botaoSim,
         botaoNao

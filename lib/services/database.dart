@@ -43,17 +43,24 @@ class DatabaseService {
     }
   }
 
-  Future updatePedidoPendente(String uidAluno, String uidOrientador, String nomeAluno, String nomeProfessor) async{
-    await usuario.document(uidAluno).updateData({
-      'pedidoPendente': true
-    });
-    return await pedidoPendente.document().setData({
+  Future updatePedidoPendente(String uidAluno, String uidOrientador, String nomeAluno, String nomeProfessor, String disciplina) async{
+     await pedidoPendente.document().setData({
       'uidAluno' : uidAluno,
       'uidProfessor': uidOrientador,
       'nomeAluno': nomeAluno,
       'nomeProfessor': nomeProfessor,
       'validado' : false,
-      'excluido' : 0
+      'excluido' : 0,
+      'disciplina': disciplina
+    });
+    return await usuario.document(uidAluno).updateData({
+      'pedidoPendente': true
+    });
+  }
+
+  void desabilitaPedidoPendente(String uid) async {
+     usuario.document(uid).updateData({
+      'pedidoPendente': true
     });
   }
 
@@ -62,7 +69,7 @@ class DatabaseService {
     return result.data['pedidoPendente'];
   }
 
-  void deletaPedidoPendenteDoAluno (String uidAluno) async{
+  Future<bool> deletaPedidoPendenteDoAluno(String uidAluno) async{
     try{
       final aux = await pedidoPendente.where("uidAluno", isEqualTo: uidAluno).getDocuments();
       final x = aux.documents.first;
@@ -70,9 +77,11 @@ class DatabaseService {
       await usuario.document(uidAluno).updateData({
         'pedidoPendente': false
       });
+      return true;
     }
     catch(e){
       print(e);
+      return false;
     }
   }
 
@@ -88,15 +97,20 @@ class DatabaseService {
      nome: result.data['nome'], email: result.data['email'], disciplina: result.data['disciplina']);
   }
 
-  Future getTurma() async{
+  Future getTurma(String curso) async{
     final snapShot = await orientacao.document('turmas').get();
-    await orientacao.document('turmas').updateData({'contador': FieldValue.increment(1)});
-    int contador =  snapShot.data['contador'];
-    return contador;
+    if(curso == 'Engenharia de Computação' || curso == 'Ciência de Computação'){
+      await orientacao.document('turmas').updateData({'contadorA': FieldValue.increment(1)});
+      return "A" + snapShot.data['contadorA'].toString().padLeft(2,'0');
+    }
+    else{
+      await orientacao.document('turmas').updateData({'contadorC': FieldValue.increment(1)});
+      return "C" + snapShot.data['contadorC'].toString().padLeft(2,'0');
+    }
   }
 
   void salvarOrientacao(String curso, String disciplina, String turma, String dia, String horario
-                          , String nomeProfessor, String matriculaAluno, String nomeAluno, String obs, String uidAluno, String uidProfessor) async{
+                          , String nomeProfessor, String matriculaAluno, String nomeAluno, String uidAluno, String uidProfessor) async{
     await orientacoes.document().setData({
       'curso': curso,
       'disciplina': disciplina,
@@ -106,7 +120,6 @@ class DatabaseService {
       'nomeProfessor': nomeProfessor,
       'matricula': matriculaAluno,
       'nomeAluno': nomeAluno,
-      'observacoes':obs,
       'uidAluno': uidAluno,
       'uidProfessor': uidProfessor
     });
@@ -130,6 +143,11 @@ class DatabaseService {
 
   Future getOrientacoes() async{
     final result = await orientacoes.getDocuments();  
+    return result.documents;
+  }
+
+  Future getDefesas() async{
+    final result = await defesa.getDocuments();  
     return result.documents;
   }
 

@@ -75,7 +75,7 @@ class _ValidarOrientacaoState extends State<ValidarOrientacao> {
                     return new CheckboxListTile(
                       key: Key(document.documentID),
                       value: listaPedidosMarcados[document.documentID] == null ? false : listaPedidosMarcados[document.documentID],
-                      title: Text(document['nomeAluno']),
+                      title: Text(document['disciplina'] + " - " + document['nomeAluno']),
                       subtitle: Text("Orientador: "+ document['nomeProfessor']),
                       onChanged: (val){
                         setState(() {

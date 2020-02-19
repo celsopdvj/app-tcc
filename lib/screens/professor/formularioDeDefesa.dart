@@ -296,6 +296,7 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                                 curso = widget.aluno.curso;
                                 orientador = widget.user.nome;
                                 agendarDefesa();
+                                Navigator.pop(context);
                               }
                               setState(()=>loading=false);
                               //Navigator.pop(context);

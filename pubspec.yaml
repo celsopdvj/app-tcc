@@ -32,6 +32,7 @@ dependencies:
   path_provider: ^1.5.1
   mailer2: ^1.2.5
   date_format: ^1.0.8
+  mask_text_input_formatter: ^1.0.6
 
 
 dev_dependencies:

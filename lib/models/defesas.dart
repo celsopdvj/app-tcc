@@ -1,4 +1,4 @@
-class Defesas{
+class Defesa{
   String data;
   String horario;
   String local;
@@ -7,5 +7,5 @@ class Defesas{
   String titulo;
   String orientador;
 
-  Defesas({this.data,this.horario,this.local,this.disciplina,this.nomeAluno,this.titulo,this.orientador});
+  Defesa({this.data,this.horario,this.local,this.disciplina,this.nomeAluno,this.titulo,this.orientador});
 }

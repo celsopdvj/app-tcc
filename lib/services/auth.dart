@@ -10,9 +10,10 @@ String nome = '';
 String matricula = '';
 String curso = '';
 String email = '';
+String disciplina = '';
 
 User _userFromFireBase(FirebaseUser user){
-  return user != null ? User(uid: user.uid, nome: nome, matricula: matricula, curso: curso, email: email) : null;
+  return user != null ? User(uid: user.uid, nome: nome, matricula: matricula, curso: curso, email: email, disciplina: disciplina) : null;
 }
   //auth change user stream
 
@@ -29,6 +30,7 @@ User _userFromFireBase(FirebaseUser user){
       nome = snapShot.data['nome'];
       matricula = snapShot.data['matricula'];
       curso = snapShot.data['curso'];
+      disciplina = snapShot.data['disciplina'];
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: senha);
       FirebaseUser user = result.user;
       return _userFromFireBase(user);
@@ -49,6 +51,7 @@ User _userFromFireBase(FirebaseUser user){
         this.matricula = matricula;
         this.curso = curso;
         this.email = email;
+        this.disciplina = "CMP1071";
         AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: senha);
         FirebaseUser user = result.user;
         await DatabaseService(uid: user.uid).updateUserData(matricula, senha, nome, email, curso, telefone,tipoUsuario, areaAtuacao, pedidoPendente);
