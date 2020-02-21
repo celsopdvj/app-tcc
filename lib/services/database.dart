@@ -25,7 +25,7 @@ class DatabaseService {
         'areaAtuacao': areaAtuacao,
         'pedidoPendente': pedidoPendente,
         'defesaAgendada': "",
-        'disciplina' : 'CMP1071'
+        'disciplina' : ''
       });
     }
     else{
@@ -185,5 +185,11 @@ class DatabaseService {
     return result.documents.map((doc){
       return new User(uid: doc.documentID, nome: doc.data['nome']);
     }).toList();
+  }
+
+  void atualizarDisciplina(String uid, String disciplina){
+    usuario.document(uid).updateData({
+      'disciplina': disciplina
+    });
   }
 }

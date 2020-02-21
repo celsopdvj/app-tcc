@@ -198,6 +198,7 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                                       widget.aluno.uid,
                                       widget.user.uid);
                                   banco.deletarPedido(widget.pedidoUid);
+                                  banco.atualizarDisciplina(widget.aluno.uid, disciplina);
                                   Navigator.of(context).pop();
                                 } catch (e) {
                                   setState(() {
