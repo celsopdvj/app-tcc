@@ -1,18 +1,27 @@
+import 'dart:io';
+
 import 'package:app_tcc/models/user.dart';
 import 'package:app_tcc/services/auth.dart';
 import 'package:app_tcc/shared/constants.dart';
 import 'package:flutter/material.dart';
 
-class HomeProfessor extends StatelessWidget {
+
+class HomeProfessor extends StatefulWidget {
   final User user;
-  HomeProfessor({Key key, @required this.user}):super(key:key);
+  HomeProfessor({Key key, @required this.user}) : super(key: key);
+  @override
+  _HomeProfessorState createState() => _HomeProfessorState();
+}
+
+class _HomeProfessorState extends State<HomeProfessor> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-
     final AuthService _auth = AuthService();
-    
+
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('PUC GO TCC - Professor'),
         elevation: 0.0,
@@ -21,7 +30,7 @@ class HomeProfessor extends StatelessWidget {
             icon: Icon(Icons.person),
             label: Text('logout'),
             onPressed: () async {
-              print(user.uid);
+              print(widget.user.uid);
               await _auth.signOut();
               Navigator.pushReplacementNamed(context, '/');
             },
@@ -36,24 +45,25 @@ class HomeProfessor extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             ButtonTheme(
-                minWidth: 300.0,
-                height: 50.0,
-                child: RaisedButton(
-                  color: Colors.blue[300],
-                  child: Text(
-                    "Pedidos de orientação",
-                    style: textStyle.copyWith(),
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/pedidosDeOrientacao', arguments: user);
-                  },
+              minWidth: 300.0,
+              height: 50.0,
+              child: RaisedButton(
+                color: Colors.blue[300],
+                child: Text(
+                  "Pedidos de orientação",
+                  style: textStyle.copyWith(),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/pedidosDeOrientacao',
+                      arguments: widget.user);
+                },
               ),
             ),
             SizedBox(height: 20.0),
             ButtonTheme(
-                minWidth: 300.0,
-                height: 50.0,
-                child: RaisedButton(
+              minWidth: 300.0,
+              height: 50.0,
+              child: RaisedButton(
                 color: Colors.blue[300],
                 child: Text(
                   "Exibir Defesas",
@@ -66,17 +76,34 @@ class HomeProfessor extends StatelessWidget {
             ),
             SizedBox(height: 20.0),
             ButtonTheme(
-                minWidth: 300.0,
-                height: 50.0,
-                child: RaisedButton(
-                  color: Colors.blue[300],
-                  child: Text(
-                    "Agendar defesa",
-                    style: textStyle.copyWith(),
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/agendarDefesa', arguments: user);
-                  },
+              minWidth: 300.0,
+              height: 50.0,
+              child: RaisedButton(
+                color: Colors.blue[300],
+                child: Text(
+                  "Agendar defesa",
+                  style: textStyle.copyWith(),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/agendarDefesa',
+                      arguments: widget.user);
+                },
+              ),
+            ),
+            SizedBox(height: 20.0),
+            ButtonTheme(
+              minWidth: 300.0,
+              height: 50.0,
+              child: RaisedButton(
+                color: Colors.blue[300],
+                child: Text(
+                  "Enviar TCC",
+                  style: textStyle.copyWith(),
+                ),
+                onPressed: () async {
+                  Navigator.pushNamed(context, '/enviarTCC',
+                      arguments: widget.user);
+                },
               ),
             ),
           ],

@@ -1,5 +1,7 @@
 import 'package:app_tcc/models/settingsFormOrientacao.dart';
 import 'package:app_tcc/screens/aluno/enviarOrientacao.dart';
+import 'package:app_tcc/screens/aluno/exibirTCC.dart';
+import 'package:app_tcc/screens/aluno/visualizarTCC.dart';
 import 'package:app_tcc/screens/authenticate/digitarEmail.dart';
 import 'package:app_tcc/screens/authenticate/register.dart';
 import 'package:app_tcc/screens/authenticate/registerProfessor.dart';
@@ -13,6 +15,7 @@ import 'package:app_tcc/screens/home/homeCoordenacao.dart';
 import 'package:app_tcc/screens/home/homeProfessor.dart';
 import 'package:app_tcc/screens/professor/agendarDefesa.dart';
 import 'package:app_tcc/screens/professor/formularioDeDefesa.dart';
+import 'package:app_tcc/screens/professor/formularioEnviarTCC.dart';
 import 'package:app_tcc/screens/professor/formularioOrientacao.dart';
 import 'package:app_tcc/screens/professor/pedidosDeOrientacao.dart';
 import 'package:flutter/material.dart';
@@ -60,6 +63,12 @@ class Router {
         return MaterialPageRoute(builder: (_) => AgendarDefesa(user: args));
       case '/formularioDeDefesa':
         return MaterialPageRoute(builder: (_) => FormularioDeDefesa(user: args2.professor, aluno: args2.aluno,));
+      case '/enviarTCC':
+        return MaterialPageRoute(builder: (_) => FormularioDeEnvioTCC(user: args));
+      case '/exibirTCC':
+        return MaterialPageRoute(builder: (_) => ExibirTCC(user: args));
+      case '/visualizarTCC':
+        return MaterialPageRoute(builder: (_) => VisualizarTCC(url: args));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

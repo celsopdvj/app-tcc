@@ -10,6 +10,7 @@ class DatabaseService {
   final CollectionReference orientacao = Firestore.instance.collection('orientacao');
   final CollectionReference orientacoes = Firestore.instance.collection('orientacao/turmas/orientacoes');
   final CollectionReference defesa = Firestore.instance.collection('defesa');
+  final CollectionReference tcc = Firestore.instance.collection('tcc');
 
   Future updateUserData(String matricula, String senha, String nome,
       String email, String curso, String telefone, String tipoUsuario, String areaAtuacao, bool pedidoPendente) async {
@@ -173,11 +174,16 @@ class DatabaseService {
       'membroDaBanca3': membroDaBanca3,
       'membroDaBanca4': membroDaBanca4,
       'membroDaBanca5': membroDaBanca5,
+      'pendente': true,
       'excluido': false
     });
+    // await defesa.document(result.documentID).collection('convites').add({
+
+    // })
     await usuario.document(uidAluno).updateData({
       'defesaAgendada': result.documentID
     });
+
   }
 
   Future getProfessores()async{
@@ -190,6 +196,15 @@ class DatabaseService {
   void atualizarDisciplina(String uid, String disciplina){
     usuario.document(uid).updateData({
       'disciplina': disciplina
+    });
+  }
+
+  void salvarTCC(String nomeAluno, String titulo, String area, String url){
+    tcc.document().setData({
+      'aluno': nomeAluno,
+      'titulo': titulo,
+      'area': area,
+      'url': url
     });
   }
 }

@@ -83,6 +83,21 @@ class Home extends StatelessWidget {
                 },
               ),
             ),
+            SizedBox(height: 20.0),
+            ButtonTheme(
+                minWidth: 300.0,
+                height: 50.0,
+                child: RaisedButton(
+                color: Colors.blue[300],
+                child: Text(
+                  "Ver TCCs",
+                  style: textStyle.copyWith(),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/exibirTCC');
+                },
+              ),
+            ),
           ],
         ),
       ),

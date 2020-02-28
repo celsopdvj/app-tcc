@@ -77,8 +77,8 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
     await banco.salvarDefesa(nomeAluno, matriculaAluno, widget.aluno.uid, disciplina, curso,
      titulo, orientador, widget.user.uid, coorientador, uidCoorientador,
       formatDate(data,[dd, '-', mm, '-', yyyy]), horario.format(context),
-       sala, membroDaBanca1.nome, membroDaBanca2.nome, membroDaBanca3.nome ,
-       membroDaBanca4.nome == 'Selecione...'? '' : membroDaBanca4.nome ,membroDaBanca5.nome == 'Selecione...'? '' : membroDaBanca5.nome);
+       sala, membroDaBanca1.uid, membroDaBanca2.uid, membroDaBanca3.uid == 'Selecione...'? '' : membroDaBanca3.uid ,
+       membroDaBanca4.uid == 'Selecione...'? '' : membroDaBanca4.uid ,membroDaBanca5.uid == 'Selecione...'? '' : membroDaBanca5.nome);
   }
 
   @override

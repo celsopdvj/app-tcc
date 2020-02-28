@@ -33,6 +33,13 @@ dependencies:
   mailer2: ^1.2.5
   date_format: ^1.0.8
   mask_text_input_formatter: ^1.0.6
+  firebase_storage: ^3.1.1
+  file_picker: ^1.4.3+2
+  url_launcher: ^5.4.2
+  open_file: ^3.0.1
+  flutter_full_pdf_viewer: ^1.0.6
+  flutter_downloader: ^1.4.1
+  
 
 
 dev_dependencies:
