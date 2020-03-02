@@ -45,92 +45,96 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
         ],
       ),
       //Botões com funcionalidades da coordenação
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            ButtonTheme(
-                minWidth: 300.0,
-                height: 50.0,
-                child: RaisedButton(
-                color: Colors.blue[300],
-                child: Text(
-                  "Validar convite de orientação",
-                  style: textStyle.copyWith(),
+      body: Center(
+              child: SingleChildScrollView(
+                child: Container(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                ButtonTheme(
+                    minWidth: 300.0,
+                    height: 50.0,
+                    child: RaisedButton(
+                    color: Colors.blue[300],
+                    child: Text(
+                      "Validar convite de orientação",
+                      style: textStyle.copyWith(),
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/novoValidarPedidoOrientacao', arguments: widget.user);
+                    },
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/validarPedidoOrientacao', arguments: widget.user);
-                },
-              ),
-            ),
-            SizedBox(height: 20.0),
-            ButtonTheme(
-                minWidth: 300.0,
-                height: 50.0,
-                child: RaisedButton(
-                color: Colors.blue[300],
-                child: Text(
-                  "Exibir orientações",
-                  style: textStyle.copyWith(),
+                SizedBox(height: 20.0),
+                ButtonTheme(
+                    minWidth: 300.0,
+                    height: 50.0,
+                    child: RaisedButton(
+                    color: Colors.blue[300],
+                    child: Text(
+                      "Exibir orientações",
+                      style: textStyle.copyWith(),
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/exibirOrientacoes');
+                    },
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/exibirOrientacoes');
-                },
-              ),
-            ),
-            SizedBox(height: 20.0),
-            ButtonTheme(
-                minWidth: 300.0,
-                height: 50.0,
-                child: RaisedButton(
-                color: Colors.blue[300],
-                child: Text(
-                  "Gerar planilha de orientações",
-                  style: textStyle.copyWith(),
+                SizedBox(height: 20.0),
+                ButtonTheme(
+                    minWidth: 300.0,
+                    height: 50.0,
+                    child: RaisedButton(
+                    color: Colors.blue[300],
+                    child: Text(
+                      "Gerar planilha de orientações",
+                      style: textStyle.copyWith(),
+                    ),
+                    onPressed: () async {
+                      setState(()  => loading = true);
+                      await getCsvOrientacao(widget.user.email, _scaffoldKey);
+                      setState(()  => loading = false);
+                    },
+                  ),
                 ),
-                onPressed: () async {
-                  setState(()  => loading = true);
-                  await getCsvOrientacao(widget.user.email, _scaffoldKey);
-                  setState(()  => loading = false);
-                },
-              ),
-            ),
-            SizedBox(height: 20.0),
-            ButtonTheme(
-                minWidth: 300.0,
-                height: 50.0,
-                child: RaisedButton(
-                color: Colors.blue[300],
-                child: Text(
-                  "Exibir Defesas",
-                  style: textStyle.copyWith(),
+                SizedBox(height: 20.0),
+                ButtonTheme(
+                    minWidth: 300.0,
+                    height: 50.0,
+                    child: RaisedButton(
+                    color: Colors.blue[300],
+                    child: Text(
+                      "Exibir Defesas",
+                      style: textStyle.copyWith(),
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/exibirDefesas');
+                    },
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/exibirDefesas');
-                },
-              ),
-            ),
-            SizedBox(height: 20.0),
-            ButtonTheme(
-                minWidth: 300.0,
-                height: 50.0,
-                child: RaisedButton(
-                color: Colors.blue[300],
-                child: Text(
-                  "Gerar planilha de defesas",
-                  style: textStyle.copyWith(),
+                SizedBox(height: 20.0),
+                ButtonTheme(
+                    minWidth: 300.0,
+                    height: 50.0,
+                    child: RaisedButton(
+                    color: Colors.blue[300],
+                    child: Text(
+                      "Gerar planilha de defesas",
+                      style: textStyle.copyWith(),
+                    ),
+                    onPressed: () async {
+                      setState(()  => loading = true);
+                      await getCsvDefesas(widget.user.email, _scaffoldKey);
+                      setState(()  => loading = false);
+                    },
+                  ),
                 ),
-                onPressed: () async {
-                  setState(()  => loading = true);
-                  await getCsvDefesas(widget.user.email, _scaffoldKey);
-                  setState(()  => loading = false);
-                },
-              ),
+                SizedBox(height: 20.0),
+              ],
             ),
-            SizedBox(height: 20.0),
-          ],
+          ),
         ),
       ),
     );

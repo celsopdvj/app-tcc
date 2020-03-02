@@ -103,6 +103,14 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
         });
   }
 
+  DropdownButton mostrarNull() {
+    return DropdownButton(
+        items: null,
+        onChanged: (val) {
+          null;
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return loading
@@ -149,7 +157,7 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                             "Horário:   ",
                             style: TextStyle(fontSize: 16),
                           ),
-                          diaDaSemana != "Sábado" ? mostrarHorario(horarios) : mostrarHorario(horarioSabado),
+                          diaDaSemana == "Selecione..." ? mostrarNull() : diaDaSemana != "Sábado" ? mostrarHorario(horarios) : mostrarHorario(horarioSabado),
                         ],
                       ),
                       SizedBox(height: 20.0),

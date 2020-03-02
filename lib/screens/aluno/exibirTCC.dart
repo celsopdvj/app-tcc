@@ -3,8 +3,7 @@ import 'package:app_tcc/services/auth.dart';
 import 'package:app_tcc/shared/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:app_tcc/models/settingsTCC.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ExibirTCC extends StatefulWidget {
@@ -89,7 +88,7 @@ class _ExibirTCCState extends State<ExibirTCC> {
                                 subtitle:
                                     Text(document.data['aluno'].toString()),
                                 onTap: ()  {
-                                    Navigator.of(context).pushNamed('/visualizarTCC', arguments: document.data['url']);
+                                    Navigator.of(context).pushNamed('/visualizarTCC', arguments: ScreenArgumentsTCC(url: document.data['url'], filename: document.data['filename']));
                                 }
                             ),
                           ],

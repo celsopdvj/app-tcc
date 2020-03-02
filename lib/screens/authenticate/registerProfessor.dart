@@ -134,7 +134,7 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                                 });
                               }
                               else 
-                                Navigator.pushReplacementNamed(context, '/homeProfessor', arguments: result);
+                                Navigator.pushReplacementNamed(context, '/horarios', arguments: result);
                             }
                           }),
                       SizedBox(height: 12.0),

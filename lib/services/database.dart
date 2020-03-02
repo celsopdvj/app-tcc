@@ -199,12 +199,13 @@ class DatabaseService {
     });
   }
 
-  void salvarTCC(String nomeAluno, String titulo, String area, String url){
+  void salvarTCC(String nomeAluno, String titulo, String area, String url, String filename){
     tcc.document().setData({
       'aluno': nomeAluno,
       'titulo': titulo,
       'area': area,
-      'url': url
+      'url': url,
+      'filename' : filename
     });
   }
 }

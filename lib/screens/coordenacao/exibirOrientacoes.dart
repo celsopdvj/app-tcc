@@ -14,7 +14,6 @@ class _ExibirOrientacoesState extends State<ExibirOrientacoes> {
   final AuthService _auth = AuthService();
   List<Orientacao> listaOrientacoes = new List<Orientacao>();
   
-
   List<Orientacao> criarListaOrientacoes(QuerySnapshot snapshot){
     for(DocumentSnapshot doc in snapshot.documents){
       listaOrientacoes.add(new Orientacao(nomeAluno: doc.data['nomeAluno'], nomeProfessor: doc.data['nomeProfessor'], dia: doc.data['dia'], horario: doc['horario']));

@@ -47,7 +47,7 @@ class FormularioDeEnvioTCCState extends State<FormularioDeEnvioTCC> {
       final StorageTaskSnapshot downloadUrl = (await uploadTask.onComplete);
       final String url = (await downloadUrl.ref.getDownloadURL());
       print("URL is $url");
-      banco.salvarTCC(nomeAluno, titulo, area, url);
+      banco.salvarTCC(nomeAluno, titulo, area, url, filename);
     }
     void enviarTCC() async{
       Future filePicker(BuildContext context) async {
