@@ -110,31 +110,31 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                           ),
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
-                              setState(() => loading = true);
-                              dynamic result = await _auth.registroDeUsuario(
-                                  matricula,
-                                  password,
-                                  nome,
-                                  "",
-                                  email,
-                                  telefone,
-                                  tipoUsuario,
-                                  areaAtuacao,
-                                  false);
-                              if (result == null) {
-                                setState(() {
-                                  error = 'Erro ao registrar';
-                                  loading = false;
-                                });
-                              }
-                              else if(result == 1){
-                                setState(() {
-                                  error = 'Matricula já cadastrada';
-                                  loading = false;
-                                });
-                              }
-                              else 
-                                Navigator.pushReplacementNamed(context, '/horarios', arguments: result);
+                              //setState(() => loading = true);
+                              // dynamic result = await _auth.registroDeUsuario(
+                              //     matricula,
+                              //     password,
+                              //     nome,
+                              //     "",
+                              //     email,
+                              //     telefone,
+                              //     tipoUsuario,
+                              //     areaAtuacao,
+                              //     false);
+                              // if (result == null) {
+                              //   setState(() {
+                              //     error = 'Erro ao registrar';
+                              //     loading = false;
+                              //   });
+                              // }
+                              // else if(result == 1){
+                              //   setState(() {
+                              //     error = 'Matricula já cadastrada';
+                              //     loading = false;
+                              //   });
+                              // }
+                              // else 
+                                Navigator.pushReplacementNamed(context, '/horarios');
                             }
                           }),
                       SizedBox(height: 12.0),

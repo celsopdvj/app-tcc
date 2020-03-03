@@ -19,7 +19,7 @@ import 'package:app_tcc/screens/professor/agendarDefesa.dart';
 import 'package:app_tcc/screens/professor/formularioDeDefesa.dart';
 import 'package:app_tcc/screens/professor/formularioEnviarTCC.dart';
 import 'package:app_tcc/screens/professor/formularioOrientacao.dart';
-import 'package:app_tcc/screens/professor/horario.dart';
+import 'package:app_tcc/screens/professor/horarios.dart';
 import 'package:app_tcc/screens/professor/pedidosDeOrientacao.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +49,7 @@ class Router {
       case '/registroProfessor':
         return MaterialPageRoute(builder: (_) => RegisterProfessor());
       case '/horarios':
-        return MaterialPageRoute(builder: (_) => Horario());
+        return MaterialPageRoute(builder: (_) => Horarios());
       case '/home':
         return MaterialPageRoute(builder: (_) => Home(user: args));
       case '/homeCoordenacao':
