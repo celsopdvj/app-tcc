@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:app_tcc/services/auth.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
+import '../../models/user.dart';
+
 class RegisterProfessor extends StatefulWidget {
 
   @override
@@ -111,30 +113,8 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
                               //setState(() => loading = true);
-                              // dynamic result = await _auth.registroDeUsuario(
-                              //     matricula,
-                              //     password,
-                              //     nome,
-                              //     "",
-                              //     email,
-                              //     telefone,
-                              //     tipoUsuario,
-                              //     areaAtuacao,
-                              //     false);
-                              // if (result == null) {
-                              //   setState(() {
-                              //     error = 'Erro ao registrar';
-                              //     loading = false;
-                              //   });
-                              // }
-                              // else if(result == 1){
-                              //   setState(() {
-                              //     error = 'Matricula já cadastrada';
-                              //     loading = false;
-                              //   });
-                              // }
-                              // else 
-                                Navigator.pushReplacementNamed(context, '/horarios');
+                              User us = new User(nome:nome, matricula:matricula, curso: "", email: email, telefone: telefone, tipoUsuario: tipoUsuario, areaAtuacao: areaAtuacao, senha: password);
+                              Navigator.pushReplacementNamed(context, '/horarios', arguments: us);
                             }
                           }),
                       SizedBox(height: 12.0),

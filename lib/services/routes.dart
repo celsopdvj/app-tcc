@@ -49,7 +49,7 @@ class Router {
       case '/registroProfessor':
         return MaterialPageRoute(builder: (_) => RegisterProfessor());
       case '/horarios':
-        return MaterialPageRoute(builder: (_) => Horarios());
+        return MaterialPageRoute(builder: (_) => Horarios(user: args));
       case '/home':
         return MaterialPageRoute(builder: (_) => Home(user: args));
       case '/homeCoordenacao':

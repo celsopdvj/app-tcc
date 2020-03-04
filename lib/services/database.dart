@@ -1,6 +1,8 @@
 import 'package:app_tcc/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../models/horario.dart';
+
 class DatabaseService {
   final String uid;
   DatabaseService({this.uid});
@@ -207,5 +209,50 @@ class DatabaseService {
       'url': url,
       'filename' : filename
     });
+  }
+
+  void salvarHorario(String uid, List<Horario> listaSegunda,List<Horario> listaTerca,List<Horario> listaQuarta,List<Horario> listaQuinta,List<Horario> listaSexta,List<Horario> listaSabado){
+    for (var item in listaSegunda) {
+      usuario.document(uid).collection("Segunda").document(item.nome).setData({
+        'horarioInicial': item.horarioInicial,
+        'horarioFinal': item.horarioFinal,
+        'possui': item.possui
+      });
+    }
+    for (var item in listaTerca) {
+      usuario.document(uid).collection("Terça").document(item.nome).setData({
+        'horarioInicial': item.horarioInicial,
+        'horarioFinal': item.horarioFinal,
+        'possui': item.possui
+      });
+    }
+    for (var item in listaQuarta) {
+      usuario.document(uid).collection("Quarta").document(item.nome).setData({
+        'horarioInicial': item.horarioInicial,
+        'horarioFinal': item.horarioFinal,
+        'possui': item.possui
+      });
+    }
+    for (var item in listaQuinta) {
+      usuario.document(uid).collection("Quinta").document(item.nome).setData({
+        'horarioInicial': item.horarioInicial,
+        'horarioFinal': item.horarioFinal,
+        'possui': item.possui
+      });
+    }
+    for (var item in listaSexta) {
+      usuario.document(uid).collection("Sexta").document(item.nome).setData({
+        'horarioInicial': item.horarioInicial,
+        'horarioFinal': item.horarioFinal,
+        'possui': item.possui
+      });
+    }
+    for (var item in listaSabado) {
+      usuario.document(uid).collection("Sabado").document(item.nome).setData({
+        'horarioInicial': item.horarioInicial,
+        'horarioFinal': item.horarioFinal,
+        'possui': item.possui
+      });
+    }
   }
 }
