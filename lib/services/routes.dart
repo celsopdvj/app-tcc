@@ -1,3 +1,4 @@
+import 'package:app_tcc/models/settingsFormDefesa.dart';
 import 'package:app_tcc/models/settingsFormOrientacao.dart';
 import 'package:app_tcc/models/settingsTCC.dart';
 import 'package:app_tcc/screens/aluno/enviarOrientacao.dart';
@@ -16,6 +17,10 @@ import 'package:app_tcc/screens/home/home.dart';
 import 'package:app_tcc/screens/home/homeCoordenacao.dart';
 import 'package:app_tcc/screens/home/homeProfessor.dart';
 import 'package:app_tcc/screens/professor/agendarDefesa.dart';
+import 'package:app_tcc/screens/professor/convitesDefesa.dart';
+import 'package:app_tcc/screens/professor/defesasAgendadas.dart';
+import 'package:app_tcc/screens/professor/editarDefesa.dart';
+import 'package:app_tcc/screens/professor/enviarTCC.dart';
 import 'package:app_tcc/screens/professor/formularioDeDefesa.dart';
 import 'package:app_tcc/screens/professor/formularioEnviarTCC.dart';
 import 'package:app_tcc/screens/professor/formularioOrientacao.dart';
@@ -30,10 +35,13 @@ class Router {
     Object args;
     ScreenArguments args2;
     ScreenArgumentsTCC args3;
-    if(settings.name == '/formularioOrientacao' || settings.name == '/formularioDeDefesa')
+    ScreenArgumentsDefesa args4;
+    if(settings.name == '/formularioOrientacao' || settings.name == '/formularioDeDefesa' || settings.name == '/formularioEnviarTCC')
       args2 = settings.arguments;
     else if(settings.name == '/visualizarTCC')
       args3 = settings.arguments;
+    else if(settings.name == '/editarDefesa')
+      args4 = settings.arguments;
     else
       args = settings.arguments;
 
@@ -70,12 +78,20 @@ class Router {
         return MaterialPageRoute(builder: (_) => ExibirOrientacoes());
       case '/exibirDefesas':
         return MaterialPageRoute(builder: (_) => ExibirDefesas());
+      case '/defesasAgendadas':
+        return MaterialPageRoute(builder: (_) => DefesasAgendadas(user: args));
       case '/agendarDefesa':
         return MaterialPageRoute(builder: (_) => AgendarDefesa(user: args));
+      case '/convitesDefesa':
+        return MaterialPageRoute(builder: (_) => ConvitesDefesa(user: args));
       case '/formularioDeDefesa':
         return MaterialPageRoute(builder: (_) => FormularioDeDefesa(user: args2.professor, aluno: args2.aluno,));
+      case '/editarDefesa':
+        return MaterialPageRoute(builder: (_) => EditarDefesa(user: args4.user, defesa: args4.defesa,));
       case '/enviarTCC':
-        return MaterialPageRoute(builder: (_) => FormularioDeEnvioTCC(user: args));
+        return MaterialPageRoute(builder: (_) => EnviarTCC(user: args));
+      case '/formularioEnviarTCC':
+        return MaterialPageRoute(builder: (_) => FormularioDeEnvioTCC(user: args2.professor, aluno: args2.aluno,));
       case '/exibirTCC':
         return MaterialPageRoute(builder: (_) => ExibirTCC(user: args));
       case '/visualizarTCC':

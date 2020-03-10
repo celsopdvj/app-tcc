@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/services.dart';
 
 class FormularioDeEnvioTCC extends StatefulWidget {
   final User user;
-  FormularioDeEnvioTCC({Key key, @required this.user,}):super(key:key);
+  final User aluno;
+  FormularioDeEnvioTCC({Key key, @required this.user,@required this.aluno}):super(key:key);
   @override
   FormularioDeEnvioTCCState createState() => FormularioDeEnvioTCCState();
 }
@@ -60,6 +60,21 @@ class FormularioDeEnvioTCCState extends State<FormularioDeEnvioTCC> {
           });
           print(fileName);
           _uploadFile(file, fileName);
+          showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('TCC enviado.'),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: Text('OK'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      )
+                                    ],
+                                  );
+                              });
         } catch (e) {
           setState(() {
             loading = false;
@@ -92,7 +107,7 @@ class FormularioDeEnvioTCCState extends State<FormularioDeEnvioTCC> {
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.person),
-            label: Text('logout'),
+            label: Text('Sair'),
             onPressed: () async {
               print(widget.user.uid);
               await _auth.signOut();
@@ -107,21 +122,6 @@ class FormularioDeEnvioTCCState extends State<FormularioDeEnvioTCC> {
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
-                      SizedBox(height: 20.0),
-                      TextFormField(
-                        decoration: textInputDecoration.copyWith(hintText: 'Nome do autor',
-                          enabledBorder: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.horizontal(),
-                            borderSide: new BorderSide()),
-                          border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.horizontal(),
-                            ),
-                        ),
-                        validator: (val) =>
-                              val.isEmpty ? 'Digite o nome do autor.' : null,
-                        onChanged: (val) {
-                          setState(() => nomeAluno = val);
-                        }),
                       SizedBox(height: 20.0),
                       TextFormField(
                         decoration: textInputDecoration.copyWith(hintText: 'Título do TCC',
@@ -159,28 +159,13 @@ class FormularioDeEnvioTCCState extends State<FormularioDeEnvioTCC> {
                           child: Text("Enviar", style: TextStyle(color: Colors.white)),
                           onPressed: () async{
                             if (_formKey.currentState.validate()) {
+                              nomeAluno = widget.aluno.nome;
                               setState(() {
                                 loading = true;
                               });
                               await enviarTCC();
                               setState(() {
                                 loading = false;
-                              });
-
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('TCC enviado.'),
-                                    actions: <Widget>[
-                                      FlatButton(
-                                        child: Text('OK'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      )
-                                    ],
-                                  );
                               });
                             }
                           }

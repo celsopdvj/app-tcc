@@ -102,7 +102,7 @@ class _NovoValidarPedidoState extends State<NovoValidarPedido> {
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.person),
-            label: Text('logout'),
+            label: Text('Sair'),
             onPressed: () async {
               await _auth.signOut();
               Navigator.pushReplacementNamed(context, '/');

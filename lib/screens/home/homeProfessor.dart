@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:app_tcc/models/user.dart';
 import 'package:app_tcc/services/auth.dart';
 import 'package:app_tcc/shared/constants.dart';
@@ -28,7 +26,7 @@ class _HomeProfessorState extends State<HomeProfessor> {
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.person),
-            label: Text('logout'),
+            label: Text('Sair'),
             onPressed: () async {
               print(widget.user.uid);
               await _auth.signOut();
@@ -85,7 +83,23 @@ class _HomeProfessorState extends State<HomeProfessor> {
                   style: textStyle.copyWith(),
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/agendarDefesa',
+                  Navigator.pushNamed(context, '/defesasAgendadas',
+                      arguments: widget.user);
+                },
+              ),
+            ),
+            SizedBox(height: 20.0),
+            ButtonTheme(
+              minWidth: 300.0,
+              height: 50.0,
+              child: RaisedButton(
+                color: Colors.blue[300],
+                child: Text(
+                  "Convites de banca de defesa",
+                  style: textStyle.copyWith(),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/convitesDefesa',
                       arguments: widget.user);
                 },
               ),

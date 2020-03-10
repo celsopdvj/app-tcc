@@ -1,6 +1,6 @@
 class User{
   final String uid;
-  final String nome;
+  String nome;
   final String matricula;
   final String curso;
   final String email;

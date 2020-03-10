@@ -3,7 +3,6 @@ import 'package:app_tcc/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:app_tcc/services/auth.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-
 import '../../models/user.dart';
 
 class RegisterProfessor extends StatefulWidget {
@@ -113,6 +112,7 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
                               //setState(() => loading = true);
+                              //validar email e matricula
                               User us = new User(nome:nome, matricula:matricula, curso: "", email: email, telefone: telefone, tipoUsuario: tipoUsuario, areaAtuacao: areaAtuacao, senha: password);
                               Navigator.pushReplacementNamed(context, '/horarios', arguments: us);
                             }

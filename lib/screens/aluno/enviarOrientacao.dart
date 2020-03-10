@@ -230,7 +230,7 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.person),
-            label: Text('logout'),
+            label: Text('Sair'),
             onPressed: () async {
               print(widget.user.uid);
               await _auth.signOut();

@@ -47,7 +47,7 @@ class _ExibirDefesasState extends State<ExibirDefesas> {
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.person),
-            label: Text('logout'),
+            label: Text('Sair'),
             onPressed: () async {
               await _auth.signOut();
               Navigator.pushReplacementNamed(context, '/');
@@ -56,7 +56,7 @@ class _ExibirDefesasState extends State<ExibirDefesas> {
         ],
       ),
       body: StreamBuilder(
-      stream: Firestore.instance.collection('defesa').snapshots(),
+      stream: Firestore.instance.collection('defesa').where('pendente', isEqualTo:false).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Loading();
         listaDefesas = criarlistaDefesas(snapshot.data);

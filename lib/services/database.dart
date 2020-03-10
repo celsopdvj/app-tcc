@@ -1,3 +1,4 @@
+import 'package:app_tcc/models/defesas.dart';
 import 'package:app_tcc/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -28,6 +29,7 @@ class DatabaseService {
         'areaAtuacao': areaAtuacao,
         'pedidoPendente': pedidoPendente,
         'defesaAgendada': "",
+        'defesaPendente': "",
         'disciplina' : ''
       });
     }
@@ -150,13 +152,13 @@ class DatabaseService {
   }
 
   Future getDefesas() async{
-    final result = await defesa.getDocuments();  
+    final result = await defesa.where('pendente',isEqualTo:false).getDocuments();  
     return result.documents;
   }
 
   Future salvarDefesa(String nomeAluno, String matriculaAluno, String uidAluno, String disciplina, String curso, String titulo, 
                     String orientador, String uidOrientador, String coOrientador, String uidCoorientador, String data, String horario, 
-                    String sala, String membroDaBanca1, String membroDaBanca2, String membroDaBanca3, String membroDaBanca4, String membroDaBanca5) async{
+                    String sala, User membroDaBanca1, User membroDaBanca2, User membroDaBanca3, User membroDaBanca4, User membroDaBanca5 ) async{
     var result = await defesa.add({
       'nomeAluno': nomeAluno,
       'matriculaAluno': matriculaAluno,
@@ -171,21 +173,306 @@ class DatabaseService {
       'data': data,
       'horario': horario,
       'sala': sala,
-      'membroDaBanca1': membroDaBanca1,
-      'membroDaBanca2': membroDaBanca2,
-      'membroDaBanca3': membroDaBanca3,
-      'membroDaBanca4': membroDaBanca4,
-      'membroDaBanca5': membroDaBanca5,
+      'membroDaBanca1': membroDaBanca1.uid,
+      'nomeMembroDaBanca1': membroDaBanca1.nome,
+      'statusConvite1': 0,
+
+      'membroDaBanca2': membroDaBanca2.uid,
+      'nomeMembroDaBanca2':membroDaBanca2.nome,
+      'statusConvite2': 0,
+      
+      'membroDaBanca3': membroDaBanca3.uid,
+      'nomeMembroDaBanca3':membroDaBanca3.nome,
+      'statusConvite3': membroDaBanca3.uid == null ? -1: 0,
+
+      'membroDaBanca4': membroDaBanca4.uid,
+      'nomeMembroDaBanca4':membroDaBanca4.nome,
+      'statusConvite4': membroDaBanca4.uid == null ? -1: 0,
+
+      'membroDaBanca5': membroDaBanca5.uid,
+      'nomeMembroDaBanca5':membroDaBanca5.nome,
+      'statusConvite5': membroDaBanca5.uid == null ? -1: 0,
+      'pendente': true,
+      'excluido': false
+
+      //-1 não existe o membro
+      //0 ele não aceitou o convite
+      //1 ele aceitou
+      //2 ele recusou
+    });
+    await usuario.document(uidAluno).updateData({
+      'defesaPendente': result.documentID
+    });
+
+    await usuario.document(membroDaBanca1.uid).collection("Convites").document(result.documentID).setData({
+      'data':data,
+      'horario':horario,
+      'aluno':nomeAluno,
+      'orientador':orientador
+    });
+
+    await usuario.document(membroDaBanca2.uid).collection("Convites").document(result.documentID).setData({
+      'data':data,
+      'horario':horario,
+      'aluno':nomeAluno,
+      'orientador':orientador
+    });
+
+    if(membroDaBanca3.uid!=null)
+      await usuario.document(membroDaBanca3.uid).collection("Convites").document(result.documentID).setData({
+        'data':data,
+        'horario':horario,
+        'aluno':nomeAluno,
+        'orientador':orientador
+      });
+    
+    if(membroDaBanca4.uid!=null)
+      await usuario.document(membroDaBanca4.uid).collection("Convites").document(result.documentID).setData({
+        'data':data,
+        'horario':horario,
+        'aluno':nomeAluno,
+        'orientador':orientador
+      });
+
+    if(membroDaBanca5.uid!=null)
+      await usuario.document(membroDaBanca5.uid).collection("Convites").document(result.documentID).setData({
+        'data':data,
+        'horario':horario,
+        'aluno':nomeAluno,
+        'orientador':orientador
+      });
+  }
+
+  Future editarDefesa(Defesa d)async{
+    await defesa.document(d.id).updateData({
+      'nomeAluno': d.nomeAluno,
+      'matriculaAluno': d.matriculaAluno,
+      'uidAluno': d.uidAluno,
+      'disciplina': d.disciplina,
+      'curso': d.curso,
+      'titulo':d.titulo,
+      'orientador': d.orientador,
+      'uidOrientador': d.uidOrientador,
+      'coOrientador': d.coorientador,
+      'uidCoorientador': d.uidCoorientador,
+      'data': d.data,
+      'horario': d.horario,
+      'sala': d.local,
       'pendente': true,
       'excluido': false
     });
-    // await defesa.document(result.documentID).collection('convites').add({
 
-    // })
-    await usuario.document(uidAluno).updateData({
-      'defesaAgendada': result.documentID
-    });
+    //novos convites e retirar pedidos recusados
+    DocumentSnapshot doc = await defesa.document(d.id).get();
+    //recusados
+    if(doc.data["statusConvite1"] == -2){
+      defesa.document(d.id).updateData({
+      'membroDaBanca1': null,
+      'nomeMembroDaBanca1': "",
+      'statusConvite1': 0,
+      });
 
+      usuario.document(doc.data["membroDaBanca1"]).collection("Convites").document(d.id).delete();
+    }
+
+    if(doc.data["statusConvite2"] == -2){
+      defesa.document(d.id).updateData({
+      'membroDaBanca2': null,
+      'nomeMembroDaBanca2': "",
+      'statusConvite2': 0,
+      });
+
+      usuario.document(doc.data["membroDaBanca2"]).collection("Convites").document(d.id).delete();
+    }
+
+    if(doc.data["statusConvite3"] == -2){
+      defesa.document(d.id).updateData({
+      'membroDaBanca3': null,
+      'nomeMembroDaBanca3': "",
+      'statusConvite3': 0,
+      });
+
+      usuario.document(doc.data["membroDaBanca3"]).collection("Convites").document(d.id).delete();
+    }
+    
+    if(doc.data["statusConvite4"] == -2){
+      defesa.document(d.id).updateData({
+      'membroDaBanca4': null,
+      'nomeMembroDaBanca4': "",
+      'statusConvite4': 0,
+      });
+
+      usuario.document(doc.data["membroDaBanca4"]).collection("Convites").document(d.id).delete();
+    }
+
+    if(doc.data["statusConvite5"] == -2){
+      defesa.document(d.id).updateData({
+      'membroDaBanca5': null,
+      'nomeMembroDaBanca5': "",
+      'statusConvite5': 0,
+      });
+
+      usuario.document(doc.data["membroDaBanca5"]).collection("Convites").document(d.id).delete();
+    }
+
+    //novos
+    if(d.membroDaBanca1 != doc.data["membroDaBanca1"] && d.membroDaBanca1!= null){
+      usuario.document(doc.data["membroDaBanca1"]).collection("Convites").document(d.id).delete();
+
+      await defesa.document(d.id).updateData({
+        'membroDaBanca1': d.membroDaBanca1,
+        'nomeMembroDaBanca1': d.nomeMembroDaBanca1,
+        'statusConvite1': 0,
+      });
+
+      await usuario.document(d.membroDaBanca1).collection("Convites").document(d.id).setData({
+        'data':d.data,
+        'horario':d.horario,
+        'aluno':d.nomeAluno,
+        'orientador':d.orientador
+      });
+
+    }
+    
+    if(d.membroDaBanca2 != doc.data["membroDaBanca2"] && d.membroDaBanca2!= null){
+      usuario.document(doc.data["membroDaBanca2"]).collection("Convites").document(d.id).delete();
+
+      await defesa.document(d.id).updateData({
+        'membroDaBanca2': d.membroDaBanca3,
+        'nomeMembroDaBanca2': d.nomeMembroDaBanca3,
+        'statusConvite2': 0,
+      });
+
+      await usuario.document(d.membroDaBanca2).collection("Convites").document(d.id).setData({
+        'data':d.data,
+        'horario':d.horario,
+        'aluno':d.nomeAluno,
+        'orientador':d.orientador
+      });
+    }
+
+    if(d.membroDaBanca3 != doc.data["membroDaBanca3"] && d.membroDaBanca3!= null){
+      usuario.document(doc.data["membroDaBanca3"]).collection("Convites").document(d.id).delete();
+
+      await defesa.document(d.id).updateData({
+        'membroDaBanca3': d.membroDaBanca3,
+        'nomeMembroDaBanca3': d.nomeMembroDaBanca3,
+        'statusConvite3': 0,
+      });
+
+      await usuario.document(d.membroDaBanca3).collection("Convites").document(d.id).setData({
+        'data':d.data,
+        'horario':d.horario,
+        'aluno':d.nomeAluno,
+        'orientador':d.orientador
+      });
+    }
+
+    if(d.membroDaBanca4 != doc.data["membroDaBanca4"] && d.membroDaBanca4!= null){
+      usuario.document(doc.data["membroDaBanca4"]).collection("Convites").document(d.id).delete();
+
+      await defesa.document(d.id).updateData({
+        'membroDaBanca4': d.membroDaBanca4,
+        'nomeMembroDaBanca4': d.nomeMembroDaBanca4,
+        'statusConvite4': 0,
+      });
+
+      await usuario.document(d.membroDaBanca4).collection("Convites").document(d.id).setData({
+        'data':d.data,
+        'horario':d.horario,
+        'aluno':d.nomeAluno,
+        'orientador':d.orientador
+      });
+    }
+
+    if(d.membroDaBanca5 != doc.data["membroDaBanca5"] && d.membroDaBanca5!= null){
+      usuario.document(doc.data["membroDaBanca5"]).collection("Convites").document(d.id).delete();
+
+      await defesa.document(d.id).updateData({
+        'membroDaBanca5': d.membroDaBanca5,
+        'nomeMembroDaBanca5': d.nomeMembroDaBanca5,
+        'statusConvite5': 0,
+      });
+
+      await usuario.document(d.membroDaBanca5).collection("Convites").document(d.id).setData({
+        'data':d.data,
+        'horario':d.horario,
+        'aluno':d.nomeAluno,
+        'orientador':d.orientador
+      });
+    }
+    
+  }
+
+  void aceitarPedidoDefesa(String idUser,String idDefesa) async{
+    usuario.document(idUser).collection("Convites").document(idDefesa).delete();
+    DocumentSnapshot doc = await defesa.document(idDefesa).get();
+    if(idUser == doc.data["membroDaBanca1"]){
+      defesa.document(idDefesa).updateData({
+        'statusConvite1':1
+      });
+    }
+    else if(idUser == doc.data["membroDaBanca2"]){
+      defesa.document(idDefesa).updateData({
+        'statusConvite2':1
+      });
+    }
+    else if(idUser == doc.data["membroDaBanca3"]){
+      defesa.document(idDefesa).updateData({
+        'statusConvite3':1
+      });
+    }
+    else if(idUser == doc.data["membroDaBanca4"]){
+      defesa.document(idDefesa).updateData({
+        'statusConvite4':1
+      });
+    }
+    else if(idUser == doc.data["membroDaBanca5"]){
+      defesa.document(idDefesa).updateData({
+        'statusConvite5':1
+      });
+    }
+
+    DocumentSnapshot doc2 = await defesa.document(idDefesa).get();
+    if((doc2.data["statusConvite1"] == 1 || doc2.data["statusConvite1"] == -1) &&
+    (doc2.data["statusConvite2"] == 1 || doc2.data["statusConvite2"] == -1) &&
+    (doc2.data["statusConvite3"] == 1 || doc2.data["statusConvite3"] == -1) &&
+    (doc2.data["statusConvite4"] == 1 || doc2.data["statusConvite4"] == -1) &&
+    (doc2.data["statusConvite5"] == 1 || doc2.data["statusConvite5"] == -1) ){
+      defesa.document(idDefesa).updateData({
+        'pendente':false
+      });
+    }
+  }
+
+  void recusarPedidoDefesa(String idUser,String idDefesa) async{
+    usuario.document(idUser).collection("Convites").document(idDefesa).delete();
+    DocumentSnapshot doc = await defesa.document(idDefesa).get();
+    if(idUser == doc.data["membroDaBanca1"]){
+      defesa.document(idDefesa).updateData({
+        'statusConvite1':2
+      });
+    }
+    else if(idUser == doc.data["membroDaBanca2"]){
+      defesa.document(idDefesa).updateData({
+        'statusConvite2':2
+      });
+    }
+    else if(idUser == doc.data["membroDaBanca3"]){
+      defesa.document(idDefesa).updateData({
+        'statusConvite3':2
+      });
+    }
+    else if(idUser == doc.data["membroDaBanca4"]){
+      defesa.document(idDefesa).updateData({
+        'statusConvite4':2
+      });
+    }
+    else if(idUser == doc.data["membroDaBanca5"]){
+      defesa.document(idDefesa).updateData({
+        'statusConvite5':2
+      });
+    }
   }
 
   Future getProfessores()async{

@@ -1,4 +1,4 @@
-import 'package:app_tcc/models/conviteDefesa.dart';
+import 'package:app_tcc/models/defesas.dart';
 import 'package:app_tcc/models/user.dart';
 import 'package:app_tcc/services/database.dart';
 import 'package:app_tcc/shared/constants.dart';
@@ -6,19 +6,20 @@ import 'package:app_tcc/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 
-class FormularioDeDefesa extends StatefulWidget {
+class EditarDefesa extends StatefulWidget {
   final User user;
-  final User aluno;
-  FormularioDeDefesa({Key key, @required this.user, @required this.aluno}):super(key:key);
+  Defesa defesa;
+  EditarDefesa({Key key, @required this.user, @required this.defesa}):super(key:key);
   @override
-  _FormularioDeDefesaState createState() => _FormularioDeDefesaState();
+  _EditarDefesaState createState() => _EditarDefesaState();
 }
 
-class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
+class _EditarDefesaState extends State<EditarDefesa> {
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
   DatabaseService banco = new DatabaseService();
 
+  User aluno;
   String nomeAluno = ''; //tem aluno selecionado
   String matriculaAluno = ''; //tem aluno selecionado
   String disciplina = ''; //tem aluno selecionado
@@ -30,12 +31,11 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
   TimeOfDay horario;
   DateTime data;
   String sala = '';
-  User membroDaBanca1 = new User(nome: 'Selecione...');
-  User membroDaBanca2 = new User(nome: 'Selecione...');
-  User membroDaBanca3 = new User(nome: 'Selecione...');
-  User membroDaBanca4 = new User(nome: 'Selecione...');
-  User membroDaBanca5 = new User(nome: 'Selecione...');
-
+  User membroDaBanca1 ;
+  User membroDaBanca2 ;
+  User membroDaBanca3 ;
+  User membroDaBanca4 ;
+  User membroDaBanca5 ;
   String error = '';
   List<User> professores = new List<User>();
 
@@ -45,9 +45,48 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
     
       setState(() =>loading = true);
       banco.getProfessores().then((onValue){
-        setState(()=>professores = onValue);
+        setState((){
+          professores = onValue;
+          professores.removeWhere((user) => user.nome == widget.defesa.nomeMembroDaBanca1);
+          professores.removeWhere((user) => user.nome == widget.defesa.nomeMembroDaBanca2);
+          professores.removeWhere((user) => user.nome == widget.defesa.nomeMembroDaBanca3);
+          professores.removeWhere((user) => user.nome == widget.defesa.nomeMembroDaBanca4);
+          professores.removeWhere((user) => user.nome == widget.defesa.nomeMembroDaBanca5);
+        });
       });
-      setState(() =>loading = false);
+      setState(() {
+        String d = widget.defesa.data;
+        data = new DateTime(int.parse(d.split("-")[2]), int.parse(d.split("-")[1]), int.parse(d.split("-")[0]));
+        String s = widget.defesa.horario;
+        horario = TimeOfDay(hour:int.parse(s.split(":")[0]),minute: int.parse(s.split(":")[1]));
+        //1
+        if(widget.defesa.statusConvite1 == -2)
+          membroDaBanca1 = new User();
+        else
+          membroDaBanca1 = new User(nome: widget.defesa.nomeMembroDaBanca1, uid: widget.defesa.membroDaBanca1);
+        //2
+        if(widget.defesa.statusConvite2 == -2)
+          membroDaBanca2 = new User();
+        else
+          membroDaBanca2 = new User(nome: widget.defesa.nomeMembroDaBanca2, uid: widget.defesa.membroDaBanca2);
+        //3
+        if(widget.defesa.statusConvite3 == -2)
+          membroDaBanca3 = new User();
+        else
+          membroDaBanca3 = new User(nome: widget.defesa.nomeMembroDaBanca3, uid: widget.defesa.membroDaBanca3);
+        //4
+        if(widget.defesa.statusConvite4 == -2)
+          membroDaBanca4 = new User();
+        else
+          membroDaBanca4 = new User(nome: widget.defesa.nomeMembroDaBanca4, uid: widget.defesa.membroDaBanca4);
+        //5
+        if(widget.defesa.statusConvite5 == -2)
+          membroDaBanca5 = new User();
+        else
+          membroDaBanca5 = new User(nome: widget.defesa.nomeMembroDaBanca5, uid: widget.defesa.membroDaBanca5);
+
+        loading = false;
+      });
 
   }
 
@@ -58,6 +97,7 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
       if (horario != null) {
         setState(() {
           horario = horario;
+          widget.defesa.horario = horario.format(context);
         });
       }
     }
@@ -71,15 +111,14 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
       if (data != null) {
         setState(() {
           data = data;
+          widget.defesa.data = formatDate(data,[dd, '-', mm, '-', yyyy]);
         });
       }
     }
 
   void agendarDefesa() async{
-    await banco.salvarDefesa(nomeAluno, matriculaAluno, widget.aluno.uid, disciplina, curso,
-     titulo, orientador, widget.user.uid, coorientador, uidCoorientador,
-      formatDate(data,[dd, '-', mm, '-', yyyy]), horario.format(context),
-       sala, membroDaBanca1,membroDaBanca2,membroDaBanca3,membroDaBanca4,membroDaBanca5);
+    print(widget.defesa);
+    await banco.editarDefesa(widget.defesa);
   }
 
   @override
@@ -98,6 +137,7 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                   child: Column(
                     children: <Widget>[
                       TextFormField(
+                        initialValue: widget.defesa.titulo,
                         decoration: textInputDecoration.copyWith(hintText: 'Título do TCC',
                           enabledBorder: new OutlineInputBorder(
                             borderRadius: new BorderRadius.horizontal(),
@@ -109,10 +149,11 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                         validator: (val) =>
                               val.isEmpty ? 'Digite o título.' : null,
                         onChanged: (val) {
-                          setState(() => titulo = val);
+                          setState(() => widget.defesa.titulo = val);
                         }),
                       SizedBox(height: 20.0),
                       TextFormField(
+                        initialValue: widget.defesa.coorientador,
                         decoration: textInputDecoration.copyWith(hintText: 'Coorientador se possuir',
                           enabledBorder: new OutlineInputBorder(
                             borderRadius: new BorderRadius.horizontal(),
@@ -122,7 +163,7 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                             ),
                         ),
                         onChanged: (val) {
-                          setState(() => coorientador = val);
+                          setState(() => widget.defesa.coorientador = val);
                         }),
                       SizedBox(height: 20.0),
                       Row(
@@ -148,6 +189,7 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                       ),
                       SizedBox(height: 20.0),
                       TextFormField(
+                        initialValue: widget.defesa.local,
                         decoration: textInputDecoration.copyWith(hintText: 'Sala',
                           enabledBorder: new OutlineInputBorder(
                             borderRadius: new BorderRadius.horizontal(),
@@ -180,6 +222,8 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                                 if(membroDaBanca1.nome != 'Selecione...')
                                   professores.add(membroDaBanca1);
                                 membroDaBanca1 = val;
+                                widget.defesa.membroDaBanca1 = membroDaBanca1.uid;
+                                widget.defesa.nomeMembroDaBanca1 = membroDaBanca1.nome;
                               });
                             },
                           )
@@ -203,6 +247,8 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                                 if(membroDaBanca2.nome != 'Selecione...')
                                   professores.add(membroDaBanca2);
                                 membroDaBanca2 = val;
+                                widget.defesa.membroDaBanca2 = membroDaBanca2.uid;
+                                widget.defesa.nomeMembroDaBanca2 = membroDaBanca2.nome;
                               });
                             },
                           )
@@ -213,7 +259,7 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                         children: <Widget>[
                           Text('Terceiro membro da banca: '),
                           DropdownButton(
-                            hint: Text(membroDaBanca3.nome),
+                            hint: Text(membroDaBanca3.nome == null?"Selecione...":membroDaBanca3.nome),
                             items: membroDaBanca2.nome == "Selecione..." ? null : professores.map((membroEscolhido){
                               return DropdownMenuItem<User>(
                                 value: membroEscolhido,
@@ -226,6 +272,8 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                                 if(membroDaBanca3.nome != 'Selecione...')
                                   professores.add(membroDaBanca3);
                                 membroDaBanca3 = val;
+                                widget.defesa.membroDaBanca3 = membroDaBanca3.uid;
+                                widget.defesa.nomeMembroDaBanca3 = membroDaBanca3.nome;
                               });
                             },
                           )
@@ -236,7 +284,7 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                         children: <Widget>[
                           Text('Quarto membro da banca: '),
                           DropdownButton(
-                            hint: Text(membroDaBanca4.nome),
+                            hint: Text(membroDaBanca4.nome == null?"Selecione...":membroDaBanca4.nome),
                             items: membroDaBanca3.nome == "Selecione..." ? null : professores.map((membroEscolhido){
                               return DropdownMenuItem<User>(
                                 value: membroEscolhido,
@@ -249,6 +297,8 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                                 if(membroDaBanca4.nome != 'Selecione...')
                                   professores.add(membroDaBanca4);
                                 membroDaBanca4 = val;
+                                widget.defesa.membroDaBanca4 = membroDaBanca4.uid;
+                                widget.defesa.nomeMembroDaBanca4 = membroDaBanca4.nome;
                               });
                             },
                           )
@@ -259,7 +309,7 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                         children: <Widget>[
                           Text('Quinto membro da banca: '),
                           DropdownButton(
-                            hint: Text(membroDaBanca5.nome),
+                            hint: Text(membroDaBanca5.nome == null?"Selecione...":membroDaBanca5.nome),
                             items: membroDaBanca4.nome == "Selecione..." ? null : professores.map((membroEscolhido){
                               return DropdownMenuItem<User>(
                                 value: membroEscolhido,
@@ -272,6 +322,8 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                                 if(membroDaBanca5.nome != 'Selecione...')
                                   professores.add(membroDaBanca5);
                                 membroDaBanca5 = val;
+                                widget.defesa.membroDaBanca5 = membroDaBanca5.uid;
+                                widget.defesa.nomeMembroDaBanca5 = membroDaBanca5.nome;
                               });
                             },
                           )
@@ -287,15 +339,11 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                           onPressed: () {
                             if (_formKey.currentState.validate()) {
                               setState(()=>loading=true);
+                              //verificar quantidade de membros escolhidos
                               if(membroDaBanca1.nome == 'Selecione...' ||
-                              membroDaBanca2.nome == 'Selecione...' || (membroDaBanca3.nome == 'Selecione...' && widget.aluno.disciplina != "CMP1071"))
+                              membroDaBanca2.nome == 'Selecione...' || (membroDaBanca3.nome == 'Selecione...' && aluno.disciplina != "CMP1071"))
                                 setState(() =>error = 'Selecione mais membros pra banca.');
                               else{
-                                nomeAluno = widget.aluno.nome;
-                                matriculaAluno = widget.aluno.matricula;
-                                disciplina = widget.aluno.disciplina;
-                                curso = widget.aluno.curso;
-                                orientador = widget.user.nome;
                                 if (membroDaBanca3.nome == "Selecione...")
                                   membroDaBanca3.nome = "";
 
@@ -306,7 +354,7 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                                   membroDaBanca5.nome = "";
                                 agendarDefesa();
                                 Navigator.pop(context);
-                                Navigator.pop(context);
+                                // Navigator.pop(context);
                               }
                               setState(()=>loading=false);
                               //Navigator.pop(context);

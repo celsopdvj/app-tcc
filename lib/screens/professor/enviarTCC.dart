@@ -6,35 +6,34 @@ import 'package:app_tcc/shared/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class AgendarDefesa extends StatefulWidget {
+class EnviarTCC extends StatefulWidget {
   final User user;
-  AgendarDefesa({Key key, @required this.user}):super(key:key);
+  EnviarTCC({Key key, @required this.user}):super(key:key);
   @override
-  _AgendarDefesaState createState() => _AgendarDefesaState();
+  _EnviarTCCState createState() => _EnviarTCCState();
 }
 
-class _AgendarDefesaState extends State<AgendarDefesa> {
+class _EnviarTCCState extends State<EnviarTCC> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   DatabaseService banco = new DatabaseService();
   String _alunoUid = '';
 
-  void agendarDefesa( )async{
+  void enviarTCC( )async{
     if(_alunoUid != ''){
       User aluno = await banco.getUser(_alunoUid);
-      Navigator.pushNamed(context, '/formularioDeDefesa', arguments: ScreenArguments(professor: widget.user, aluno:aluno));
+      Navigator.pushNamed(context, '/formularioEnviarTCC', arguments: ScreenArguments(professor:widget.user,aluno:aluno));
       _alunoUid = '';
     }
   }
 
-   @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
     ScrollController _controller = new ScrollController();
-
+    
     return  Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Escolha um aluno'),
+        title: Text('Escolha o orientando'),
         elevation: 0.0,
         actions: <Widget>[
           FlatButton.icon(
@@ -51,7 +50,6 @@ class _AgendarDefesaState extends State<AgendarDefesa> {
       body: StreamBuilder(
       stream: Firestore.instance.collection('usuario')
                                 .where('orientador' ,isEqualTo: widget.user.uid)
-                                .where('defesaPendente', isEqualTo: "")
                                 .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Loading();
@@ -82,14 +80,10 @@ class _AgendarDefesaState extends State<AgendarDefesa> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          RaisedButton(
-                          color: Colors.blue,
-                          child: Text("Agendar",style: TextStyle(color: Colors.white)),
-                          onPressed: agendarDefesa,
-                          ),
-                        ],
+                      RaisedButton(
+                      color: Colors.blue,
+                      child: Text("Confirmar",style: TextStyle(color: Colors.white)),
+                      onPressed: enviarTCC,
                       )
                     ],
                   ),
