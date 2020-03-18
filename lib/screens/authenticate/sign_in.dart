@@ -99,6 +99,10 @@ Future<bool> _onWillPop() async {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(18.0),
+                        
+                      ),
                       color: Colors.blue[300],
                       child: Text(
                         "Entrar",
@@ -138,6 +142,10 @@ Future<bool> _onWillPop() async {
                         }
                     ),
                     RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(18.0),
+                        
+                      ),
                       color: Colors.blue[300],
                       child: Text(
                         "Cadastre-se",

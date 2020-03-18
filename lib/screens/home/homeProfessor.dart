@@ -18,109 +18,112 @@ class _HomeProfessorState extends State<HomeProfessor> {
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
 
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text('PUC GO TCC - Professor'),
-        elevation: 0.0,
-        actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Sair'),
-            onPressed: () async {
-              print(widget.user.uid);
-              await _auth.signOut();
-              Navigator.pushReplacementNamed(context, '/');
-            },
-          )
-        ],
-      ),
-      //Botões com funcionalidades dos professores
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            ButtonTheme(
-              minWidth: 300.0,
-              height: 50.0,
-              child: RaisedButton(
-                color: Colors.blue[300],
-                child: Text(
-                  "Pedidos de orientação",
-                  style: textStyle.copyWith(),
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/pedidosDeOrientacao',
-                      arguments: widget.user);
-                },
-              ),
-            ),
-            SizedBox(height: 20.0),
-            ButtonTheme(
-              minWidth: 300.0,
-              height: 50.0,
-              child: RaisedButton(
-                color: Colors.blue[300],
-                child: Text(
-                  "Exibir Defesas",
-                  style: textStyle.copyWith(),
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/exibirDefesas');
-                },
-              ),
-            ),
-            SizedBox(height: 20.0),
-            ButtonTheme(
-              minWidth: 300.0,
-              height: 50.0,
-              child: RaisedButton(
-                color: Colors.blue[300],
-                child: Text(
-                  "Agendar defesa",
-                  style: textStyle.copyWith(),
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/defesasAgendadas',
-                      arguments: widget.user);
-                },
-              ),
-            ),
-            SizedBox(height: 20.0),
-            ButtonTheme(
-              minWidth: 300.0,
-              height: 50.0,
-              child: RaisedButton(
-                color: Colors.blue[300],
-                child: Text(
-                  "Convites de banca de defesa",
-                  style: textStyle.copyWith(),
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/convitesDefesa',
-                      arguments: widget.user);
-                },
-              ),
-            ),
-            SizedBox(height: 20.0),
-            ButtonTheme(
-              minWidth: 300.0,
-              height: 50.0,
-              child: RaisedButton(
-                color: Colors.blue[300],
-                child: Text(
-                  "Enviar TCC",
-                  style: textStyle.copyWith(),
-                ),
-                onPressed: () async {
-                  Navigator.pushNamed(context, '/enviarTCC',
-                      arguments: widget.user);
-                },
-              ),
-            ),
+    return WillPopScope(
+      onWillPop: () => Future.value(false),
+        child: Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text('PUC GO TCC - Professor'),
+          elevation: 0.0,
+          actions: <Widget>[
+            FlatButton.icon(
+              icon: Icon(Icons.person),
+              label: Text('Sair'),
+              onPressed: () async {
+                print(widget.user.uid);
+                await _auth.signOut();
+                Navigator.pushReplacementNamed(context, '/');
+              },
+            )
           ],
+        ),
+        //Botões com funcionalidades dos professores
+        body: Container(
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              ButtonTheme(
+                minWidth: 300.0,
+                height: 50.0,
+                child: RaisedButton(
+                  color: Colors.blue[300],
+                  child: Text(
+                    "Pedidos de orientação",
+                    style: textStyle.copyWith(),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/pedidosDeOrientacao',
+                        arguments: widget.user);
+                  },
+                ),
+              ),
+              SizedBox(height: 20.0),
+              ButtonTheme(
+                minWidth: 300.0,
+                height: 50.0,
+                child: RaisedButton(
+                  color: Colors.blue[300],
+                  child: Text(
+                    "Exibir Defesas",
+                    style: textStyle.copyWith(),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/exibirDefesas');
+                  },
+                ),
+              ),
+              SizedBox(height: 20.0),
+              ButtonTheme(
+                minWidth: 300.0,
+                height: 50.0,
+                child: RaisedButton(
+                  color: Colors.blue[300],
+                  child: Text(
+                    "Agendar defesa",
+                    style: textStyle.copyWith(),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/defesasAgendadas',
+                        arguments: widget.user);
+                  },
+                ),
+              ),
+              SizedBox(height: 20.0),
+              ButtonTheme(
+                minWidth: 300.0,
+                height: 50.0,
+                child: RaisedButton(
+                  color: Colors.blue[300],
+                  child: Text(
+                    "Convites de banca de defesa",
+                    style: textStyle.copyWith(),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/convitesDefesa',
+                        arguments: widget.user);
+                  },
+                ),
+              ),
+              SizedBox(height: 20.0),
+              ButtonTheme(
+                minWidth: 300.0,
+                height: 50.0,
+                child: RaisedButton(
+                  color: Colors.blue[300],
+                  child: Text(
+                    "Enviar TCC",
+                    style: textStyle.copyWith(),
+                  ),
+                  onPressed: () async {
+                    Navigator.pushNamed(context, '/enviarTCC',
+                        arguments: widget.user);
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

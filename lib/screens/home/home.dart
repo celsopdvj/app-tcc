@@ -17,88 +17,91 @@ class Home extends StatelessWidget {
     final AuthService _auth = AuthService();
     String orientador;
     
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text('PUC GO TCC - Aluno'),
-        elevation: 0.0,
-        actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Sair'),
-            onPressed: () async {
-              print(user.uid);
-              await _auth.signOut();
-              Navigator.pushReplacementNamed(context, '/');
-            },
-          )
-        ],
-      ),
-      //Botões com funcionalidades dos alunos
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            ButtonTheme(
-              minWidth: 300.0,
-              height: 50.0,
-              child: RaisedButton(
-                color: Colors.blue[300],
-                child: Text(
-                  "Enviar convite de orientação",
-                  style: textStyle.copyWith(),
-                ),
-                onPressed: () async{
-                  orientador = await banco.getOrientador(user.uid);
-                  if(orientador != ""){
-                    //mostrar "Já possui orientador"
-                    _scaffoldKey.currentState.showSnackBar(
-                      SnackBar(
-                        content: new Text("Já possui orientador!"),
-                        duration: Duration(seconds: 3),
-                        backgroundColor: Colors.red,
-                      )
-                    );
-                  }
-                  else{
-                    Navigator.pushNamed(context, '/enviarOrientacao', arguments: user);
-                  }
-                },
-              ),
-            ),
-            SizedBox(height: 20.0),
-            ButtonTheme(
-                minWidth: 300.0,
-                height: 50.0,
-                child: RaisedButton(
-                color: Colors.blue[300],
-                child: Text(
-                  "Exibir Defesas",
-                  style: textStyle.copyWith(),
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/exibirDefesas');
-                },
-              ),
-            ),
-            SizedBox(height: 20.0),
-            ButtonTheme(
-                minWidth: 300.0,
-                height: 50.0,
-                child: RaisedButton(
-                color: Colors.blue[300],
-                child: Text(
-                  "Ver TCCs",
-                  style: textStyle.copyWith(),
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/exibirTCC');
-                },
-              ),
-            ),
+    return WillPopScope(
+      onWillPop: () => Future.value(false),
+          child: Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text('PUC GO TCC - Aluno'),
+          elevation: 0.0,
+          actions: <Widget>[
+            FlatButton.icon(
+              icon: Icon(Icons.person),
+              label: Text('Sair'),
+              onPressed: () async {
+                print(user.uid);
+                await _auth.signOut();
+                Navigator.pushReplacementNamed(context, '/');
+              },
+            )
           ],
+        ),
+        //Botões com funcionalidades dos alunos
+        body: Container(
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              ButtonTheme(
+                minWidth: 300.0,
+                height: 50.0,
+                child: RaisedButton(
+                  color: Colors.blue[300],
+                  child: Text(
+                    "Enviar convite de orientação",
+                    style: textStyle.copyWith(),
+                  ),
+                  onPressed: () async{
+                    orientador = await banco.getOrientador(user.uid);
+                    if(orientador != ""){
+                      //mostrar "Já possui orientador"
+                      _scaffoldKey.currentState.showSnackBar(
+                        SnackBar(
+                          content: new Text("Já possui orientador!"),
+                          duration: Duration(seconds: 3),
+                          backgroundColor: Colors.red,
+                        )
+                      );
+                    }
+                    else{
+                      Navigator.pushNamed(context, '/enviarOrientacao', arguments: user);
+                    }
+                  },
+                ),
+              ),
+              SizedBox(height: 20.0),
+              ButtonTheme(
+                  minWidth: 300.0,
+                  height: 50.0,
+                  child: RaisedButton(
+                  color: Colors.blue[300],
+                  child: Text(
+                    "Exibir Defesas",
+                    style: textStyle.copyWith(),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/exibirDefesas');
+                  },
+                ),
+              ),
+              SizedBox(height: 20.0),
+              ButtonTheme(
+                  minWidth: 300.0,
+                  height: 50.0,
+                  child: RaisedButton(
+                  color: Colors.blue[300],
+                  child: Text(
+                    "Ver TCCs",
+                    style: textStyle.copyWith(),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/exibirTCC');
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

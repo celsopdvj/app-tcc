@@ -28,111 +28,114 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
 
-    return loading ? Loading() : Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text('PUC GO TCC - Coordenação'),
-        elevation: 0.0,
-        actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Sair'),
-            onPressed: () async {
-              await _auth.signOut();
-              Navigator.pushReplacementNamed(context, '/');
-            },
-          )
-        ],
-      ),
-      //Botões com funcionalidades da coordenação
-      body: Center(
-              child: SingleChildScrollView(
-                child: Container(
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                ButtonTheme(
-                    minWidth: 300.0,
-                    height: 50.0,
-                    child: RaisedButton(
-                    color: Colors.blue[300],
-                    child: Text(
-                      "Validar convite de orientação",
-                      style: textStyle.copyWith(),
+    return loading ? Loading() : WillPopScope(
+      onWillPop: () => Future.value(false),
+          child: Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text('PUC GO TCC - Coordenação'),
+          elevation: 0.0,
+          actions: <Widget>[
+            FlatButton.icon(
+              icon: Icon(Icons.person),
+              label: Text('Sair'),
+              onPressed: () async {
+                await _auth.signOut();
+                Navigator.pushReplacementNamed(context, '/');
+              },
+            )
+          ],
+        ),
+        //Botões com funcionalidades da coordenação
+        body: Center(
+                child: SingleChildScrollView(
+                  child: Container(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  ButtonTheme(
+                      minWidth: 300.0,
+                      height: 50.0,
+                      child: RaisedButton(
+                      color: Colors.blue[300],
+                      child: Text(
+                        "Validar convite de orientação",
+                        style: textStyle.copyWith(),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/novoValidarPedidoOrientacao', arguments: widget.user);
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/novoValidarPedidoOrientacao', arguments: widget.user);
-                    },
                   ),
-                ),
-                SizedBox(height: 20.0),
-                ButtonTheme(
-                    minWidth: 300.0,
-                    height: 50.0,
-                    child: RaisedButton(
-                    color: Colors.blue[300],
-                    child: Text(
-                      "Exibir orientações",
-                      style: textStyle.copyWith(),
+                  SizedBox(height: 20.0),
+                  ButtonTheme(
+                      minWidth: 300.0,
+                      height: 50.0,
+                      child: RaisedButton(
+                      color: Colors.blue[300],
+                      child: Text(
+                        "Exibir orientações",
+                        style: textStyle.copyWith(),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/exibirOrientacoes');
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/exibirOrientacoes');
-                    },
                   ),
-                ),
-                SizedBox(height: 20.0),
-                ButtonTheme(
-                    minWidth: 300.0,
-                    height: 50.0,
-                    child: RaisedButton(
-                    color: Colors.blue[300],
-                    child: Text(
-                      "Gerar planilha de orientações",
-                      style: textStyle.copyWith(),
+                  SizedBox(height: 20.0),
+                  ButtonTheme(
+                      minWidth: 300.0,
+                      height: 50.0,
+                      child: RaisedButton(
+                      color: Colors.blue[300],
+                      child: Text(
+                        "Gerar planilha de orientações",
+                        style: textStyle.copyWith(),
+                      ),
+                      onPressed: () async {
+                        setState(()  => loading = true);
+                        await getCsvOrientacao(widget.user.email, _scaffoldKey);
+                        setState(()  => loading = false);
+                      },
                     ),
-                    onPressed: () async {
-                      setState(()  => loading = true);
-                      await getCsvOrientacao(widget.user.email, _scaffoldKey);
-                      setState(()  => loading = false);
-                    },
                   ),
-                ),
-                SizedBox(height: 20.0),
-                ButtonTheme(
-                    minWidth: 300.0,
-                    height: 50.0,
-                    child: RaisedButton(
-                    color: Colors.blue[300],
-                    child: Text(
-                      "Exibir Defesas",
-                      style: textStyle.copyWith(),
+                  SizedBox(height: 20.0),
+                  ButtonTheme(
+                      minWidth: 300.0,
+                      height: 50.0,
+                      child: RaisedButton(
+                      color: Colors.blue[300],
+                      child: Text(
+                        "Exibir Defesas",
+                        style: textStyle.copyWith(),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/exibirDefesas');
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/exibirDefesas');
-                    },
                   ),
-                ),
-                SizedBox(height: 20.0),
-                ButtonTheme(
-                    minWidth: 300.0,
-                    height: 50.0,
-                    child: RaisedButton(
-                    color: Colors.blue[300],
-                    child: Text(
-                      "Gerar planilha de defesas",
-                      style: textStyle.copyWith(),
+                  SizedBox(height: 20.0),
+                  ButtonTheme(
+                      minWidth: 300.0,
+                      height: 50.0,
+                      child: RaisedButton(
+                      color: Colors.blue[300],
+                      child: Text(
+                        "Gerar planilha de defesas",
+                        style: textStyle.copyWith(),
+                      ),
+                      onPressed: () async {
+                        setState(()  => loading = true);
+                        await getCsvDefesas(widget.user.email, _scaffoldKey);
+                        setState(()  => loading = false);
+                      },
                     ),
-                    onPressed: () async {
-                      setState(()  => loading = true);
-                      await getCsvDefesas(widget.user.email, _scaffoldKey);
-                      setState(()  => loading = false);
-                    },
                   ),
-                ),
-                SizedBox(height: 20.0),
-              ],
+                  SizedBox(height: 20.0),
+                ],
+              ),
             ),
           ),
         ),
