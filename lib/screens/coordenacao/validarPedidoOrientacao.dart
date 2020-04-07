@@ -47,7 +47,7 @@ class _ValidarOrientacaoState extends State<ValidarOrientacao> {
     return loading ? Loading() : Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Pedidos'),
+        title: Text('Validar convites'),
         elevation: 0.0,
         actions: <Widget>[
           FlatButton.icon(

@@ -30,7 +30,6 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
   TimeOfDay horario;
   DateTime data;
   String sala = '';
-  User membroDaBanca1 = new User(nome: 'Selecione...');
   User membroDaBanca2 = new User(nome: 'Selecione...');
   User membroDaBanca3 = new User(nome: 'Selecione...');
   User membroDaBanca4 = new User(nome: 'Selecione...');
@@ -79,7 +78,7 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
     await banco.salvarDefesa(nomeAluno, matriculaAluno, widget.aluno.uid, disciplina, curso,
      titulo, orientador, widget.user.uid, coorientador, uidCoorientador,
       formatDate(data,[dd, '-', mm, '-', yyyy]), horario.format(context),
-       sala, membroDaBanca1,membroDaBanca2,membroDaBanca3,membroDaBanca4,membroDaBanca5);
+       sala,membroDaBanca2,membroDaBanca3,membroDaBanca4,membroDaBanca5);
   }
 
   @override
@@ -127,7 +126,7 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                       SizedBox(height: 20.0),
                       Row(
                         children: <Widget>[
-                          Text("Data  ", style: TextStyle(fontSize: 16)),
+                          Text("Data:  ", style: TextStyle(fontSize: 16)),
                           FlatButton(
                               child: data == null ? Text("Selecione...", style: TextStyle(fontSize: 16, color: Colors.black38))
                                                     :Text(formatDate(data,[dd, '-', mm, '-', yyyy])),
@@ -164,34 +163,10 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                       SizedBox(height: 20.0),
                       Row(
                         children: <Widget>[
-                          Text('Primeiro membro da banca: '),
-                          SizedBox(width: 4,),
-                          DropdownButton(
-                            hint: Text(membroDaBanca1.nome),
-                            items: professores.map((membroEscolhido){
-                              return DropdownMenuItem<User>(
-                                value: membroEscolhido,
-                                child: Text(membroEscolhido.nome)
-                              );
-                            }).toList(),
-                            onChanged:(val){ 
-                              setState(() {
-                                professores.remove(val);
-                                if(membroDaBanca1.nome != 'Selecione...')
-                                  professores.add(membroDaBanca1);
-                                membroDaBanca1 = val;
-                              });
-                            },
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 20.0),
-                      Row(
-                        children: <Widget>[
                           Text('Segundo membro da banca:  '),
                           DropdownButton(
                             hint: Text(membroDaBanca2.nome),
-                            items: membroDaBanca1.nome == "Selecione..." ? null : professores.map((membroEscolhido){
+                            items: professores.map((membroEscolhido){
                               return DropdownMenuItem<User>(
                                 value: membroEscolhido,
                                 child: Text(membroEscolhido.nome)
@@ -287,7 +262,7 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                           onPressed: () {
                             if (_formKey.currentState.validate()) {
                               setState(()=>loading=true);
-                              if(membroDaBanca1.nome == 'Selecione...' ||
+                              if(
                               membroDaBanca2.nome == 'Selecione...' || (membroDaBanca3.nome == 'Selecione...' && widget.aluno.disciplina != "CMP1071"))
                                 setState(() =>error = 'Selecione mais membros pra banca.');
                               else{

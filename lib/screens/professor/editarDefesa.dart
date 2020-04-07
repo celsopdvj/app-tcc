@@ -31,7 +31,6 @@ class _EditarDefesaState extends State<EditarDefesa> {
   TimeOfDay horario;
   DateTime data;
   String sala = '';
-  User membroDaBanca1 ;
   User membroDaBanca2 ;
   User membroDaBanca3 ;
   User membroDaBanca4 ;
@@ -47,7 +46,6 @@ class _EditarDefesaState extends State<EditarDefesa> {
       banco.getProfessores().then((onValue){
         setState((){
           professores = onValue;
-          professores.removeWhere((user) => user.nome == widget.defesa.nomeMembroDaBanca1);
           professores.removeWhere((user) => user.nome == widget.defesa.nomeMembroDaBanca2);
           professores.removeWhere((user) => user.nome == widget.defesa.nomeMembroDaBanca3);
           professores.removeWhere((user) => user.nome == widget.defesa.nomeMembroDaBanca4);
@@ -59,11 +57,6 @@ class _EditarDefesaState extends State<EditarDefesa> {
         data = new DateTime(int.parse(d.split("-")[2]), int.parse(d.split("-")[1]), int.parse(d.split("-")[0]));
         String s = widget.defesa.horario;
         horario = TimeOfDay(hour:int.parse(s.split(":")[0]),minute: int.parse(s.split(":")[1]));
-        //1
-        if(widget.defesa.statusConvite1 == -2)
-          membroDaBanca1 = new User();
-        else
-          membroDaBanca1 = new User(nome: widget.defesa.nomeMembroDaBanca1, uid: widget.defesa.membroDaBanca1);
         //2
         if(widget.defesa.statusConvite2 == -2)
           membroDaBanca2 = new User();
@@ -208,25 +201,6 @@ class _EditarDefesaState extends State<EditarDefesa> {
                         children: <Widget>[
                           Text('Primeiro membro da banca: '),
                           SizedBox(width: 4,),
-                          DropdownButton(
-                            hint: Text(membroDaBanca1.nome),
-                            items: professores.map((membroEscolhido){
-                              return DropdownMenuItem<User>(
-                                value: membroEscolhido,
-                                child: Text(membroEscolhido.nome)
-                              );
-                            }).toList(),
-                            onChanged:(val){ 
-                              setState(() {
-                                professores.remove(val);
-                                if(membroDaBanca1.nome != 'Selecione...')
-                                  professores.add(membroDaBanca1);
-                                membroDaBanca1 = val;
-                                widget.defesa.membroDaBanca1 = membroDaBanca1.uid;
-                                widget.defesa.nomeMembroDaBanca1 = membroDaBanca1.nome;
-                              });
-                            },
-                          )
                         ],
                       ),
                       SizedBox(height: 20.0),
@@ -235,7 +209,7 @@ class _EditarDefesaState extends State<EditarDefesa> {
                           Text('Segundo membro da banca:  '),
                           DropdownButton(
                             hint: Text(membroDaBanca2.nome),
-                            items: membroDaBanca1.nome == "Selecione..." ? null : professores.map((membroEscolhido){
+                            items: professores.map((membroEscolhido){
                               return DropdownMenuItem<User>(
                                 value: membroEscolhido,
                                 child: Text(membroEscolhido.nome)
@@ -340,17 +314,17 @@ class _EditarDefesaState extends State<EditarDefesa> {
                             if (_formKey.currentState.validate()) {
                               setState(()=>loading=true);
                               //verificar quantidade de membros escolhidos
-                              if(membroDaBanca1.nome == 'Selecione...' ||
-                              membroDaBanca2.nome == 'Selecione...' || (membroDaBanca3.nome == 'Selecione...' && aluno.disciplina != "CMP1071"))
+                              if(
+                              membroDaBanca2.nome == null || (membroDaBanca3.nome == null && aluno.disciplina != "CMP1071"))
                                 setState(() =>error = 'Selecione mais membros pra banca.');
                               else{
-                                if (membroDaBanca3.nome == "Selecione...")
+                                if (membroDaBanca3.nome == null)
                                   membroDaBanca3.nome = "";
 
-                                if (membroDaBanca4.nome == "Selecione...")
+                                if (membroDaBanca4.nome == null)
                                   membroDaBanca4.nome = "";
 
-                                if (membroDaBanca5.nome == "Selecione...")
+                                if (membroDaBanca5.nome == null)
                                   membroDaBanca5.nome = "";
                                 agendarDefesa();
                                 Navigator.pop(context);

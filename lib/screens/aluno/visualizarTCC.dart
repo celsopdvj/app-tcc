@@ -60,7 +60,7 @@ class _VisualizarTCCState extends State<VisualizarTCC> {
     Dio dio = Dio();
     var downloaddir;
     try {
-      var dir = await getExternalStorageDirectory();
+      var dir = await getTemporaryDirectory();
       downloaddir = dir.path + '/' + widget.filename;
       await dio.download(widget.url, downloaddir, onReceiveProgress: (rec, total) {
         print("Rec: $rec , Total: $total");

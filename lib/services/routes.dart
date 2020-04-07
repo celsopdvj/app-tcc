@@ -24,6 +24,7 @@ import 'package:app_tcc/screens/professor/enviarTCC.dart';
 import 'package:app_tcc/screens/professor/formularioDeDefesa.dart';
 import 'package:app_tcc/screens/professor/formularioEnviarTCC.dart';
 import 'package:app_tcc/screens/professor/formularioOrientacao.dart';
+import 'package:app_tcc/screens/professor/gerarAtaDefesa.dart';
 import 'package:app_tcc/screens/professor/horarios.dart';
 import 'package:app_tcc/screens/professor/pedidosDeOrientacao.dart';
 import 'package:flutter/material.dart';
@@ -94,6 +95,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => FormularioDeEnvioTCC(user: args2.professor, aluno: args2.aluno,));
       case '/exibirTCC':
         return MaterialPageRoute(builder: (_) => ExibirTCC(user: args));
+      case '/gerarAtaDefesa':
+        return MaterialPageRoute(builder: (_) => GerarAtaDefesa(user: args));
       case '/visualizarTCC':
         return MaterialPageRoute(builder: (_) => VisualizarTCC(url: args3.url, filename: args3.filename));
       default:

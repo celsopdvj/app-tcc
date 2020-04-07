@@ -61,7 +61,7 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                       child: RaisedButton(
                       color: Colors.blue[300],
                       child: Text(
-                        "Validar convite de orientação",
+                        "Validar convites de orientação",
                         style: textStyle.copyWith(),
                       ),
                       onPressed: () {
@@ -108,7 +108,7 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                       child: RaisedButton(
                       color: Colors.blue[300],
                       child: Text(
-                        "Exibir Defesas",
+                        "Exibir defesas",
                         style: textStyle.copyWith(),
                       ),
                       onPressed: () {

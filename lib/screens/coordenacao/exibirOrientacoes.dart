@@ -64,8 +64,8 @@ class _ExibirOrientacoesState extends State<ExibirOrientacoes> {
                 sortColumnIndex: 0,
                 sortAscending: true,
                 columns: <DataColumn>[
-                  new DataColumn(label: Text('Aluno', style: textStyle,),),
-                  new DataColumn(label: Text('Professor', style: textStyle,)),
+                  new DataColumn(label: Text('Aluno(a)', style: textStyle,),),
+                  new DataColumn(label: Text('Professor(a)', style: textStyle,)),
                   new DataColumn(label: Text('Dia', style: textStyle,)),
                   new DataColumn(label: Text('Horário', style: textStyle,)),
                 ],

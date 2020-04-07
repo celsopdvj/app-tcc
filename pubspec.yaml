@@ -41,6 +41,10 @@ dependencies:
   flutter_downloader: ^1.4.1
   downloads_path_provider: ^0.1.0
   open_file: ^3.0.1
+  flutter_local_notifications: ^1.3.0
+  scheduled_notifications: ^1.0.0
+  pdf: ^1.6.0
+  printing: ^3.2.1
 
 
 dev_dependencies:
@@ -55,6 +59,7 @@ dev_dependencies:
 flutter:
   assets:     
     - assets/images/puc.png
+    - assets/images/ata.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

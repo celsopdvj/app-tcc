@@ -158,7 +158,7 @@ class DatabaseService {
 
   Future salvarDefesa(String nomeAluno, String matriculaAluno, String uidAluno, String disciplina, String curso, String titulo, 
                     String orientador, String uidOrientador, String coOrientador, String uidCoorientador, String data, String horario, 
-                    String sala, User membroDaBanca1, User membroDaBanca2, User membroDaBanca3, User membroDaBanca4, User membroDaBanca5 ) async{
+                    String sala, User membroDaBanca2, User membroDaBanca3, User membroDaBanca4, User membroDaBanca5 ) async{
     var result = await defesa.add({
       'nomeAluno': nomeAluno,
       'matriculaAluno': matriculaAluno,
@@ -173,9 +173,9 @@ class DatabaseService {
       'data': data,
       'horario': horario,
       'sala': sala,
-      'membroDaBanca1': membroDaBanca1.uid,
-      'nomeMembroDaBanca1': membroDaBanca1.nome,
-      'statusConvite1': 0,
+      'membroDaBanca1': uidOrientador,
+      'nomeMembroDaBanca1': orientador,
+      'statusConvite1': 1,
 
       'membroDaBanca2': membroDaBanca2.uid,
       'nomeMembroDaBanca2':membroDaBanca2.nome,
@@ -202,13 +202,6 @@ class DatabaseService {
     });
     await usuario.document(uidAluno).updateData({
       'defesaPendente': result.documentID
-    });
-
-    await usuario.document(membroDaBanca1.uid).collection("Convites").document(result.documentID).setData({
-      'data':data,
-      'horario':horario,
-      'aluno':nomeAluno,
-      'orientador':orientador
     });
 
     await usuario.document(membroDaBanca2.uid).collection("Convites").document(result.documentID).setData({
@@ -265,15 +258,6 @@ class DatabaseService {
     //novos convites e retirar pedidos recusados
     DocumentSnapshot doc = await defesa.document(d.id).get();
     //recusados
-    if(doc.data["statusConvite1"] == -2){
-      defesa.document(d.id).updateData({
-      'membroDaBanca1': null,
-      'nomeMembroDaBanca1': "",
-      'statusConvite1': 0,
-      });
-
-      usuario.document(doc.data["membroDaBanca1"]).collection("Convites").document(d.id).delete();
-    }
 
     if(doc.data["statusConvite2"] == -2){
       defesa.document(d.id).updateData({
@@ -316,23 +300,6 @@ class DatabaseService {
     }
 
     //novos
-    if(d.membroDaBanca1 != doc.data["membroDaBanca1"] && d.membroDaBanca1!= null){
-      usuario.document(doc.data["membroDaBanca1"]).collection("Convites").document(d.id).delete();
-
-      await defesa.document(d.id).updateData({
-        'membroDaBanca1': d.membroDaBanca1,
-        'nomeMembroDaBanca1': d.nomeMembroDaBanca1,
-        'statusConvite1': 0,
-      });
-
-      await usuario.document(d.membroDaBanca1).collection("Convites").document(d.id).setData({
-        'data':d.data,
-        'horario':d.horario,
-        'aluno':d.nomeAluno,
-        'orientador':d.orientador
-      });
-
-    }
     
     if(d.membroDaBanca2 != doc.data["membroDaBanca2"] && d.membroDaBanca2!= null){
       usuario.document(doc.data["membroDaBanca2"]).collection("Convites").document(d.id).delete();
@@ -407,12 +374,7 @@ class DatabaseService {
   void aceitarPedidoDefesa(String idUser,String idDefesa) async{
     usuario.document(idUser).collection("Convites").document(idDefesa).delete();
     DocumentSnapshot doc = await defesa.document(idDefesa).get();
-    if(idUser == doc.data["membroDaBanca1"]){
-      defesa.document(idDefesa).updateData({
-        'statusConvite1':1
-      });
-    }
-    else if(idUser == doc.data["membroDaBanca2"]){
+    if(idUser == doc.data["membroDaBanca2"]){
       defesa.document(idDefesa).updateData({
         'statusConvite2':1
       });
@@ -434,8 +396,7 @@ class DatabaseService {
     }
 
     DocumentSnapshot doc2 = await defesa.document(idDefesa).get();
-    if((doc2.data["statusConvite1"] == 1 || doc2.data["statusConvite1"] == -1) &&
-    (doc2.data["statusConvite2"] == 1 || doc2.data["statusConvite2"] == -1) &&
+    if((doc2.data["statusConvite2"] == 1 || doc2.data["statusConvite2"] == -1) &&
     (doc2.data["statusConvite3"] == 1 || doc2.data["statusConvite3"] == -1) &&
     (doc2.data["statusConvite4"] == 1 || doc2.data["statusConvite4"] == -1) &&
     (doc2.data["statusConvite5"] == 1 || doc2.data["statusConvite5"] == -1) ){
@@ -448,12 +409,7 @@ class DatabaseService {
   void recusarPedidoDefesa(String idUser,String idDefesa) async{
     usuario.document(idUser).collection("Convites").document(idDefesa).delete();
     DocumentSnapshot doc = await defesa.document(idDefesa).get();
-    if(idUser == doc.data["membroDaBanca1"]){
-      defesa.document(idDefesa).updateData({
-        'statusConvite1':2
-      });
-    }
-    else if(idUser == doc.data["membroDaBanca2"]){
+    if(idUser == doc.data["membroDaBanca2"]){
       defesa.document(idDefesa).updateData({
         'statusConvite2':2
       });
