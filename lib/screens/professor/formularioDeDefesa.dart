@@ -3,13 +3,15 @@ import 'package:app_tcc/models/user.dart';
 import 'package:app_tcc/services/database.dart';
 import 'package:app_tcc/shared/constants.dart';
 import 'package:app_tcc/shared/loading.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 
 class FormularioDeDefesa extends StatefulWidget {
   final User user;
   final User aluno;
-  FormularioDeDefesa({Key key, @required this.user, @required this.aluno}):super(key:key);
+  FormularioDeDefesa({Key key, @required this.user, @required this.aluno})
+      : super(key: key);
   @override
   _FormularioDeDefesaState createState() => _FormularioDeDefesaState();
 }
@@ -39,51 +41,110 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
   List<User> professores = new List<User>();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    
-      setState(() =>loading = true);
-      banco.getProfessores().then((onValue){
-        setState(()=>professores = onValue);
-      });
-      setState(() =>loading = false);
 
+    setState(() => loading = true);
+    banco.getProfessores().then((onValue) {
+      setState(() {
+        professores = onValue;
+        professores.removeWhere((prof) => prof.nome == widget.user.nome);
+      });
+    });
+    setState(() => loading = false);
+  }
+
+  void mostrarDialog(String mensagem) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(mensagem),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  int getQuantidadeMembrosBanca() {
+    int qntMembros = 1;
+    if (membroDaBanca2.nome != 'Selecione...') {
+      qntMembros++;
+      if (membroDaBanca3.nome != 'Selecione...') {
+        qntMembros++;
+        if (membroDaBanca4.nome != 'Selecione...') {
+          qntMembros++;
+          if (membroDaBanca5.nome != 'Selecione...') {
+            qntMembros++;
+          }
+        }
+      }
+    }
+    return qntMembros;
   }
 
   Future<Null> _selectedTime(BuildContext context) async {
-      horario = await showTimePicker(
-          context: context,
-          initialTime: TimeOfDay.now());
-      if (horario != null) {
-        setState(() {
-          horario = horario;
-        });
-      }
+    horario =
+        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    if (horario != null) {
+      setState(() {
+        horario = horario;
+      });
     }
+  }
 
   Future<Null> _selectedDate(BuildContext context) async {
-      data = await showDatePicker(
-          context: context,
-          initialDate: DateTime.now(),
-          firstDate: DateTime(DateTime.now().year),
-          lastDate: DateTime(DateTime.now().year +1));
-      if (data != null) {
-        setState(() {
-          data = data;
-        });
-      }
+    data = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(DateTime.now().year),
+        lastDate: DateTime(DateTime.now().year + 1));
+    if (data != null) {
+      setState(() {
+        data = data;
+      });
     }
+  }
 
-  void agendarDefesa() async{
-    await banco.salvarDefesa(nomeAluno, matriculaAluno, widget.aluno.uid, disciplina, curso,
-     titulo, orientador, widget.user.uid, coorientador, uidCoorientador,
-      formatDate(data,[dd, '-', mm, '-', yyyy]), horario.format(context),
-       sala,membroDaBanca2,membroDaBanca3,membroDaBanca4,membroDaBanca5);
+  void agendarDefesa() async {
+    await banco.salvarDefesa(
+        nomeAluno,
+        matriculaAluno,
+        widget.aluno.uid,
+        disciplina,
+        curso,
+        titulo,
+        orientador,
+        widget.user.uid,
+        coorientador,
+        uidCoorientador,
+        formatDate(data, [dd, '-', mm, '-', yyyy]),
+        horario.format(context),
+        sala,
+        membroDaBanca2,
+        membroDaBanca3,
+        membroDaBanca4,
+        membroDaBanca5);
+  }
+
+  BoxDecoration myBoxDecoration() {
+    return BoxDecoration(
+      border: Border.all(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return loading ? Loading() : Scaffold(
+    disciplina = widget.aluno.disciplina;
+    return loading
+        ? Loading()
+        : Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.blue,
               elevation: 0.0,
@@ -97,85 +158,103 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                   child: Column(
                     children: <Widget>[
                       TextFormField(
-                        decoration: textInputDecoration.copyWith(hintText: 'Título do TCC',
-                          enabledBorder: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.horizontal(),
-                            borderSide: new BorderSide()),
-                          border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.horizontal(),
+                          decoration: textInputDecoration.copyWith(
+                            hintText: 'Título do TCC',
+                            enabledBorder: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.horizontal(),
+                                borderSide: new BorderSide()),
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.horizontal(),
                             ),
-                        ),
-                        validator: (val) =>
+                          ),
+                          validator: (val) =>
                               val.isEmpty ? 'Digite o título.' : null,
-                        onChanged: (val) {
-                          setState(() => titulo = val);
-                        }),
+                          onChanged: (val) {
+                            setState(() => titulo = val);
+                          }),
                       SizedBox(height: 20.0),
                       TextFormField(
-                        decoration: textInputDecoration.copyWith(hintText: 'Coorientador se possuir',
-                          enabledBorder: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.horizontal(),
-                            borderSide: new BorderSide()),
-                          border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.horizontal(),
+                          decoration: textInputDecoration.copyWith(
+                            hintText: 'Coorientador se possuir',
+                            enabledBorder: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.horizontal(),
+                                borderSide: new BorderSide()),
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.horizontal(),
                             ),
-                        ),
-                        onChanged: (val) {
-                          setState(() => coorientador = val);
-                        }),
-                      SizedBox(height: 20.0),
-                      Row(
-                        children: <Widget>[
-                          Text("Data:  ", style: TextStyle(fontSize: 16)),
-                          FlatButton(
-                              child: data == null ? Text("Selecione...", style: TextStyle(fontSize: 16, color: Colors.black38))
-                                                    :Text(formatDate(data,[dd, '-', mm, '-', yyyy])),
-                              onPressed: () => _selectedDate(context)
                           ),
-                        ],
+                          onChanged: (val) {
+                            setState(() => coorientador = val);
+                          }),
+                      SizedBox(height: 20.0),
+                      Container(
+                        decoration: myBoxDecoration(),
+                        child: Row(
+                          children: <Widget>[
+                            Text("  Data:  ", style: TextStyle(fontSize: 16)),
+                            FlatButton(
+                                child: data == null
+                                    ? Text("Selecione...",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black38))
+                                    : Text(formatDate(
+                                        data, [dd, '-', mm, '-', yyyy])),
+                                onPressed: () => _selectedDate(context)),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 20.0),
-                      Row(
-                        children: <Widget>[
-                          Text("Horário:   ", style: TextStyle(fontSize: 16),),
-                          FlatButton(
-                              child: horario == null ? Text("Selecione...", style: TextStyle(fontSize: 16, color: Colors.black38))
-                                                      :Text(horario.format(context)),
-                              onPressed: () => _selectedTime(context)
-                          ),
-                        ],
+                      Container(
+                        decoration: myBoxDecoration(),
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              "  Horário:   ",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            FlatButton(
+                                child: horario == null
+                                    ? Text("Selecione...",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black38))
+                                    : Text(horario.format(context)),
+                                onPressed: () => _selectedTime(context)),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 20.0),
                       TextFormField(
-                        decoration: textInputDecoration.copyWith(hintText: 'Sala',
-                          enabledBorder: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.horizontal(),
-                            borderSide: new BorderSide()),
-                          border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.horizontal(),
+                          decoration: textInputDecoration.copyWith(
+                            hintText: 'Sala',
+                            enabledBorder: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.horizontal(),
+                                borderSide: new BorderSide()),
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.horizontal(),
                             ),
-                        ),
-                        validator: (val) =>
+                          ),
+                          validator: (val) =>
                               val.isEmpty ? 'Digite uma sala.' : null,
-                        onChanged: (val) {
-                          setState(() => sala = val);
-                        }),
+                          onChanged: (val) {
+                            setState(() => sala = val);
+                          }),
                       SizedBox(height: 20.0),
                       Row(
                         children: <Widget>[
                           Text('Segundo membro da banca:  '),
                           DropdownButton(
                             hint: Text(membroDaBanca2.nome),
-                            items: professores.map((membroEscolhido){
+                            items: professores.map((membroEscolhido) {
                               return DropdownMenuItem<User>(
-                                value: membroEscolhido,
-                                child: Text(membroEscolhido.nome)
-                              );
+                                  value: membroEscolhido,
+                                  child: Text(membroEscolhido.nome));
                             }).toList(),
-                            onChanged:(val){ 
+                            onChanged: (val) {
                               setState(() {
                                 professores.remove(val);
-                                if(membroDaBanca2.nome != 'Selecione...')
+                                if (membroDaBanca2.nome != 'Selecione...')
                                   professores.add(membroDaBanca2);
                                 membroDaBanca2 = val;
                               });
@@ -189,16 +268,17 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                           Text('Terceiro membro da banca: '),
                           DropdownButton(
                             hint: Text(membroDaBanca3.nome),
-                            items: membroDaBanca2.nome == "Selecione..." ? null : professores.map((membroEscolhido){
-                              return DropdownMenuItem<User>(
-                                value: membroEscolhido,
-                                child: Text(membroEscolhido.nome)
-                              );
-                            }).toList(),
-                            onChanged:(val){ 
+                            items: membroDaBanca2.nome == "Selecione..."
+                                ? null
+                                : professores.map((membroEscolhido) {
+                                    return DropdownMenuItem<User>(
+                                        value: membroEscolhido,
+                                        child: Text(membroEscolhido.nome));
+                                  }).toList(),
+                            onChanged: (val) {
                               setState(() {
                                 professores.remove(val);
-                                if(membroDaBanca3.nome != 'Selecione...')
+                                if (membroDaBanca3.nome != 'Selecione...')
                                   professores.add(membroDaBanca3);
                                 membroDaBanca3 = val;
                               });
@@ -212,16 +292,17 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                           Text('Quarto membro da banca: '),
                           DropdownButton(
                             hint: Text(membroDaBanca4.nome),
-                            items: membroDaBanca3.nome == "Selecione..." ? null : professores.map((membroEscolhido){
-                              return DropdownMenuItem<User>(
-                                value: membroEscolhido,
-                                child: Text(membroEscolhido.nome)
-                              );
-                            }).toList(),
-                            onChanged:(val){ 
+                            items: membroDaBanca3.nome == "Selecione..."
+                                ? null
+                                : professores.map((membroEscolhido) {
+                                    return DropdownMenuItem<User>(
+                                        value: membroEscolhido,
+                                        child: Text(membroEscolhido.nome));
+                                  }).toList(),
+                            onChanged: (val) {
                               setState(() {
                                 professores.remove(val);
-                                if(membroDaBanca4.nome != 'Selecione...')
+                                if (membroDaBanca4.nome != 'Selecione...')
                                   professores.add(membroDaBanca4);
                                 membroDaBanca4 = val;
                               });
@@ -235,16 +316,17 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                           Text('Quinto membro da banca: '),
                           DropdownButton(
                             hint: Text(membroDaBanca5.nome),
-                            items: membroDaBanca4.nome == "Selecione..." ? null : professores.map((membroEscolhido){
-                              return DropdownMenuItem<User>(
-                                value: membroEscolhido,
-                                child: Text(membroEscolhido.nome)
-                              );
-                            }).toList(),
-                            onChanged:(val){ 
+                            items: membroDaBanca4.nome == "Selecione..."
+                                ? null
+                                : professores.map((membroEscolhido) {
+                                    return DropdownMenuItem<User>(
+                                        value: membroEscolhido,
+                                        child: Text(membroEscolhido.nome));
+                                  }).toList(),
+                            onChanged: (val) {
                               setState(() {
                                 professores.remove(val);
-                                if(membroDaBanca5.nome != 'Selecione...')
+                                if (membroDaBanca5.nome != 'Selecione...')
                                   professores.add(membroDaBanca5);
                                 membroDaBanca5 = val;
                               });
@@ -261,29 +343,40 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                           ),
                           onPressed: () {
                             if (_formKey.currentState.validate()) {
-                              setState(()=>loading=true);
-                              if(
-                              membroDaBanca2.nome == 'Selecione...' || (membroDaBanca3.nome == 'Selecione...' && widget.aluno.disciplina != "CMP1071"))
-                                setState(() =>error = 'Selecione mais membros pra banca.');
-                              else{
+                              setState(() => loading = true);
+                              int quantidadeMembros =
+                                  getQuantidadeMembrosBanca();
+                              if (data == null) {
+                                setState(() => loading = false);
+                                mostrarDialog('Selecione uma data.');
+                              } else if (horario == null) {
+                                setState(() => loading = false);
+                                mostrarDialog('Selecione um horário.');
+                              } else if ((disciplina == 'MAF1318' ||
+                                      disciplina == 'CMP1071') &&
+                                  quantidadeMembros < 2) {
+                                setState(() => loading = false);
+                                mostrarDialog(
+                                    'Selecione pelo menos mais 1 membro para banca.');
+                              } else if ((disciplina == 'MAF1319' ||
+                                      disciplina == 'CMP1072' ||
+                                      disciplina == 'MAF1149') &&
+                                  quantidadeMembros < 3) {
+                                setState(() => loading = false);
+                                mostrarDialog('Selecione pelo menos mais ' +
+                                    (3 - quantidadeMembros).toString() +
+                                    ' membro para banca.');
+                              } else {
                                 nomeAluno = widget.aluno.nome;
                                 matriculaAluno = widget.aluno.matricula;
                                 disciplina = widget.aluno.disciplina;
                                 curso = widget.aluno.curso;
                                 orientador = widget.user.nome;
-                                if (membroDaBanca3.nome == "Selecione...")
-                                  membroDaBanca3.nome = "";
-
-                                if (membroDaBanca4.nome == "Selecione...")
-                                  membroDaBanca4.nome = "";
-
-                                if (membroDaBanca5.nome == "Selecione...")
-                                  membroDaBanca5.nome = "";
                                 agendarDefesa();
                                 Navigator.pop(context);
                                 Navigator.pop(context);
                               }
-                              setState(()=>loading=false);
+
                               //Navigator.pop(context);
                             }
                           }),

@@ -12,3 +12,8 @@ const textStyle = TextStyle(
   color: Colors.black
 );
 
+const textStyle2 = TextStyle(
+  fontSize: 18,
+  color: Colors.white
+);
+

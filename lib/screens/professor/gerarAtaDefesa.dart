@@ -25,42 +25,58 @@ class _GerarAtaDefesaState extends State<GerarAtaDefesa> {
   DatabaseService banco = new DatabaseService();
   String _alunoUid = '';
 
-  pw.Column _buildMembrosBanca(DocumentSnapshot document) {
-    String membro3="",membro4="",membro5="";
+  int getQuantidadeMembrosBanca(DocumentSnapshot document){
+    int qntMembros = 2;
     if(document["nomeMembroDaBanca3"]!=""){
-      membro3="    Membro 3: " + document['nomeMembroDaBanca3'];
+      qntMembros++;
+      if(document["nomeMembroDaBanca4"]!=""){
+        qntMembros++;
+        if(document["nomeMembroDaBanca5"]!=""){
+          qntMembros++;
+        }
+      }
     }
-    if(document["nomeMembroDaBanca4"]!=""){
-      membro3="    Membro 4: " + document['nomeMembroDaBanca4'];
-    }
-    if(document["nomeMembroDaBanca5"]!=""){
-      membro3="    Membro 5: " + document['nomeMembroDaBanca5'];
-    }
-      return pw.Column(mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,children: <pw.Widget>[
-        pw.Paragraph(text: "    Membro 1: " + document['nomeMembroDaBanca1']),
-        pw.Paragraph(text: "Membro 2: " + document['nomeMembroDaBanca2']),
-        membro3!=""?pw.Paragraph(text: membro3):membro4!=""?pw.Paragraph(text: membro4):membro5!=""?pw.Paragraph(text: membro5):pw.Text("")
-      ]);
+    return qntMembros;
   }
-  pw.Row _buildMembrosNota(DocumentSnapshot document) {
-      return pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,children: <pw.Widget>[
-            pw.Column(children: <pw.Widget>[
-              pw.Text('_________________'),
-              pw.Text('(Nota Membro 1)')
-            ]),
-            pw.Column(children: <pw.Widget>[
-              pw.Text('_________________'),
-              pw.Text('(Nota Membro 2)')
-            ]),
-            pw.Column(children: <pw.Widget>[
-              pw.Text('_________________'),
-              pw.Text('(Nota Membro 3)')
-            ]),
-            pw.Column(children: <pw.Widget>[
-              pw.Text('_________________'),
-              pw.Text('(Média Final)')
+
+  pw.Column _buildMembrosBanca(DocumentSnapshot document) {
+    List<pw.Widget> membros = new List<pw.Widget>();
+    for(int i=1;i <= getQuantidadeMembrosBanca(document);i++){
+      membros.add(pw.Text("    Membro "+i.toString()+": " + document['nomeMembroDaBanca'+i.toString()]));
+    }
+    membros.add(pw.Paragraph(text:""));
+    return pw.Column(mainAxisAlignment: pw.MainAxisAlignment.start,crossAxisAlignment: pw.CrossAxisAlignment.start,children:membros);
+  }
+
+  pw.Center _buildAssinaturas(DocumentSnapshot document) {
+    List<pw.Widget> membros = new List<pw.Widget>();
+    for(int i=1;i <= getQuantidadeMembrosBanca(document);i++){
+      membros.add(
+        pw.Column(mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,children: <pw.Widget>[
+              pw.Text('___________________________________________________'),
+              pw.Text('Assinatura Membro '+i.toString())
             ])
-          ]);
+      );
+    }
+    
+    return pw.Center(child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.center,crossAxisAlignment: pw.CrossAxisAlignment.center,children:membros));
+  }
+
+  pw.Row _buildMembrosNota(DocumentSnapshot document) {
+    List<pw.Widget> membros = new List<pw.Widget>();
+    for(int i=1;i <= getQuantidadeMembrosBanca(document);i++){
+      membros.add(
+        pw.Column(mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,children: <pw.Widget>[
+              pw.Text('Nota:___________  ',style: pw.TextStyle(decoration: pw.TextDecoration.underline)),
+              pw.Text('( Membro '+i.toString()+')')
+            ])
+      );
+    }
+    membros.add(pw.Column(children: <pw.Widget>[
+              pw.Text('_____________  '),
+              pw.Text('(Média Final)')
+            ]));
+    return pw.Row(mainAxisAlignment: pw.MainAxisAlignment.start,children:membros);
   }
   
   void gerarAta( DocumentSnapshot document)async{
@@ -103,16 +119,16 @@ class _GerarAtaDefesaState extends State<GerarAtaDefesa> {
           ),
           pw.Center(child: pw.Paragraph(text: 'ATA DE DEFESA',style: pw.TextStyle(fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center)),
           pw.Paragraph(text: ""),
-          pw.Paragraph(text: 'Aluno(a): '+ document['nomeAluno']),
-          pw.Paragraph(text: 'Matrícula: ' + document['matriculaAluno']),
-          pw.Paragraph(text: 'Curso: '+document['curso']),
-          pw.Paragraph(text: 'Título do trabalho: '+document['titulo']),
-          pw.Paragraph(text: 'Disciplina: '+document['disciplina']),
-          pw.Paragraph(text: 'Orientador(a): '+document['orientador']),
+          pw.Text('Aluno(a): '+ document['nomeAluno']),
+          pw.Text('Matrícula: ' + document['matriculaAluno']),
+          pw.Text('Curso: '+document['curso']),
+          pw.Text('Título do trabalho: '+document['titulo']),
+          pw.Text('Disciplina: '+document['disciplina']),
+          pw.Text('Orientador(a): '+document['orientador']),
           pw.Row(children: <pw.Widget>[
-            pw.Paragraph(text: 'Data: '+document['data'].toString().replaceAll('-', '/')+"    "),
-            pw.Paragraph(text: 'Horário: '+document['horario']+"    "),
-            pw.Paragraph(text: 'Sala: '+document['sala']+"    ")
+            pw.Text('Data: '+document['data'].toString().replaceAll('-', '/')+"    "),
+            pw.Text('Horário: '+document['horario']+"    "),
+            pw.Text('Sala: '+document['sala']+"    ")
           ]),
           pw.Paragraph(text: ""),
           pw.Paragraph(text: "Banca Examinadora: ",style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
@@ -126,9 +142,13 @@ class _GerarAtaDefesaState extends State<GerarAtaDefesa> {
           pw.Paragraph(text: "________________________________________________________________________________"),
           pw.Paragraph(text: "A banca examinadora indica o trabalho para publicação: (   ) Sim    (   ) Não"),
           _buildMembrosNota(document),
+          pw.Paragraph(text: ""),
+          pw.Paragraph(text: ""),
+          _buildAssinaturas(document)
         ]));
 
-    final File file = File('${appTempDirectory.path}/example.pdf');
+    final File file = File('${appTempDirectory.path}/AtaDeDefesa${document['nomeAluno'].replaceAll(new RegExp(r"\s+\b|\b\s"), "")}.pdf');
+    print(file.path.toString());
     file.writeAsBytesSync(doc.save());
     OpenFile.open(file.path);
   }

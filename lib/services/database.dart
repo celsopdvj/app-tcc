@@ -1,6 +1,7 @@
 import 'package:app_tcc/models/defesas.dart';
 import 'package:app_tcc/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 import '../models/horario.dart';
 
@@ -104,7 +105,7 @@ class DatabaseService {
 
   Future getTurma(String curso) async{
     final snapShot = await orientacao.document('turmas').get();
-    if(curso == 'Engenharia de Computação' || curso == 'Ciência de Computação'){
+    if(curso == 'Engenharia de Computação' || curso == 'Ciência da Computação'){
       await orientacao.document('turmas').updateData({'contadorA': FieldValue.increment(1)});
       return "A" + snapShot.data['contadorA'].toString().padLeft(2,'0');
     }
@@ -497,5 +498,31 @@ class DatabaseService {
         'possui': item.possui
       });
     }
+  }
+
+  Future<bool> temAula(String uid, String diaDaSemana, String horario) async{
+    
+    double horarioInicial;
+    double horarioFinal;
+    double horarioOrientacaoInicial;
+    double horarioOrientacaoFinal;
+    String hora;
+    String minuto;
+    
+    var result = await usuario.document(uid).collection(diaDaSemana).where('possui',isEqualTo:true).getDocuments();
+    for (var aulas in result.documents) {
+      hora = aulas.data["horarioInicial"].split(':')[0];
+      minuto = aulas.data["horarioInicial"].split(':')[1];
+      horarioInicial = double.parse(hora) + double.parse(minuto)/60.0;
+      hora = aulas.data["horarioFinal"].split(':')[0];
+      minuto = aulas.data["horarioFinal"].split(':')[1];
+      horarioFinal = double.parse(hora) + double.parse(minuto)/60.0;
+      horarioOrientacaoInicial = double.parse(horario.split("-")[0].split(":")[0]) + double.parse(horario.split("-")[0].split(":")[1])/60.0;
+      horarioOrientacaoFinal = double.parse(horario.split("-")[1].split(":")[0]) + double.parse(horario.split("-")[1].split(":")[1])/60.0;
+
+      if(((horarioInicial <= horarioOrientacaoFinal) && (horarioFinal >= horarioOrientacaoInicial)))
+        return true;
+    }
+    return false;
   }
 }

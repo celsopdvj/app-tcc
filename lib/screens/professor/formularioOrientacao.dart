@@ -178,7 +178,14 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                                 error = 'Escolha um horario';
                                 loading = false;
                               });
-                            } else {
+                            }
+                            else if(await banco.temAula(widget.user.uid, diaDaSemana, horario)){
+                              setState(() {
+                                error = 'Você possui aula no horário escolhido! Escolha outro horário';
+                                loading = false;
+                              });
+                            } 
+                            else {
                               if (_formKey.currentState.validate()) {
                                 setState(() => loading = true);
                                 curso = widget.aluno.curso;

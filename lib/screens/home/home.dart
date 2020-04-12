@@ -6,9 +6,8 @@ import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
   final User user;
-  Home({Key key, @required this.user}):super(key:key);
+  Home({Key key, @required this.user}) : super(key: key);
 
-  
   final DatabaseService banco = new DatabaseService();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -16,18 +15,21 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
     String orientador;
-    
+
     return WillPopScope(
       onWillPop: () => Future.value(false),
-          child: Scaffold(
+      child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Text('PUC GO TCC - Aluno'),
+          title: Text('ECEC TCC'),
           elevation: 0.0,
           actions: <Widget>[
             FlatButton.icon(
               icon: Icon(Icons.person),
-              label: Text('Sair'),
+              label: Text(
+                'Sair',
+                style: textStyle2.copyWith(),
+              ),
               onPressed: () async {
                 print(user.uid);
                 await _auth.signOut();
@@ -47,38 +49,42 @@ class Home extends StatelessWidget {
                 minWidth: 300.0,
                 height: 50.0,
                 child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
+                  ),
                   color: Colors.blue[300],
                   child: Text(
                     "Enviar convite de orientação",
-                    style: textStyle.copyWith(),
+                    style: textStyle2.copyWith(),
                   ),
-                  onPressed: () async{
+                  onPressed: () async {
                     orientador = await banco.getOrientador(user.uid);
-                    if(orientador != ""){
+                    if (orientador != "") {
                       //mostrar "Já possui orientador"
-                      _scaffoldKey.currentState.showSnackBar(
-                        SnackBar(
-                          content: new Text("Já possui orientador!"),
-                          duration: Duration(seconds: 3),
-                          backgroundColor: Colors.red,
-                        )
-                      );
-                    }
-                    else{
-                      Navigator.pushNamed(context, '/enviarOrientacao', arguments: user);
+                      _scaffoldKey.currentState.showSnackBar(SnackBar(
+                        content: new Text("Já possui orientador!"),
+                        duration: Duration(seconds: 3),
+                        backgroundColor: Colors.red,
+                      ));
+                    } else {
+                      Navigator.pushNamed(context, '/enviarOrientacao',
+                          arguments: user);
                     }
                   },
                 ),
               ),
               SizedBox(height: 20.0),
               ButtonTheme(
-                  minWidth: 300.0,
-                  height: 50.0,
-                  child: RaisedButton(
+                minWidth: 300.0,
+                height: 50.0,
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
+                  ),
                   color: Colors.blue[300],
                   child: Text(
                     "Exibir Defesas",
-                    style: textStyle.copyWith(),
+                    style: textStyle2.copyWith(),
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, '/exibirDefesas');
@@ -87,13 +93,16 @@ class Home extends StatelessWidget {
               ),
               SizedBox(height: 20.0),
               ButtonTheme(
-                  minWidth: 300.0,
-                  height: 50.0,
-                  child: RaisedButton(
+                minWidth: 300.0,
+                height: 50.0,
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
+                  ),
                   color: Colors.blue[300],
                   child: Text(
                     "Ver TCCs",
-                    style: textStyle.copyWith(),
+                    style: textStyle2.copyWith(),
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, '/exibirTCC');

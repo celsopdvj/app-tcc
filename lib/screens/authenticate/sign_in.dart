@@ -101,61 +101,66 @@ Future<bool> _onWillPop() async {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(18.0),
-                            
-                          ),
-                          color: Colors.blue[300],
-                          child: Text(
-                            "Cadastre-se",
-                            style: TextStyle(color: Colors.white),
+                        Expanded(
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
+                              
                             ),
-                          onPressed: (){
-                            Navigator.pushNamed(context, '/tipoUsuario');
-                          },
+                            color: Colors.blue[300],
+                            child: Text(
+                              "Cadastrar",
+                              style: TextStyle(color: Colors.white),
+                              ),
+                            onPressed: (){
+                              Navigator.pushNamed(context, '/tipoUsuario');
+                            },
+                          ),
                         ),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(18.0),
-                          ),
-                          color: Colors.blue[300],
-                          child: Text(
-                            "Entrar",
-                            style: TextStyle(color: Colors.white),
+                        SizedBox(width:10),
+                        Expanded(
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
                             ),
-                            onPressed: () async{
-                              if(_formKey.currentState.validate()){
-                                dynamic result;
-                                setState(()=>loading=true);
-                                final doc = await Firestore.instance.collection('usuario').where("matricula", isEqualTo: matricula).getDocuments();
-                                if(doc.documents.length == 0){
-                                  setState(() {
-                                    error = 'Matrícula não cadastrada.';
-                                    loading = false;
-                                  });
-                                }
-                                else{
-                                  result = await _auth.logInComMatriculaESenha(doc.documents.first.documentID, password);
-                                  if(result == null){
+                            color: Colors.blue[300],
+                            child: Text(
+                              "Entrar",
+                              style: TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () async{
+                                if(_formKey.currentState.validate()){
+                                  dynamic result;
+                                  setState(()=>loading=true);
+                                  final doc = await Firestore.instance.collection('usuario').where("matricula", isEqualTo: matricula).getDocuments();
+                                  if(doc.documents.length == 0){
                                     setState(() {
-                                      error = 'Usuário ou senha inválido.';
+                                      error = 'Matrícula não cadastrada.';
                                       loading = false;
                                     });
                                   }
                                   else{
-                                    if(doc.documents.first.data["tipo"] == "Aluno"){
-                                    Navigator.pushReplacementNamed(context, '/home', arguments: result);
-                                  }
-                                  else if(doc.documents.first.data['tipo'] == "Professor"){
-                                    Navigator.pushReplacementNamed(context, '/homeProfessor',arguments: result);
-                                  }
-                                  else
-                                    Navigator.pushReplacementNamed(context, '/homeCoordenacao',arguments: result);
+                                    result = await _auth.logInComMatriculaESenha(doc.documents.first.documentID, password);
+                                    if(result == null){
+                                      setState(() {
+                                        error = 'Usuário ou senha inválido.';
+                                        loading = false;
+                                      });
+                                    }
+                                    else{
+                                      if(doc.documents.first.data["tipo"] == "Aluno"){
+                                      Navigator.pushReplacementNamed(context, '/home', arguments: result);
+                                    }
+                                    else if(doc.documents.first.data['tipo'] == "Professor"){
+                                      Navigator.pushReplacementNamed(context, '/homeProfessor',arguments: result);
+                                    }
+                                    else
+                                      Navigator.pushReplacementNamed(context, '/homeCoordenacao',arguments: result);
+                                    }
                                   }
                                 }
                               }
-                            }
+                          ),
                         ),
                       ],
                     ),

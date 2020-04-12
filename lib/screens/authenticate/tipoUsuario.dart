@@ -12,7 +12,7 @@ class _TipoUsuarioState extends State<TipoUsuario> {
       appBar: AppBar(
           backgroundColor: Colors.blue,
           elevation: 0.0,
-          title: Text('Que tipo de usuário você é?')
+          title: Text('Tipo de usuário')
       ),
       body: Container(
         alignment: Alignment.center,

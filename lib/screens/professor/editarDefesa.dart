@@ -46,6 +46,7 @@ class _EditarDefesaState extends State<EditarDefesa> {
       banco.getProfessores().then((onValue){
         setState((){
           professores = onValue;
+          professores.removeWhere((user) => user.nome == widget.user.nome);
           professores.removeWhere((user) => user.nome == widget.defesa.nomeMembroDaBanca2);
           professores.removeWhere((user) => user.nome == widget.defesa.nomeMembroDaBanca3);
           professores.removeWhere((user) => user.nome == widget.defesa.nomeMembroDaBanca4);
@@ -114,6 +115,12 @@ class _EditarDefesaState extends State<EditarDefesa> {
     await banco.editarDefesa(widget.defesa);
   }
 
+  BoxDecoration myBoxDecoration() {
+    return BoxDecoration(
+      border: Border.all(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return loading ? Loading() : Scaffold(
@@ -159,26 +166,32 @@ class _EditarDefesaState extends State<EditarDefesa> {
                           setState(() => widget.defesa.coorientador = val);
                         }),
                       SizedBox(height: 20.0),
-                      Row(
-                        children: <Widget>[
-                          Text("Data  ", style: TextStyle(fontSize: 16)),
-                          FlatButton(
-                              child: data == null ? Text("Selecione...", style: TextStyle(fontSize: 16, color: Colors.black38))
-                                                    :Text(formatDate(data,[dd, '-', mm, '-', yyyy])),
-                              onPressed: () => _selectedDate(context)
-                          ),
-                        ],
+                      Container(
+                        decoration: myBoxDecoration(),
+                        child: Row(
+                          children: <Widget>[
+                            Text("  Data:  ", style: TextStyle(fontSize: 16)),
+                            FlatButton(
+                                child: data == null ? Text("Selecione...", style: TextStyle(fontSize: 16, color: Colors.black38))
+                                                      :Text(formatDate(data,[dd, '-', mm, '-', yyyy])),
+                                onPressed: () => _selectedDate(context)
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 20.0),
-                      Row(
-                        children: <Widget>[
-                          Text("Horário:   ", style: TextStyle(fontSize: 16),),
-                          FlatButton(
-                              child: horario == null ? Text("Selecione...", style: TextStyle(fontSize: 16, color: Colors.black38))
-                                                      :Text(horario.format(context)),
-                              onPressed: () => _selectedTime(context)
-                          ),
-                        ],
+                      Container(
+                        decoration: myBoxDecoration(),
+                        child: Row(
+                          children: <Widget>[
+                            Text("  Horário:   ", style: TextStyle(fontSize: 16),),
+                            FlatButton(
+                                child: horario == null ? Text("Selecione...", style: TextStyle(fontSize: 16, color: Colors.black38))
+                                                        :Text(horario.format(context)),
+                                onPressed: () => _selectedTime(context)
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 20.0),
                       TextFormField(
@@ -196,13 +209,6 @@ class _EditarDefesaState extends State<EditarDefesa> {
                         onChanged: (val) {
                           setState(() => sala = val);
                         }),
-                      SizedBox(height: 20.0),
-                      Row(
-                        children: <Widget>[
-                          Text('Primeiro membro da banca: '),
-                          SizedBox(width: 4,),
-                        ],
-                      ),
                       SizedBox(height: 20.0),
                       Row(
                         children: <Widget>[
@@ -344,4 +350,5 @@ class _EditarDefesaState extends State<EditarDefesa> {
             ),
           );
   }
+
 }

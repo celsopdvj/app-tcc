@@ -3,7 +3,6 @@ import 'package:app_tcc/services/auth.dart';
 import 'package:app_tcc/shared/constants.dart';
 import 'package:flutter/material.dart';
 
-
 class HomeProfessor extends StatefulWidget {
   final User user;
   HomeProfessor({Key key, @required this.user}) : super(key: key);
@@ -20,15 +19,15 @@ class _HomeProfessorState extends State<HomeProfessor> {
 
     return WillPopScope(
       onWillPop: () => Future.value(false),
-        child: Scaffold(
+      child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Text('PUC GO TCC - Professor'),
+          title: Text('ECEC TCC'),
           elevation: 0.0,
           actions: <Widget>[
             FlatButton.icon(
               icon: Icon(Icons.person),
-              label: Text('Sair'),
+              label: Text('Sair', style: textStyle2.copyWith()),
               onPressed: () async {
                 print(widget.user.uid);
                 await _auth.signOut();
@@ -48,10 +47,13 @@ class _HomeProfessorState extends State<HomeProfessor> {
                 minWidth: 300.0,
                 height: 50.0,
                 child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
+                  ),
                   color: Colors.blue[300],
                   child: Text(
                     "Pedidos de orientação",
-                    style: textStyle.copyWith(),
+                    style: textStyle2.copyWith(),
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, '/pedidosDeOrientacao',
@@ -64,10 +66,13 @@ class _HomeProfessorState extends State<HomeProfessor> {
                 minWidth: 300.0,
                 height: 50.0,
                 child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
+                  ),
                   color: Colors.blue[300],
                   child: Text(
                     "Exibir Defesas",
-                    style: textStyle.copyWith(),
+                    style: textStyle2.copyWith(),
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, '/exibirDefesas');
@@ -79,10 +84,13 @@ class _HomeProfessorState extends State<HomeProfessor> {
                 minWidth: 300.0,
                 height: 50.0,
                 child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
+                  ),
                   color: Colors.blue[300],
                   child: Text(
                     "Agendar defesa",
-                    style: textStyle.copyWith(),
+                    style: textStyle2.copyWith(),
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, '/defesasAgendadas',
@@ -95,10 +103,13 @@ class _HomeProfessorState extends State<HomeProfessor> {
                 minWidth: 300.0,
                 height: 50.0,
                 child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
+                  ),
                   color: Colors.blue[300],
                   child: Text(
                     "Convites de banca de defesa",
-                    style: textStyle.copyWith(),
+                    style: textStyle2.copyWith(),
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, '/convitesDefesa',
@@ -111,10 +122,13 @@ class _HomeProfessorState extends State<HomeProfessor> {
                 minWidth: 300.0,
                 height: 50.0,
                 child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
+                  ),
                   color: Colors.blue[300],
                   child: Text(
                     "Enviar TCC",
-                    style: textStyle.copyWith(),
+                    style: textStyle2.copyWith(),
                   ),
                   onPressed: () async {
                     Navigator.pushNamed(context, '/enviarTCC',
@@ -127,10 +141,13 @@ class _HomeProfessorState extends State<HomeProfessor> {
                 minWidth: 300.0,
                 height: 50.0,
                 child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
+                  ),
                   color: Colors.blue[300],
                   child: Text(
                     "Gerar ata de defesa",
-                    style: textStyle.copyWith(),
+                    style: textStyle2.copyWith(),
                   ),
                   onPressed: () async {
                     Navigator.pushNamed(context, '/gerarAtaDefesa',
