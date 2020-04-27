@@ -20,6 +20,7 @@ import 'package:app_tcc/screens/home/homeProfessor.dart';
 import 'package:app_tcc/screens/professor/convitesDefesa.dart';
 import 'package:app_tcc/screens/professor/defesasPendentes.dart';
 import 'package:app_tcc/screens/professor/editarDefesa.dart';
+import 'package:app_tcc/screens/professor/editarHorario.dart';
 import 'package:app_tcc/screens/professor/enviarTCC.dart';
 import 'package:app_tcc/screens/professor/escolherAlunoAgendarDefesa.dart';
 import 'package:app_tcc/screens/professor/formularioDeDefesa.dart';
@@ -73,6 +74,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => NovoValidarPedido());
       case '/pedidosDeOrientacao':
         return MaterialPageRoute(builder: (_) => PedidosDeOrientacao(user: args));
+      case '/editarHorario':
+        return MaterialPageRoute(builder: (_) => EditarHorario(user: args));
       case '/formularioOrientacao':
         return MaterialPageRoute(builder: (_) => FormularioOrientacao(user: args2.professor, aluno: args2.aluno, pedidoUid: args2.pedidoUid,));
       case '/exibirOrientacoes':

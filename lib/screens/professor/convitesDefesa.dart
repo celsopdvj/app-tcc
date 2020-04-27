@@ -21,7 +21,7 @@ class _ConvitesDefesaState extends State<ConvitesDefesa> {
   @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
-    ScrollController _controller = new ScrollController();
+    ScrollController _controller = new ScrollController(keepScrollOffset: true);
     
     return loading ? Loading() : Scaffold(
       key: _scaffoldKey,
@@ -55,9 +55,9 @@ class _ConvitesDefesaState extends State<ConvitesDefesa> {
                       isThreeLine: true,
                       groupValue: defesaEscolhida,
                       value: document.documentID,
-                      title: Text("Aluno: "+document.data['aluno']),
-                      subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[Text("Orientador: "+document.data['orientador']),
-                       Text("Horário: "+document.data['data'] + " - " + document.data['horario'])],),
+                      title: Text("Aluno(a): "+document.data['aluno']),
+                      subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[Text("Orientador(a): "+document.data['orientador']),
+                       Text("Defesa: "+document.data['data'] + " - " + document.data['horario'])],),
                       onChanged: (val){
                         setState(() {
                           defesaEscolhida = document.documentID;
@@ -74,23 +74,106 @@ class _ConvitesDefesaState extends State<ConvitesDefesa> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     RaisedButton(
+                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                       color: Colors.blue,
                       child: Text("Aceitar",style: TextStyle(color: Colors.white)),
                       onPressed: (){
                         setState(() =>loading = true);
-                        print(defesaEscolhida);
-                        banco.aceitarPedidoDefesa(widget.user.uid, defesaEscolhida);
-                        setState(() =>loading = false);
+                        if(defesaEscolhida==""){
+                          setState(() =>loading = false);
+                          showDialog(
+                                      context: context,
+                                      builder: (context) => new AlertDialog(
+                                            content: new Text(
+                                                'Escolha um convite!'),
+                                            actions: <Widget>[
+                                              new FlatButton(
+                                                textColor: Colors.white,
+                                                color: Colors.blue[300],
+                                                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(false);
+                                                },
+                                                child: new Text('Ok'),
+                                              ),
+                                            ],
+                                          ));
+                        }
+                        else{
+                          banco.aceitarPedidoDefesa(widget.user.uid, defesaEscolhida);
+                          setState(() =>loading = false);
+                          showDialog(
+                                      context: context,
+                                      builder: (context) => new AlertDialog(
+                                            content: new Text(
+                                                'Convite aceito!'),
+                                            actions: <Widget>[
+                                              new FlatButton(
+                                                textColor: Colors.white,
+                                                color: Colors.blue[300],
+                                                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(false);
+                                                },
+                                                child: new Text('Ok'),
+                                              ),
+                                            ],
+                                          ));
+                        }
+                        
                       }
                     ),
                     RaisedButton(
+                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                       color: Colors.red,
                       child: Text("Recusar",style: TextStyle(color: Colors.white)),
                       onPressed: (){
                         setState(() =>loading = true);
-                        print(defesaEscolhida);
-                        banco.recusarPedidoDefesa(widget.user.uid, defesaEscolhida);
-                        setState(() =>loading = false);
+                        if(defesaEscolhida==""){
+                          setState(() =>loading = false);
+                          showDialog(
+                                      context: context,
+                                      builder: (context) => new AlertDialog(
+                                            content: new Text(
+                                                'Escolha um convite!'),
+                                            actions: <Widget>[
+                                              new FlatButton(
+                                                textColor: Colors.white,
+                                                color: Colors.blue[300],
+                                                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(false);
+                                                },
+                                                child: new Text('Ok'),
+                                              ),
+                                            ],
+                                          ));
+                        }
+                        else{
+                          banco.recusarPedidoDefesa(widget.user.uid, defesaEscolhida);
+                          setState(() =>loading = false);
+                          showDialog(
+                                      context: context,
+                                      builder: (context) => new AlertDialog(
+                                            content: new Text(
+                                                'Convite recusado!'),
+                                            actions: <Widget>[
+                                              new FlatButton(
+                                                textColor: Colors.white,
+                                                color: Colors.blue[300],
+                                                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(false);
+                                                },
+                                                child: new Text('Ok'),
+                                              ),
+                                            ],
+                                          ));
+                        }
                       }
                     ),
                   ],

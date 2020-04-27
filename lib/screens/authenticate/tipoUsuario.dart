@@ -17,30 +17,37 @@ class _TipoUsuarioState extends State<TipoUsuario> {
       body: Container(
         alignment: Alignment.center,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           
           children: <Widget>[
             ButtonTheme(
               minWidth: 200.0,
               height: 50.0,
               child: MaterialButton(
+                shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
+                  ),
                 color: Colors.blue[300],
                 child: Text(
                     "Aluno",
-                    style: TextStyle(color: Colors.white, fontSize: 30.0),
+                    style: TextStyle(color: Colors.white, fontSize: 18.0),
                 ),
                 onPressed: () {
                 Navigator.pushNamed(context, '/registroAluno');
               }),
             ),
+            SizedBox(height: 12,),
             ButtonTheme(
               minWidth: 200.0,
               height: 50.0,
               child: MaterialButton(
+                shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
+                  ),
                 color: Colors.blue[300],
                 child: Text(
                   "Professor",
-                  style: TextStyle(color: Colors.white, fontSize: 30.0),
+                  style: TextStyle(color: Colors.white, fontSize: 18.0),
                 ),
                 onPressed: () {
                   Navigator.pushNamed(context, '/registroProfessor');

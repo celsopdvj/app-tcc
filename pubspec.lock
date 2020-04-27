@@ -113,6 +113,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.0"
+  email_validator:
+    dependency: "direct main"
+    description:
+      name: email_validator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
   ffi:
     dependency: transitive
     description:
@@ -455,13 +462,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.21.0"
-  scheduled_notifications:
-    dependency: "direct main"
-    description:
-      name: scheduled_notifications
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   sky_engine:
     dependency: transitive
     description: flutter

@@ -29,7 +29,7 @@ class _AgendarDefesaState extends State<AgendarDefesa> {
    @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
-    ScrollController _controller = new ScrollController();
+    ScrollController _controller = new ScrollController(keepScrollOffset: true);
 
     return  Scaffold(
       key: _scaffoldKey,
@@ -77,23 +77,27 @@ class _AgendarDefesaState extends State<AgendarDefesa> {
                   ),
               ),
               
-              Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          RaisedButton(
-                          color: Colors.blue,
-                          child: Text("Agendar",style: TextStyle(color: Colors.white)),
-                          onPressed: agendarDefesa,
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-              ),
+              Expanded(
+                                          child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            SizedBox(width: 10,),
+                            Expanded(
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
+                                color: Colors.blue,
+                                child: Text("Agendar",
+                                    style: TextStyle(color: Colors.white)),
+                                onPressed: agendarDefesa,
+                              ),
+                            ),
+                            SizedBox(width: 10,),
+                          ],
+                        ),
+                      ),
+                    ),
             ],
           );
         },

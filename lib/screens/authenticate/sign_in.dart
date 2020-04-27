@@ -28,10 +28,16 @@ Future<bool> _onWillPop() async {
         content: new Text('Deseja sair do aplicativo?'),
         actions: <Widget>[
           new FlatButton(
+            textColor: Colors.white,
+            color: Colors.blue[300],
+            shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
             onPressed: () => Navigator.of(context).pop(false),
             child: new Text('Não'),
           ),
           new FlatButton(
+            textColor: Colors.white,
+            color: Colors.blue[300],
+            shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
             onPressed: () => exit(0),
             child: new Text('Sim'),
           ),
@@ -47,8 +53,7 @@ Future<bool> _onWillPop() async {
           child: Scaffold(
         body: Center(
           child: SingleChildScrollView(
-            
-                    child: Container(
+            child: Container(
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
               child: Form(
                 key: _formKey,

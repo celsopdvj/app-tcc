@@ -172,6 +172,7 @@ class _EditarDefesaState extends State<EditarDefesa> {
                           children: <Widget>[
                             Text("  Data:  ", style: TextStyle(fontSize: 16)),
                             FlatButton(
+                              shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                                 child: data == null ? Text("Selecione...", style: TextStyle(fontSize: 16, color: Colors.black38))
                                                       :Text(formatDate(data,[dd, '-', mm, '-', yyyy])),
                                 onPressed: () => _selectedDate(context)
@@ -186,6 +187,7 @@ class _EditarDefesaState extends State<EditarDefesa> {
                           children: <Widget>[
                             Text("  Horário:   ", style: TextStyle(fontSize: 16),),
                             FlatButton(
+                              shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                                 child: horario == null ? Text("Selecione...", style: TextStyle(fontSize: 16, color: Colors.black38))
                                                         :Text(horario.format(context)),
                                 onPressed: () => _selectedTime(context)
@@ -210,107 +212,93 @@ class _EditarDefesaState extends State<EditarDefesa> {
                           setState(() => sala = val);
                         }),
                       SizedBox(height: 20.0),
-                      Row(
-                        children: <Widget>[
-                          Text('Segundo membro da banca:  '),
-                          DropdownButton(
-                            hint: Text(membroDaBanca2.nome),
-                            items: professores.map((membroEscolhido){
-                              return DropdownMenuItem<User>(
-                                value: membroEscolhido,
-                                child: Text(membroEscolhido.nome)
-                              );
-                            }).toList(),
-                            onChanged:(val){ 
-                              setState(() {
-                                professores.remove(val);
-                                if(membroDaBanca2.nome != 'Selecione...')
-                                  professores.add(membroDaBanca2);
-                                membroDaBanca2 = val;
-                                widget.defesa.membroDaBanca2 = membroDaBanca2.uid;
-                                widget.defesa.nomeMembroDaBanca2 = membroDaBanca2.nome;
-                              });
-                            },
-                          )
-                        ],
+                      Text('Membros da banca: ',style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black)),
+                      SizedBox(height: 20.0),
+                      DropdownButton(
+                        hint: Text(membroDaBanca2.nome),
+                        items: professores.map((membroEscolhido){
+                          return DropdownMenuItem<User>(
+                            value: membroEscolhido,
+                            child: Text(membroEscolhido.nome)
+                          );
+                        }).toList(),
+                        onChanged:(val){ 
+                          setState(() {
+                            professores.remove(val);
+                            if(membroDaBanca2.nome != 'Selecione...')
+                              professores.add(membroDaBanca2);
+                            membroDaBanca2 = val;
+                            widget.defesa.membroDaBanca2 = membroDaBanca2.uid;
+                            widget.defesa.nomeMembroDaBanca2 = membroDaBanca2.nome;
+                          });
+                        },
                       ),
                       SizedBox(height: 20.0),
-                      Row(
-                        children: <Widget>[
-                          Text('Terceiro membro da banca: '),
-                          DropdownButton(
-                            hint: Text(membroDaBanca3.nome == null?"Selecione...":membroDaBanca3.nome),
-                            items: membroDaBanca2.nome == "Selecione..." ? null : professores.map((membroEscolhido){
-                              return DropdownMenuItem<User>(
-                                value: membroEscolhido,
-                                child: Text(membroEscolhido.nome)
-                              );
-                            }).toList(),
-                            onChanged:(val){ 
-                              setState(() {
-                                professores.remove(val);
-                                if(membroDaBanca3.nome != 'Selecione...')
-                                  professores.add(membroDaBanca3);
-                                membroDaBanca3 = val;
-                                widget.defesa.membroDaBanca3 = membroDaBanca3.uid;
-                                widget.defesa.nomeMembroDaBanca3 = membroDaBanca3.nome;
-                              });
-                            },
-                          )
-                        ],
+                      DropdownButton(
+                        hint: Text(membroDaBanca3.nome == null?"Selecione...":membroDaBanca3.nome),
+                        items: membroDaBanca2.nome == "Selecione..." ? null : professores.map((membroEscolhido){
+                          return DropdownMenuItem<User>(
+                            value: membroEscolhido,
+                            child: Text(membroEscolhido.nome)
+                          );
+                        }).toList(),
+                        onChanged:(val){ 
+                          setState(() {
+                            professores.remove(val);
+                            if(membroDaBanca3.nome != 'Selecione...')
+                              professores.add(membroDaBanca3);
+                            membroDaBanca3 = val;
+                            widget.defesa.membroDaBanca3 = membroDaBanca3.uid;
+                            widget.defesa.nomeMembroDaBanca3 = membroDaBanca3.nome;
+                          });
+                        },
                       ),
                       SizedBox(height: 20.0),
-                      Row(
-                        children: <Widget>[
-                          Text('Quarto membro da banca: '),
-                          DropdownButton(
-                            hint: Text(membroDaBanca4.nome == null?"Selecione...":membroDaBanca4.nome),
-                            items: membroDaBanca3.nome == "Selecione..." ? null : professores.map((membroEscolhido){
-                              return DropdownMenuItem<User>(
-                                value: membroEscolhido,
-                                child: Text(membroEscolhido.nome)
-                              );
-                            }).toList(),
-                            onChanged:(val){ 
-                              setState(() {
-                                professores.remove(val);
-                                if(membroDaBanca4.nome != 'Selecione...')
-                                  professores.add(membroDaBanca4);
-                                membroDaBanca4 = val;
-                                widget.defesa.membroDaBanca4 = membroDaBanca4.uid;
-                                widget.defesa.nomeMembroDaBanca4 = membroDaBanca4.nome;
-                              });
-                            },
-                          )
-                        ],
+                      DropdownButton(
+                        hint: Text(membroDaBanca4.nome == null?"Selecione...":membroDaBanca4.nome),
+                        items: membroDaBanca3.nome == "Selecione..." ? null : professores.map((membroEscolhido){
+                          return DropdownMenuItem<User>(
+                            value: membroEscolhido,
+                            child: Text(membroEscolhido.nome)
+                          );
+                        }).toList(),
+                        onChanged:(val){ 
+                          setState(() {
+                            professores.remove(val);
+                            if(membroDaBanca4.nome != 'Selecione...')
+                              professores.add(membroDaBanca4);
+                            membroDaBanca4 = val;
+                            widget.defesa.membroDaBanca4 = membroDaBanca4.uid;
+                            widget.defesa.nomeMembroDaBanca4 = membroDaBanca4.nome;
+                          });
+                        },
                       ),
                       SizedBox(height: 20.0),
-                      Row(
-                        children: <Widget>[
-                          Text('Quinto membro da banca: '),
-                          DropdownButton(
-                            hint: Text(membroDaBanca5.nome == null?"Selecione...":membroDaBanca5.nome),
-                            items: membroDaBanca4.nome == "Selecione..." ? null : professores.map((membroEscolhido){
-                              return DropdownMenuItem<User>(
-                                value: membroEscolhido,
-                                child: Text(membroEscolhido.nome)
-                              );
-                            }).toList(),
-                            onChanged:(val){ 
-                              setState(() {
-                                professores.remove(val);
-                                if(membroDaBanca5.nome != 'Selecione...')
-                                  professores.add(membroDaBanca5);
-                                membroDaBanca5 = val;
-                                widget.defesa.membroDaBanca5 = membroDaBanca5.uid;
-                                widget.defesa.nomeMembroDaBanca5 = membroDaBanca5.nome;
-                              });
-                            },
-                          )
-                        ],
+                      DropdownButton(
+                        hint: Text(membroDaBanca5.nome == null?"Selecione...":membroDaBanca5.nome),
+                        items: membroDaBanca4.nome == "Selecione..." ? null : professores.map((membroEscolhido){
+                          return DropdownMenuItem<User>(
+                            value: membroEscolhido,
+                            child: Text(membroEscolhido.nome)
+                          );
+                        }).toList(),
+                        onChanged:(val){ 
+                          setState(() {
+                            professores.remove(val);
+                            if(membroDaBanca5.nome != 'Selecione...')
+                              professores.add(membroDaBanca5);
+                            membroDaBanca5 = val;
+                            widget.defesa.membroDaBanca5 = membroDaBanca5.uid;
+                            widget.defesa.nomeMembroDaBanca5 = membroDaBanca5.nome;
+                          });
+                        },
                       ),
                       SizedBox(height: 20.0),
                       RaisedButton(
+                        padding: EdgeInsets.only(left:100,right:100),
+                        shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                           color: Colors.blue,
                           child: Text(
                             "Confirmar",

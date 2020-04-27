@@ -2,6 +2,7 @@ import 'package:app_tcc/models/settingsFormOrientacao.dart';
 import 'package:app_tcc/models/user.dart';
 import 'package:app_tcc/services/auth.dart';
 import 'package:app_tcc/services/database.dart';
+import 'package:app_tcc/shared/constants.dart';
 import 'package:app_tcc/shared/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class _EnviarTCCState extends State<EnviarTCC> {
 
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
-    ScrollController _controller = new ScrollController();
+    ScrollController _controller = new ScrollController(keepScrollOffset: true);
     
     return  Scaffold(
       key: _scaffoldKey,
@@ -53,7 +54,15 @@ class _EnviarTCCState extends State<EnviarTCC> {
                                 .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Loading();
-        return Column(
+        return snapshot.data.documents.length == 0
+              ? Column(
+                  children: <Widget>[
+                    SizedBox(height: 10,),
+                    Center(
+                        child: Text(
+                      "Não possui alunos orientandos!",
+                      style: textStyle,
+                    ))]) :Column(
           children: <Widget>[
             Expanded(
                 child: new ListView(
@@ -81,6 +90,7 @@ class _EnviarTCCState extends State<EnviarTCC> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       RaisedButton(
+                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                       color: Colors.blue,
                       child: Text("Confirmar",style: TextStyle(color: Colors.white)),
                       onPressed: enviarTCC,

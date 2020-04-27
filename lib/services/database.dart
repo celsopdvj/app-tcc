@@ -16,6 +16,8 @@ class DatabaseService {
   final CollectionReference defesa = Firestore.instance.collection('defesa');
   final CollectionReference tcc = Firestore.instance.collection('tcc');
 
+  
+
   Future updateUserData(String matricula, String senha, String nome,
       String email, String curso, String telefone, String tipoUsuario, String areaAtuacao, bool pedidoPendente) async {
     if (tipoUsuario == "Aluno") {
@@ -455,7 +457,7 @@ class DatabaseService {
     });
   }
 
-  void salvarHorario(String uid, List<Horario> listaSegunda,List<Horario> listaTerca,List<Horario> listaQuarta,List<Horario> listaQuinta,List<Horario> listaSexta,List<Horario> listaSabado){
+  void salvarHorario(String uid, List<Horario> listaSegunda,List<Horario> listaTerca,List<Horario> listaQuarta,List<Horario> listaQuinta,List<Horario> listaSexta,List<Horario> listaSabado) async{
     for (var item in listaSegunda) {
       usuario.document(uid).collection("Segunda").document(item.nome).setData({
         'horarioInicial': item.horarioInicial,
@@ -500,6 +502,11 @@ class DatabaseService {
     }
   }
 
+  Future getAulas(String diaDaSemana, String uid) async{
+    var result = await usuario.document(uid).collection(diaDaSemana).where('possui', isEqualTo:true).getDocuments();
+    return result.documents;
+  }
+
   Future<bool> temAula(String uid, String diaDaSemana, String horario) async{
     
     double horarioInicial;
@@ -519,10 +526,35 @@ class DatabaseService {
       horarioFinal = double.parse(hora) + double.parse(minuto)/60.0;
       horarioOrientacaoInicial = double.parse(horario.split("-")[0].split(":")[0]) + double.parse(horario.split("-")[0].split(":")[1])/60.0;
       horarioOrientacaoFinal = double.parse(horario.split("-")[1].split(":")[0]) + double.parse(horario.split("-")[1].split(":")[1])/60.0;
-
       if(((horarioInicial <= horarioOrientacaoFinal) && (horarioFinal >= horarioOrientacaoInicial)))
         return true;
     }
+    var horarioOrientacoes = await orientacao.where('uidProfessor', isEqualTo:uid).getDocuments();
+    for (var orientacao in horarioOrientacoes.documents) {
+      if(horario == orientacao.data['horario']){
+        return true;
+      }
+    }
     return false;
+  }
+
+  Future checarEmailCadastrado(String email) async{
+    var result = await usuario.where('email',isEqualTo: email).getDocuments();
+    if(result.documents.length>0){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  Future checarMatriculaCadastrada(String email) async{
+    var result = await usuario.where('matricula',isEqualTo: email).getDocuments();
+    if(result.documents.length>0){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 }

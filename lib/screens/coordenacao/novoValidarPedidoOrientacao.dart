@@ -21,6 +21,7 @@ class _NovoValidarPedidoState extends State<NovoValidarPedido> {
 
   @override
   void initState(){
+    super.initState();
     criarListaPedidos();
   }
 
@@ -111,7 +112,6 @@ class _NovoValidarPedidoState extends State<NovoValidarPedido> {
         ],
       ),
       body: 
-        //listaPedidos = criarListaPedidos(snapshot.data);
          StreamBuilder<Object>(
            stream: Firestore.instance.collection('pedidoPendente').where('validado' ,isEqualTo: false).snapshots(),
            builder: (context, snapshot) {
@@ -128,8 +128,8 @@ class _NovoValidarPedidoState extends State<NovoValidarPedido> {
                           sortAscending: true,
                           columns: <DataColumn>[
                             new DataColumn(label: Text('Disciplina', style: textStyle,),),
-                            new DataColumn(label: Text('Aluno', style: textStyle,)),
-                            new DataColumn(label: Text('Orientador', style: textStyle,)),
+                            new DataColumn(label: Text('Aluno(a)', style: textStyle,)),
+                            new DataColumn(label: Text('Orientador(a)', style: textStyle,)),
                             new DataColumn(label: Checkbox(value: value, onChanged: checksAll,)),
                           ],
                           rows: _createRows2(snapshot.data),
@@ -143,21 +143,59 @@ class _NovoValidarPedidoState extends State<NovoValidarPedido> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         RaisedButton(
+                          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                           color: Colors.blue,
                           child: Text("Validar",style: TextStyle(color: Colors.white)),
                           onPressed: (){
                             setState(() =>loading = true);
                             validarPedidos();
                             setState(() =>loading = false);
+                            showDialog(
+                                      context: context,
+                                      builder: (context) => new AlertDialog(
+                                            content: new Text(
+                                                'Pedidos validados!'),
+                                            actions: <Widget>[
+                                              new FlatButton(
+                                                textColor: Colors.white,
+                                                color: Colors.blue[300],
+                                                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(false);
+                                                },
+                                                child: new Text('Ok'),
+                                              ),
+                                            ],
+                                          ));
                           }
                         ),
                         RaisedButton(
+                          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                           color: Colors.red,
                           child: Text("Recusar",style: TextStyle(color: Colors.white)),
                           onPressed: (){
                             setState(() =>loading = true);
                             recusarPedidos();
                             setState(() =>loading = false);
+                            showDialog(
+                                      context: context,
+                                      builder: (context) => new AlertDialog(
+                                            content: new Text(
+                                                'Pedidos recusados!'),
+                                            actions: <Widget>[
+                                              new FlatButton(
+                                                textColor: Colors.white,
+                                                color: Colors.blue[300],
+                                                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(false);
+                                                },
+                                                child: new Text('Ok'),
+                                              ),
+                                            ],
+                                          ));
                           }
                         ),
                       ],

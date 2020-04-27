@@ -5,7 +5,6 @@ import 'package:app_tcc/shared/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:scheduled_notifications/scheduled_notifications.dart';
 
 
 
@@ -29,21 +28,27 @@ class _ExibirDefesasState extends State<ExibirDefesas> {
         content: new Text('Deseja agendar uma notificação para 30 minutos antes dessa defesa?'),
         actions: <Widget>[
           new FlatButton(
+            textColor: Colors.white,
+            color: Colors.blue[300],
+            shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
             onPressed: () => Navigator.of(context).pop(false),
             child: new Text('Não'),
           ),
           new FlatButton(
+            textColor: Colors.white,
+            color: Colors.blue[300],
+            shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
             onPressed: () async {
               var aux = data.split('-');
-              var aux2 = aux[2]+'-'+aux[1]+'-'+aux[0] + " " +horario;
+              var aux2 = aux[2]+'-'+aux[1]+'-'+aux[0] + " " +horario.padLeft(5,'0');;
               print(aux2);
-              DateTime datetime = DateTime.parse(aux2);
+              DateTime datetime = DateTime.parse(aux2.toString());
               print(datetime);
               var android = new AndroidNotificationDetails('channel id', 'channel NAME', 'CHANNEL DESCRIPTION', importance: Importance.Max, priority: Priority.High);
               var iOS = new IOSNotificationDetails();
               var plataform = new NotificationDetails(android,iOS);
               var scheduledNotificationDateTime =
-                  datetime.add(Duration(minutes: 30));
+                  datetime.subtract(Duration(minutes: 30));
               await flutterLocalNotificationsPlugin.schedule(0, 'A defesa de: '+nomeAluno+" vai começar!", 'Sala: '+sala,scheduledNotificationDateTime, plataform,
               androidAllowWhileIdle: true
               );
@@ -53,6 +58,9 @@ class _ExibirDefesasState extends State<ExibirDefesas> {
                 content: new Text('Notificação agendada!'),
                 actions: <Widget>[
                   new FlatButton(
+                    textColor: Colors.white,
+                    color: Colors.blue[300],
+                    shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                     onPressed: () { Navigator.of(context).pop(false);Navigator.of(context).pop(false);},
                     child: new Text('Ok'),
                   ),
@@ -124,9 +132,9 @@ class _ExibirDefesasState extends State<ExibirDefesas> {
                   new DataColumn(label: Text('Horário', style: textStyle,)),
                   new DataColumn(label: Text('Local', style: textStyle,)),
                   new DataColumn(label: Text('Disciplina', style: textStyle,)),
-                  new DataColumn(label: Text('Aluno', style: textStyle,),),
+                  new DataColumn(label: Text('Aluno(a)', style: textStyle,),),
                   new DataColumn(label: Text('Título', style: textStyle)),
-                  new DataColumn(label: Text('Professor', style: textStyle,)),
+                  new DataColumn(label: Text('Orientador(a)', style: textStyle,)),
                   new DataColumn(label: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[

@@ -42,7 +42,7 @@ class _ValidarOrientacaoState extends State<ValidarOrientacao> {
   @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
-    ScrollController _controller = new ScrollController();
+    ScrollController _controller = new ScrollController(keepScrollOffset: true);
     
     return loading ? Loading() : Scaffold(
       key: _scaffoldKey,
@@ -93,6 +93,7 @@ class _ValidarOrientacaoState extends State<ValidarOrientacao> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     RaisedButton(
+                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                       color: Colors.blue,
                       child: Text("Validar",style: TextStyle(color: Colors.white)),
                       onPressed: (){
@@ -102,6 +103,7 @@ class _ValidarOrientacaoState extends State<ValidarOrientacao> {
                       }
                     ),
                     RaisedButton(
+                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                       color: Colors.red,
                       child: Text("Recusar",style: TextStyle(color: Colors.white)),
                       onPressed: (){

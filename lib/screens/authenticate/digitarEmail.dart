@@ -36,6 +36,7 @@ class _DigitarEmailState extends State<DigitarEmail> {
                   });
                 }),
             RaisedButton(
+                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                 color: Colors.blue[300],
                 child: Text(
                   "Confirmar",

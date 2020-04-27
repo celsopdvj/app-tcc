@@ -102,6 +102,7 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
 
   void mostrarModalDisciplina() {
     Widget botaoConfirmar = RaisedButton(
+      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
       color: Colors.blue[300],
       child: Text(
         "Confirmar",
@@ -136,6 +137,7 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
       },
     );
     Widget botaoCancelar = RaisedButton(
+      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
       color: Colors.red[300],
       child: Text(
         "Cancelar",
@@ -183,6 +185,8 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
 
   void mostrarModal() {
     Widget botaoSim = RaisedButton(
+      textColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
       color: Colors.blue[300],
       child: Text(
         "Sim",
@@ -195,6 +199,8 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
       },
     );
     Widget botaoNao = RaisedButton(
+      textColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
       color: Colors.blue[300],
       child: Text(
         "Não",
@@ -220,7 +226,7 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
   @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
-    ScrollController _controller = new ScrollController();
+    ScrollController _controller = new ScrollController(keepScrollOffset: true);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -273,6 +279,7 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: RaisedButton(
+                  shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                   color: Colors.blue,
                   child: Text("Enviar", style: TextStyle(color: Colors.white)),
                   onPressed: enviarPedido,

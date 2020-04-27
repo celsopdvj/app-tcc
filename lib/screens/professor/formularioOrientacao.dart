@@ -58,7 +58,7 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
   //List<int> minutos = new List<int>.generate(61, (i) => i);
 
   String curso = ''; // pegar do aluno
-  String disciplina = 'CMP1071'; // pegar do banco
+  String disciplina = ''; // pegar do banco
   String turma = ''; // pegar do banco
   String diaDaSemana = 'Selecione...';
   String horario = ' Selecione...';
@@ -162,6 +162,7 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                       ),
                       SizedBox(height: 20.0),
                       RaisedButton(
+                        shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                           color: Colors.blue,
                           child: Text(
                             "Confirmar",
@@ -181,7 +182,7 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                             }
                             else if(await banco.temAula(widget.user.uid, diaDaSemana, horario)){
                               setState(() {
-                                error = 'Você possui aula no horário escolhido! Escolha outro horário';
+                                error = 'Você possui aula no horário escolhido! Escolha outro horário.';
                                 loading = false;
                               });
                             } 
@@ -197,7 +198,7 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                                 turma =
                                     await banco.getTurma(widget.aluno.curso);
                                 print(turma);
-
+                                disciplina = widget.aluno.disciplina;
                                 //metodo do database para salvar orientação
                                 //passar uid do pedido para remove-lo (excluido = 1)
                                 try {
@@ -214,6 +215,25 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                                       widget.user.uid);
                                   banco.deletarPedido(widget.pedidoUid);
                                   banco.atualizarDisciplina(widget.aluno.uid, disciplina);
+                                  setState(() => loading = false);
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => new AlertDialog(
+                                            content: new Text(
+                                                'Orientação registrada com sucesso!'),
+                                            actions: <Widget>[
+                                              new FlatButton(
+                                                textColor: Colors.white,
+                                                color: Colors.blue[300],
+                                                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(false);
+                                                },
+                                                child: new Text('Ok'),
+                                              ),
+                                            ],
+                                          ));
                                   Navigator.of(context).pop();
                                 } catch (e) {
                                   setState(() {

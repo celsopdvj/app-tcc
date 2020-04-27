@@ -1,8 +1,10 @@
+import 'package:app_tcc/services/database.dart';
 import 'package:app_tcc/shared/constants.dart';
 import 'package:app_tcc/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:app_tcc/services/auth.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:email_validator/email_validator.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -20,14 +22,24 @@ class _RegisterState extends State<Register> {
   String curso = 'Selecione...';
   String email = '';
   String telefone = '';
-  String tipoUsuario='Aluno';
+  String tipoUsuario = 'Aluno';
   String error = '';
-  var maskFormatter = new MaskTextInputFormatter(mask: '(##) #####-####', filter: { "#": RegExp(r'[0-9]') });
-  var cursos = ['Análise e Desenvolvimento de Sistemas','Ciência da Computação','Engenharia de Computação','Física','Matemática', 'Química'];
+  var maskFormatter = new MaskTextInputFormatter(
+      mask: '(##) #####-####', filter: {"#": RegExp(r'[0-9]')});
+  var cursos = [
+    'Análise e Desenvolvimento de Sistemas',
+    'Ciência da Computação',
+    'Engenharia de Computação',
+    'Física',
+    'Matemática',
+    'Química'
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return loading ? Loading() : Scaffold(
+    return loading
+        ? Loading()
+        : Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.blue,
               elevation: 0.0,
@@ -42,7 +54,7 @@ class _RegisterState extends State<Register> {
                     children: <Widget>[
                       SizedBox(height: 20.0),
                       TextFormField(
-                        keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.number,
                           decoration: textInputDecoration.copyWith(
                               hintText: 'Matrícula'),
                           validator: (val) =>
@@ -64,7 +76,8 @@ class _RegisterState extends State<Register> {
                           decoration:
                               textInputDecoration.copyWith(hintText: 'Senha'),
                           validator: (val) => val.length < 6
-                              ? 'Digite uma senha com mais de 6 caracteres.': null,
+                              ? 'Digite uma senha com mais de 6 caracteres.'
+                              : null,
                           obscureText: true,
                           onChanged: (val) {
                             setState(() => password = val);
@@ -74,7 +87,9 @@ class _RegisterState extends State<Register> {
                           decoration:
                               textInputDecoration.copyWith(hintText: 'Email'),
                           validator: (val) =>
-                              val.isEmpty ? 'Digite um email.' : null,
+                              val.isEmpty || !EmailValidator.validate(val)
+                                  ? 'Digite um email válido.'
+                                  : null,
                           onChanged: (val) {
                             setState(() => email = val);
                           }),
@@ -84,8 +99,10 @@ class _RegisterState extends State<Register> {
                           inputFormatters: [maskFormatter],
                           decoration: textInputDecoration.copyWith(
                               hintText: 'Telefone'),
-                          validator: (val) =>
-                              val.isEmpty || maskFormatter.getUnmaskedText().length != 11 ? 'Digite um telefone válido.' : null,
+                          validator: (val) => val.isEmpty ||
+                                  maskFormatter.getUnmaskedText().length != 11
+                              ? 'Digite um telefone válido.'
+                              : null,
                           onChanged: (val) {
                             setState(() => telefone = val);
                           }),
@@ -95,63 +112,89 @@ class _RegisterState extends State<Register> {
                           Text("Curso:   ", style: TextStyle(fontSize: 16)),
                           DropdownButton(
                             hint: Text(curso, style: TextStyle(fontSize: 14)),
-                            items: cursos.map((String diaEscolhido){
+                            items: cursos.map((String diaEscolhido) {
                               return DropdownMenuItem<String>(
                                 value: diaEscolhido,
-                                child: Text(diaEscolhido, style: TextStyle(fontSize: 14),),
+                                child: Text(
+                                  diaEscolhido,
+                                  style: TextStyle(fontSize: 14),
+                                ),
                               );
                             }).toList(),
-                            onChanged: (val){
+                            onChanged: (val) {
                               print(val);
                               setState(() {
                                 curso = val;
                               });
                             },
-                            
                           ),
                         ],
                       ),
                       SizedBox(height: 20.0),
                       RaisedButton(
+                          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                           color: Colors.blue,
                           child: Text(
                             "Confirmar",
                             style: TextStyle(color: Colors.white),
                           ),
                           onPressed: () async {
-                            if(curso == "Selecione..."){
+                            if (curso == "Selecione...") {
                               setState(() {
-                                    error = 'Selecione um curso.';
-                                    loading = false;
-                                  });
-                            }
-                            else{
+                                error = 'Selecione um curso.';
+                                loading = false;
+                              });
+                            } else {
                               if (_formKey.currentState.validate()) {
                                 setState(() => loading = true);
-                                dynamic result = await _auth.registroDeUsuario(
-                                    matricula,
-                                    password,
-                                    nome,
-                                    curso,
-                                    email,
-                                    telefone,
-                                    tipoUsuario,
-                                    "",
-                                    false);
-                                if (result == null) {
-                                  setState(() {
-                                    error = 'Erro ao registrar';
-                                    loading = false;
-                                  });
+                                if (await DatabaseService()
+                                    .checarEmailCadastrado(email)) {
+                                  setState(() => loading = false);
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => new AlertDialog(
+                                            content: new Text(
+                                                'Já existe uma conta com este email.'),
+                                            actions: <Widget>[
+                                              new FlatButton(
+                                                textColor: Colors.white,
+                                                color: Colors.blue[300],
+                                                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(false);
+                                                },
+                                                child: new Text('Ok'),
+                                              ),
+                                            ],
+                                          ));
+                                } else {
+                                  dynamic result =
+                                      await _auth.registroDeUsuario(
+                                          matricula,
+                                          password,
+                                          nome,
+                                          curso,
+                                          email,
+                                          telefone,
+                                          tipoUsuario,
+                                          "",
+                                          false);
+                                  if (result == null) {
+                                    setState(() {
+                                      error = 'Erro ao registrar';
+                                      loading = false;
+                                    });
+                                  } else if (result == 1) {
+                                    setState(() {
+                                      error = 'Matricula já cadastrada';
+                                      loading = false;
+                                    });
+                                  } else
+                                    Navigator.pushReplacementNamed(
+                                        context, '/home',
+                                        arguments: result);
                                 }
-                                else if(result == 1){
-                                  setState(() {
-                                    error = 'Matricula já cadastrada';
-                                    loading = false;
-                                  });
-                                }
-                                else 
-                                  Navigator.pushReplacementNamed(context, '/home', arguments: result);
                               }
                             }
                           }),

@@ -18,6 +18,7 @@ class DefesasAgendadas extends StatefulWidget {
 
 class _DefesasAgendadasState extends State<DefesasAgendadas> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  ScrollController _controller = new ScrollController(keepScrollOffset: true);
   DatabaseService banco = new DatabaseService();
   String _alunoUid = '';
   Defesa defesa = new Defesa();
@@ -29,7 +30,7 @@ class _DefesasAgendadasState extends State<DefesasAgendadas> {
   @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
-    ScrollController _controller = new ScrollController();
+    
 
     BoxDecoration myBoxDecorationGreen() {
       return BoxDecoration(
@@ -61,6 +62,7 @@ class _DefesasAgendadasState extends State<DefesasAgendadas> {
     BoxDecoration myBoxDecoration() {
       return BoxDecoration(
         border: Border.all(),
+        borderRadius: BorderRadius.all(Radius.circular(18))
       );
     }
 
@@ -92,25 +94,29 @@ class _DefesasAgendadasState extends State<DefesasAgendadas> {
           return snapshot.data.documents.length == 0
               ? Column(
                   children: <Widget>[
+                    SizedBox(height: 10,),
                     Center(
                         child: Text(
                       "Não há defesas pendentes!",
                       style: textStyle,
                     )),
                     Expanded(
-                                          child: Align(
+                        child: Align(
                         alignment: Alignment.bottomCenter,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
+                            SizedBox(width: 10,),
                             Expanded(
                               child: RaisedButton(
+                                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                                 color: Colors.blue,
                                 child: Text("Agendar uma nova defesa",
                                     style: TextStyle(color: Colors.white)),
                                 onPressed: agendarDefesa,
                               ),
-                            )
+                            ),
+                            SizedBox(width: 10,),
                           ],
                         ),
                       ),
@@ -119,148 +125,158 @@ class _DefesasAgendadasState extends State<DefesasAgendadas> {
                 )
               : Column(
                   children: <Widget>[
+                    SizedBox(height: 12,),
                     Expanded(
                       child: new ListView(
                         physics: const AlwaysScrollableScrollPhysics(),
                         controller: _controller,
                         children: snapshot.data.documents.map((document) {
-                          return Container(
-                            decoration: myBoxDecoration(),
-                            child: new ListTile(
-                              key: Key(document.documentID),
-                              title: new Text("Aluno: " + document['nomeAluno']),
-                              onTap: () {
-                                defesa = new Defesa(
-                                    id: document.documentID,
-                                    data: document.data["data"],
-                                    horario: document.data["horario"],
-                                    local: document.data["sala"],
-                                    disciplina: document.data["disciplina"],
-                                    nomeAluno: document.data["nomeAluno"],
-                                    titulo: document.data["titulo"],
-                                    orientador: document.data["orientador"],
-                                    coorientador: document.data["coOrientador"],
-                                    curso: document.data["curso"],
-                                    uidAluno: document.data["uidAluno"],
-                                    uidCoorientador:
-                                        document.data["uidCoorientador"],
-                                    uidOrientador: document.data["uidOrientador"],
-                                    matriculaAluno:
-                                        document.data["matriculaAluno"],
-                                    membroDaBanca1:
-                                        document.data["membroDaBanca1"],
-                                    membroDaBanca2:
-                                        document.data["membroDaBanca2"],
-                                    membroDaBanca3:
-                                        document.data["membroDaBanca3"],
-                                    membroDaBanca4:
-                                        document.data["membroDaBanca4"],
-                                    membroDaBanca5:
-                                        document.data["membroDaBanca5"],
-                                    nomeMembroDaBanca1:
-                                        document.data["nomeMembroDaBanca1"],
-                                    nomeMembroDaBanca2:
-                                        document.data["nomeMembroDaBanca2"],
-                                    nomeMembroDaBanca3:
-                                        document.data["nomeMembroDaBanca3"],
-                                    nomeMembroDaBanca4:
-                                        document.data["nomeMembroDaBanca4"],
-                                    nomeMembroDaBanca5:
-                                        document.data["nomeMembroDaBanca5"],
-                                    statusConvite1:
-                                        document.data["statusConvite1"],
-                                    statusConvite2:
-                                        document.data["statusConvite2"],
-                                    statusConvite3:
-                                        document.data["statusConvite3"],
-                                    statusConvite4:
-                                        document.data["statusConvite4"],
-                                    statusConvite5:
-                                        document.data["statusConvite5"]);
-
-                                Navigator.pushNamed(context, '/editarDefesa',
-                                    arguments: ScreenArgumentsDefesa(
-                                        user: widget.user, defesa: defesa));
-                              },
-                              subtitle: Row(
-                                children: <Widget>[
-                                  Text("Banca: "),
-                                  SizedBox(width: 5.0),
-                                  Container(
-                                    decoration:
-                                        document.data["statusConvite1"] == 1
-                                            ? myBoxDecorationGreen()
-                                            : document.data["statusConvite1"] == 0
-                                                ? myBoxDecorationGray()
-                                                : myBoxDecorationRed(),
-                                    child: Text(
-                                      document.data["nomeMembroDaBanca1"],
-                                    ),
-                                  ),
-                                  SizedBox(width: 5.0),
-                                  Container(
-                                    decoration:
-                                        document.data["statusConvite2"] == 1
-                                            ? myBoxDecorationGreen()
-                                            : document.data["statusConvite2"] == 0
-                                                ? myBoxDecorationGray()
-                                                : myBoxDecorationRed(),
-                                    child: Text(
-                                      document.data["nomeMembroDaBanca2"],
-                                    ),
-                                  ),
-                                  SizedBox(width: 5.0),
-                                  document.data["statusConvite3"] == -1
-                                      ? Text("")
-                                      : Container(
-                                          decoration: document
-                                                      .data["statusConvite3"] ==
-                                                  1
-                                              ? myBoxDecorationGreen()
-                                              : document.data["statusConvite3"] ==
-                                                      0
-                                                  ? myBoxDecorationGray()
-                                                  : myBoxDecorationRed(),
-                                          child: Text(
+                          return Column(
+                            children: <Widget>[
+                              Container(
+                                margin: new EdgeInsets.symmetric(horizontal: 20.0),
+                                decoration: myBoxDecoration(),
+                                child: new ListTile(
+                                  key: Key(document.documentID),
+                                  title: new Text("Aluno: " + document['nomeAluno']),
+                                  onTap: () {
+                                    defesa = new Defesa(
+                                        id: document.documentID,
+                                        data: document.data["data"],
+                                        horario: document.data["horario"],
+                                        local: document.data["sala"],
+                                        disciplina: document.data["disciplina"],
+                                        nomeAluno: document.data["nomeAluno"],
+                                        titulo: document.data["titulo"],
+                                        orientador: document.data["orientador"],
+                                        coorientador: document.data["coOrientador"],
+                                        curso: document.data["curso"],
+                                        uidAluno: document.data["uidAluno"],
+                                        uidCoorientador:
+                                            document.data["uidCoorientador"],
+                                        uidOrientador: document.data["uidOrientador"],
+                                        matriculaAluno:
+                                            document.data["matriculaAluno"],
+                                        membroDaBanca1:
+                                            document.data["membroDaBanca1"],
+                                        membroDaBanca2:
+                                            document.data["membroDaBanca2"],
+                                        membroDaBanca3:
+                                            document.data["membroDaBanca3"],
+                                        membroDaBanca4:
+                                            document.data["membroDaBanca4"],
+                                        membroDaBanca5:
+                                            document.data["membroDaBanca5"],
+                                        nomeMembroDaBanca1:
+                                            document.data["nomeMembroDaBanca1"],
+                                        nomeMembroDaBanca2:
+                                            document.data["nomeMembroDaBanca2"],
+                                        nomeMembroDaBanca3:
                                             document.data["nomeMembroDaBanca3"],
-                                          ),
-                                        ),
-                                  SizedBox(width: 5.0),
-                                  document.data["statusConvite4"] == -1
-                                      ? Text("")
-                                      : Container(
-                                          decoration: document
-                                                      .data["statusConvite4"] ==
-                                                  1
-                                              ? myBoxDecorationGreen()
-                                              : document.data["statusConvite4"] ==
-                                                      0
-                                                  ? myBoxDecorationGray()
-                                                  : myBoxDecorationRed(),
-                                          child: Text(
+                                        nomeMembroDaBanca4:
                                             document.data["nomeMembroDaBanca4"],
-                                          ),
-                                        ),
-                                  SizedBox(width: 5.0),
-                                  document.data["statusConvite5"] == -1
-                                      ? Text("")
-                                      : Container(
-                                          decoration: document
-                                                      .data["statusConvite5"] ==
-                                                  1
-                                              ? myBoxDecorationGreen()
-                                              : document.data["statusConvite5"] ==
-                                                      0
-                                                  ? myBoxDecorationGray()
-                                                  : myBoxDecorationRed(),
-                                          child: Text(
+                                        nomeMembroDaBanca5:
                                             document.data["nomeMembroDaBanca5"],
+                                        statusConvite1:
+                                            document.data["statusConvite1"],
+                                        statusConvite2:
+                                            document.data["statusConvite2"],
+                                        statusConvite3:
+                                            document.data["statusConvite3"],
+                                        statusConvite4:
+                                            document.data["statusConvite4"],
+                                        statusConvite5:
+                                            document.data["statusConvite5"]);
+
+                                    Navigator.pushNamed(context, '/editarDefesa',
+                                        arguments: ScreenArgumentsDefesa(
+                                            user: widget.user, defesa: defesa));
+                                  },
+                                  subtitle: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text("Banca: "),
+                                        SizedBox(width: 5.0),
+                                        Container(
+                                          decoration:
+                                              document.data["statusConvite1"] == 1
+                                                  ? myBoxDecorationGreen()
+                                                  : document.data["statusConvite1"] == 0
+                                                      ? myBoxDecorationGray()
+                                                      : myBoxDecorationRed(),
+                                          child: Text(
+                                            document.data["nomeMembroDaBanca1"],
                                           ),
                                         ),
-                                  SizedBox(width: 5.0),
-                                ],
+                                        SizedBox(width: 5.0),
+                                        Container(
+                                          decoration:
+                                              document.data["statusConvite2"] == 1
+                                                  ? myBoxDecorationGreen()
+                                                  : document.data["statusConvite2"] == 0
+                                                      ? myBoxDecorationGray()
+                                                      : myBoxDecorationRed(),
+                                          child: Text(
+                                            document.data["nomeMembroDaBanca2"],
+                                          ),
+                                        ),
+                                        SizedBox(width: 5.0),
+                                        document.data["statusConvite3"] == -1
+                                            ? Text("")
+                                            : Container(
+                                                decoration: document
+                                                            .data["statusConvite3"] ==
+                                                        1
+                                                    ? myBoxDecorationGreen()
+                                                    : document.data["statusConvite3"] ==
+                                                            0
+                                                        ? myBoxDecorationGray()
+                                                        : myBoxDecorationRed(),
+                                                child: Text(
+                                                  document.data["nomeMembroDaBanca3"],
+                                                ),
+                                              ),
+                                        SizedBox(width: 5.0),
+                                        document.data["statusConvite4"] == -1
+                                            ? Text("")
+                                            : Container(
+                                                decoration: document
+                                                            .data["statusConvite4"] ==
+                                                        1
+                                                    ? myBoxDecorationGreen()
+                                                    : document.data["statusConvite4"] ==
+                                                            0
+                                                        ? myBoxDecorationGray()
+                                                        : myBoxDecorationRed(),
+                                                child: Text(
+                                                  document.data["nomeMembroDaBanca4"],
+                                                ),
+                                              ),
+                                        SizedBox(width: 5.0),
+                                        document.data["statusConvite5"] == -1
+                                            ? Text("")
+                                            : Container(
+                                                decoration: document
+                                                            .data["statusConvite5"] ==
+                                                        1
+                                                    ? myBoxDecorationGreen()
+                                                    : document.data["statusConvite5"] ==
+                                                            0
+                                                        ? myBoxDecorationGray()
+                                                        : myBoxDecorationRed(),
+                                                child: Text(
+                                                  document.data["nomeMembroDaBanca5"],
+                                                ),
+                                              ),
+                                        SizedBox(width: 5.0),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
+                              SizedBox(height: 12,),
+                            ],
                           );
                         }).toList(),
                       ),
@@ -270,14 +286,17 @@ class _DefesasAgendadasState extends State<DefesasAgendadas> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
+                          SizedBox(width: 10,),
                           Expanded(
                             child: RaisedButton(
+                              shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                               color: Colors.blue,
                               child: Text("Agendar uma nova defesa",
                                   style: TextStyle(color: Colors.white)),
                               onPressed: agendarDefesa,
                             ),
-                          )
+                          ),
+                          SizedBox(width: 10,),
                         ],
                       ),
                     ),

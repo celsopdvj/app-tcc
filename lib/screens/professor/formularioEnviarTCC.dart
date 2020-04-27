@@ -67,6 +67,9 @@ class FormularioDeEnvioTCCState extends State<FormularioDeEnvioTCC> {
                                     title: Text('TCC enviado.'),
                                     actions: <Widget>[
                                       FlatButton(
+                                        textColor: Colors.white,
+                                        color: Colors.blue[300],
+                                        shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                                         child: Text('OK'),
                                         onPressed: () {
                                           Navigator.of(context).pop();
@@ -86,6 +89,9 @@ class FormularioDeEnvioTCCState extends State<FormularioDeEnvioTCC> {
                   title: Text('Erro ao enviar TCC.'),
                   actions: <Widget>[
                     FlatButton(
+                      textColor: Colors.white,
+                      color: Colors.blue[300],
+                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                       child: Text('OK'),
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -155,6 +161,7 @@ class FormularioDeEnvioTCCState extends State<FormularioDeEnvioTCC> {
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: RaisedButton(
+                          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                           color: Colors.blue,
                           child: Text("Enviar", style: TextStyle(color: Colors.white)),
                           onPressed: () async{

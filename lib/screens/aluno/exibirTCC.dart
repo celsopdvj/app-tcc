@@ -1,5 +1,6 @@
 import 'package:app_tcc/models/user.dart';
 import 'package:app_tcc/services/auth.dart';
+import 'package:app_tcc/shared/constants.dart';
 import 'package:app_tcc/shared/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,9 @@ class _ExibirTCCState extends State<ExibirTCC> {
       throw 'Não foi possivel abrir o pdf';
     }
   }
+
+  final GlobalKey<ScaffoldState> _scaffoldKey =
+        new GlobalKey<ScaffoldState>();
 
   // pdfView(url) => FutureBuilder<PDFDocument>(
   //   // Open document
@@ -48,9 +52,8 @@ class _ExibirTCCState extends State<ExibirTCC> {
   @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
-    ScrollController _controller = new ScrollController();
-    final GlobalKey<ScaffoldState> _scaffoldKey =
-        new GlobalKey<ScaffoldState>();
+    ScrollController _controller = new ScrollController(keepScrollOffset: true);
+    
 
     return Scaffold(
         key: _scaffoldKey,
@@ -74,7 +77,15 @@ class _ExibirTCCState extends State<ExibirTCC> {
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData) return Loading();
-              return Column(children: <Widget>[
+              return snapshot.data.documents.length == 0
+              ? Column(
+                  children: <Widget>[
+                    SizedBox(height: 10,),
+                    Center(
+                        child: Text(
+                      "Não há TCCs para visualizar.",
+                      style: textStyle,
+                    ))]) :Column(children: <Widget>[
                 Expanded(
                   child: new ListView(
                     physics: const AlwaysScrollableScrollPhysics(),
