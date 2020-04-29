@@ -48,12 +48,14 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
     "20:30 - 21:15",
     "21:15 - 22:00"
   ];
-  var horarioSabado = ["7:15 - 8:00",
+  var horarioSabado = [
+    "7:15 - 8:00",
     "8:00 - 8:45",
     "9:00 - 9:45",
     "9:45 - 10:30",
     "10:45 - 11:30",
-    "11:30 - 12:15" ];
+    "11:30 - 12:15"
+  ];
   //List<int> horas = new List<int>.generate(25, (i) => i);
   //List<int> minutos = new List<int>.generate(61, (i) => i);
 
@@ -157,12 +159,18 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                             "Horário:   ",
                             style: TextStyle(fontSize: 16),
                           ),
-                          diaDaSemana == "Selecione..." ? mostrarNull() : diaDaSemana != "Sábado" ? mostrarHorario(horarios) : mostrarHorario(horarioSabado),
+                          diaDaSemana == "Selecione..."
+                              ? mostrarNull()
+                              : diaDaSemana != "Sábado"
+                                  ? mostrarHorario(horarios)
+                                  : mostrarHorario(horarioSabado),
                         ],
                       ),
                       SizedBox(height: 20.0),
                       RaisedButton(
-                        shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(18.0),
+                          ),
                           color: Colors.blue,
                           child: Text(
                             "Confirmar",
@@ -179,14 +187,14 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                                 error = 'Escolha um horario';
                                 loading = false;
                               });
-                            }
-                            else if(await banco.temAula(widget.user.uid, diaDaSemana, horario)){
+                            } else if (await banco.temAula(
+                                widget.user.uid, diaDaSemana, horario)) {
                               setState(() {
-                                error = 'Você possui aula no horário escolhido! Escolha outro horário.';
+                                error =
+                                    'Você possui aula no horário escolhido! Escolha outro horário.';
                                 loading = false;
                               });
-                            } 
-                            else {
+                            } else {
                               if (_formKey.currentState.validate()) {
                                 setState(() => loading = true);
                                 curso = widget.aluno.curso;
@@ -214,7 +222,8 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                                       widget.aluno.uid,
                                       widget.user.uid);
                                   banco.deletarPedido(widget.pedidoUid);
-                                  banco.atualizarDisciplina(widget.aluno.uid, disciplina);
+                                  banco.atualizarDisciplina(
+                                      widget.aluno.uid, disciplina);
                                   setState(() => loading = false);
                                   showDialog(
                                       context: context,
@@ -225,8 +234,14 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                                               new FlatButton(
                                                 textColor: Colors.white,
                                                 color: Colors.blue[300],
-                                                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          18.0),
+                                                ),
                                                 onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(false);
                                                   Navigator.of(context)
                                                       .pop(false);
                                                 },
@@ -234,7 +249,6 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                                               ),
                                             ],
                                           ));
-                                  Navigator.of(context).pop();
                                 } catch (e) {
                                   setState(() {
                                     error = 'Erro ao salvar orientação!';

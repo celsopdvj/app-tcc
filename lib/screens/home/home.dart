@@ -50,7 +50,7 @@ class Home extends StatelessWidget {
                 height: 50.0,
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(18.0),
+                    borderRadius: new BorderRadius.circular(18.0),
                   ),
                   color: Colors.blue[300],
                   child: Text(
@@ -66,6 +66,27 @@ class Home extends StatelessWidget {
                         duration: Duration(seconds: 3),
                         backgroundColor: Colors.red,
                       ));
+                    } else if (user.curso == "Análise e Desenvolvimento de Sistemas" || user.curso == "Química") {
+                      showDialog(
+                          context: context,
+                          builder: (context) => new AlertDialog(
+                                content: new Text(
+                                    'Este curso não possui disciplinas de TCC!'),
+                                actions: <Widget>[
+                                  new FlatButton(
+                                    textColor: Colors.white,
+                                    color: Colors.blue[300],
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(18.0),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop(false);
+                                    },
+                                    child: new Text('Ok'),
+                                  ),
+                                ],
+                              ));
                     } else {
                       Navigator.pushNamed(context, '/enviarOrientacao',
                           arguments: user);
@@ -79,7 +100,7 @@ class Home extends StatelessWidget {
                 height: 50.0,
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(18.0),
+                    borderRadius: new BorderRadius.circular(18.0),
                   ),
                   color: Colors.blue[300],
                   child: Text(
@@ -97,7 +118,7 @@ class Home extends StatelessWidget {
                 height: 50.0,
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(18.0),
+                    borderRadius: new BorderRadius.circular(18.0),
                   ),
                   color: Colors.blue[300],
                   child: Text(

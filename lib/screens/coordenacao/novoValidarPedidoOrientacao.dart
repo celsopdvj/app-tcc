@@ -103,7 +103,7 @@ class _NovoValidarPedidoState extends State<NovoValidarPedido> {
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.person),
-            label: Text('Sair'),
+            label: Text('Sair', style: textStyle2.copyWith()),
             onPressed: () async {
               await _auth.signOut();
               Navigator.pushReplacementNamed(context, '/');
@@ -112,11 +112,19 @@ class _NovoValidarPedidoState extends State<NovoValidarPedido> {
         ],
       ),
       body: 
-         StreamBuilder<Object>(
+         StreamBuilder(
            stream: Firestore.instance.collection('pedidoPendente').where('validado' ,isEqualTo: false).snapshots(),
            builder: (context, snapshot) {
              if (!snapshot.hasData) return Loading();
-             return Column(
+             return snapshot.data.documents.length == 0
+              ? Column(
+                  children: <Widget>[
+                    SizedBox(height: 10,),
+                    Center(
+                        child: Text(
+                      "Não há pedidos de orientação para validar!",
+                      style: textStyle,
+                    ))]) :Column(
                children: <Widget>[
                  Expanded(
                     child: SingleChildScrollView(

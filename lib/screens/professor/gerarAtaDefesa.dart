@@ -27,11 +27,11 @@ class _GerarAtaDefesaState extends State<GerarAtaDefesa> {
 
   int getQuantidadeMembrosBanca(DocumentSnapshot document) {
     int qntMembros = 2;
-    if (document["nomeMembroDaBanca3"] != "") {
+    if (document["nomeMembroDaBanca3"] != "Selecione...") {
       qntMembros++;
-      if (document["nomeMembroDaBanca4"] != "") {
+      if (document["nomeMembroDaBanca4"] != "Selecione...") {
         qntMembros++;
-        if (document["nomeMembroDaBanca5"] != "") {
+        if (document["nomeMembroDaBanca5"] != "Selecione...") {
           qntMembros++;
         }
       }
@@ -227,7 +227,7 @@ class _GerarAtaDefesaState extends State<GerarAtaDefesa> {
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.person),
-            label: Text('Sair'),
+            label: Text('Sair', style: textStyle2.copyWith()),
             onPressed: () async {
               print(widget.user.uid);
               await _auth.signOut();

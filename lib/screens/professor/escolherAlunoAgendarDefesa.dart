@@ -2,6 +2,7 @@ import 'package:app_tcc/models/settingsFormOrientacao.dart';
 import 'package:app_tcc/models/user.dart';
 import 'package:app_tcc/services/auth.dart';
 import 'package:app_tcc/services/database.dart';
+import 'package:app_tcc/shared/constants.dart';
 import 'package:app_tcc/shared/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class _AgendarDefesaState extends State<AgendarDefesa> {
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.person),
-            label: Text('Sair'),
+            label: Text('Sair', style: textStyle2.copyWith()),
             onPressed: () async {
               print(widget.user.uid);
               await _auth.signOut();
@@ -55,7 +56,16 @@ class _AgendarDefesaState extends State<AgendarDefesa> {
                                 .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Loading();
-        return Column(
+        
+        return snapshot.data.documents.length == 0
+              ? Column(
+                  children: <Widget>[
+                    SizedBox(height: 10,),
+                    Center(
+                        child: Text(
+                      "Não há orientandos para agendar defesa.",
+                      style: textStyle,
+                    ))]) :Column(
           children: <Widget>[
             Expanded(
                 child: new ListView(

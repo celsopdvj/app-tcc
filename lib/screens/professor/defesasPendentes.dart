@@ -74,7 +74,7 @@ class _DefesasAgendadasState extends State<DefesasAgendadas> {
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.person),
-            label: Text('Sair'),
+            label: Text('Sair', style: textStyle2.copyWith()),
             onPressed: () async {
               print(widget.user.uid);
               await _auth.signOut();

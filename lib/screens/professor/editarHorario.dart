@@ -229,12 +229,101 @@ class _EditarHorarioState extends State<EditarHorario> {
                             style: TextStyle(color: Colors.white),
                           ),
                           onPressed: () async {
+                            bool temOrientacao = false;
                             setState(() {
                               loading = true;
                             });
-                            print(listaSegunda);
-                                await DatabaseService().salvarHorario(widget.user.uid, listaSegunda, listaTerca, listaQuarta, listaQuinta, listaSexta, listaSabado);
-                                Navigator.pop(context);
+                            for (Horario horario in listaSegunda.where((l) => l.possui==true)) {
+                              String auxHorario = horario.horarioInicial.toString() + " - " + horario.horarioFinal.toString();
+                              if(await DatabaseService().temOrientacao(widget.user.uid, auxHorario)){
+                                temOrientacao = true;
+                              }
+                            }
+
+                            for (Horario horario in listaTerca.where((l) => l.possui==true)) {
+                              String auxHorario = horario.horarioInicial.toString() + " - " + horario.horarioFinal.toString();
+                              if(await DatabaseService().temOrientacao(widget.user.uid, auxHorario)){
+                                temOrientacao = true;
+                              }
+                            }
+
+                            for (Horario horario in listaQuarta.where((l) => l.possui==true)) {
+                              String auxHorario = horario.horarioInicial.toString() + " - " + horario.horarioFinal.toString();
+                              if(await DatabaseService().temOrientacao(widget.user.uid, auxHorario)){
+                                temOrientacao = true;
+                              }
+                            }
+
+                            for (Horario horario in listaQuinta.where((l) => l.possui==true)) {
+                              String auxHorario = horario.horarioInicial.toString() + " - " + horario.horarioFinal.toString();
+                              if(await DatabaseService().temOrientacao(widget.user.uid, auxHorario)){
+                                temOrientacao = true;
+                              }
+                            }
+
+                            for (Horario horario in listaSexta.where((l) => l.possui==true)) {
+                              String auxHorario = horario.horarioInicial.toString() + " - " + horario.horarioFinal.toString();
+                              if(await DatabaseService().temOrientacao(widget.user.uid, auxHorario)){
+                                temOrientacao = true;
+                              }
+                            }
+
+                            for (Horario horario in listaSabado.where((l) => l.possui==true)) {
+                              String auxHorario = horario.horarioInicial.toString() + " - " + horario.horarioFinal.toString();
+                              if(await DatabaseService().temOrientacao(widget.user.uid, auxHorario)){
+                                temOrientacao = true;
+                              }
+                            }
+
+                            print(temOrientacao);
+                            if(temOrientacao){
+                              setState(() {
+                                loading = false;
+                              });
+                              showDialog(
+                                    context: context,
+                                    builder: (context) => new AlertDialog(
+                                          content: new Text(
+                                              'Ocorreu choque de horário com os horários de orientação!'),
+                                          actions: <Widget>[
+                                            new FlatButton(
+                                              textColor: Colors.white,
+                                              color: Colors.blue[300],
+                                              shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
+                                              onPressed: () {
+                                                Navigator.of(context).pop(false); 
+                                              },
+                                              child: new Text('Ok'),
+                                            ),
+                                          ],
+                                        ));
+                            }
+                            else{
+                              await DatabaseService().salvarHorario(widget.user.uid, listaSegunda, listaTerca, listaQuarta, listaQuinta, listaSexta, listaSabado);
+                              setState(() {
+                                loading = false;
+                              });
+                              showDialog(
+                                    context: context,
+                                    builder: (context) => new AlertDialog(
+                                          content: new Text(
+                                              'Horários alterados!'),
+                                          actions: <Widget>[
+                                            new FlatButton(
+                                              textColor: Colors.white,
+                                              color: Colors.blue[300],
+                                              shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
+                                              onPressed: () {
+                                                Navigator.of(context).pop(false);
+                                                Navigator.of(context).pop(false);
+                                              },
+                                              child: new Text('Ok'),
+                                            ),
+                                          ],
+                                        ));
+
+                              
+                            }
                           }),
                SizedBox(height: 12.0),
                Text(error,style: TextStyle(color: Colors.red, fontSize: 14.0))

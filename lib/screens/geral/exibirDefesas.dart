@@ -107,7 +107,7 @@ class _ExibirDefesasState extends State<ExibirDefesas> {
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.person),
-            label: Text('Sair'),
+            label: Text('Sair', style: textStyle2.copyWith()),
             onPressed: () async {
               await _auth.signOut();
               Navigator.pushReplacementNamed(context, '/');

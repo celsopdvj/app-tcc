@@ -1,6 +1,7 @@
 import 'package:app_tcc/models/user.dart';
 import 'package:app_tcc/services/auth.dart';
 import 'package:app_tcc/services/database.dart';
+import 'package:app_tcc/shared/constants.dart';
 import 'package:app_tcc/shared/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,7 @@ class _ValidarOrientacaoState extends State<ValidarOrientacao> {
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.person),
-            label: Text('Sair'),
+            label: Text('Sair', style: textStyle2.copyWith()),
             onPressed: () async {
               print(widget.user.uid);
               await _auth.signOut();

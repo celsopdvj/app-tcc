@@ -63,7 +63,7 @@ class _ExibirTCCState extends State<ExibirTCC> {
           actions: <Widget>[
             FlatButton.icon(
               icon: Icon(Icons.person),
-              label: Text('Sair'),
+              label: Text('Sair', style: textStyle2.copyWith()),
               onPressed: () async {
                 print(widget.user.uid);
                 await _auth.signOut();
@@ -92,16 +92,23 @@ class _ExibirTCCState extends State<ExibirTCC> {
                     controller: _controller,
                     children: snapshot.data.documents.map((document) {
                       return new Card(
+                        shape: StadiumBorder(
+                                side: BorderSide(
+                                  color: Colors.black,
+                                  width: 0.5,
+                                ),
+                              ),
                         child: Column(
                           children: <Widget>[
                             ListTile(
-                                title: Text(document.data['titulo'].toString()),
+                                title: Text("Título: "+document.data['titulo'].toString()),
                                 subtitle:
-                                    Text(document.data['aluno'].toString()),
+                                    Text("Autor: "+document.data['aluno'].toString()),
                                 onTap: ()  {
                                     Navigator.of(context).pushNamed('/visualizarTCC', arguments: ScreenArgumentsTCC(url: document.data['url'], filename: document.data['filename']));
                                 }
                             ),
+                            SizedBox(height: 12,),
                           ],
                         ),
                       );
