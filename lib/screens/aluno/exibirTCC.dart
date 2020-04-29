@@ -15,6 +15,10 @@ class ExibirTCC extends StatefulWidget {
 }
 
 class _ExibirTCCState extends State<ExibirTCC> {
+  String _searchText = "";
+  String _searchFilter = "";
+  int _radioValue = -1;
+
   void _launchURL(url) async {
     if (await canLaunch(url)) {
       await launch(url);
@@ -23,37 +27,24 @@ class _ExibirTCCState extends State<ExibirTCC> {
     }
   }
 
-  final GlobalKey<ScaffoldState> _scaffoldKey =
-        new GlobalKey<ScaffoldState>();
-
-  // pdfView(url) => FutureBuilder<PDFDocument>(
-  //   // Open document
-  //   future: PDFDocument.openAsset(url),
-  //   builder: (_, snapshot) {
-  //     if (snapshot.hasData) {
-  //       // Show document
-  //       return PDFView(document: snapshot.data);
-  //     }
-
-  //     if (snapshot.hasError) {
-  //       // Catch
-  //       return Center(
-  //         child: Text(
-  //           'PDF Rendering does not '
-  //           'support on the system of this version',
-  //         ),
-  //       );
-  //     }
-
-  //     return Center(child: CircularProgressIndicator());
-  //   },
-  // );
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
     ScrollController _controller = new ScrollController(keepScrollOffset: true);
-    
+
+    Stream<QuerySnapshot> getStreamTcc() {
+      if (_searchText == "" || _radioValue == -1) {
+        return Firestore.instance.collection('tcc').snapshots();
+      }
+      else if(_radioValue == 0){
+        return Firestore.instance.collection('tcc').where('titulo',isEqualTo:_searchText).snapshots();
+      }
+      else if(_radioValue == 1){
+        return Firestore.instance.collection('tcc').where('aluno',isEqualTo:_searchText).snapshots();
+      }
+    }
 
     return Scaffold(
         key: _scaffoldKey,
@@ -73,49 +64,114 @@ class _ExibirTCCState extends State<ExibirTCC> {
           ],
         ),
         body: StreamBuilder(
-            stream: Firestore.instance.collection('tcc').snapshots(),
+            stream: getStreamTcc(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData) return Loading();
-              return snapshot.data.documents.length == 0
-              ? Column(
-                  children: <Widget>[
-                    SizedBox(height: 10,),
-                    Center(
-                        child: Text(
-                      "Não há TCCs para visualizar.",
-                      style: textStyle,
-                    ))]) :Column(children: <Widget>[
-                Expanded(
-                  child: new ListView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    controller: _controller,
-                    children: snapshot.data.documents.map((document) {
-                      return new Card(
-                        shape: StadiumBorder(
-                                side: BorderSide(
-                                  color: Colors.black,
-                                  width: 0.5,
-                                ),
-                              ),
-                        child: Column(
+              return GestureDetector(
+                      onTap: () {
+                        FocusScopeNode currentFocus = FocusScope.of(context);
+                        if (!currentFocus.hasPrimaryFocus) {
+                          currentFocus.unfocus();
+                        }
+                      },
+                      child: Column(children: <Widget>[
+                        Container(
+                            child: Row(
                           children: <Widget>[
-                            ListTile(
-                                title: Text("Título: "+document.data['titulo'].toString()),
-                                subtitle:
-                                    Text("Autor: "+document.data['aluno'].toString()),
-                                onTap: ()  {
-                                    Navigator.of(context).pushNamed('/visualizarTCC', arguments: ScreenArgumentsTCC(url: document.data['url'], filename: document.data['filename']));
-                                }
+                            SizedBox(width: 10,),
+                            Expanded(
+                              child: TextFormField(
+                                  decoration: InputDecoration(
+                                      hintText: "Procurar...",
+                                      enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.white,
+                                              width: 2.0))),
+                                  onChanged: (val) {
+                                    setState(() => _searchText = val);
+                                  }),
                             ),
-                            SizedBox(height: 12,),
+                            IconButton(
+                              icon: Icon(Icons.search),
+                              onPressed: () {
+                                print(_searchText);
+                                print(_radioValue);
+                              },
+                            )
+                          ],
+                        )),
+                        Row(
+                          children: <Widget>[
+                            new Radio(
+                                value: 0,
+                                groupValue: _radioValue,
+                                onChanged: (val) {
+                                  print(val);
+                                  setState(() {
+                                    _radioValue = val;
+                                  });
+                                }),
+                            new Text(
+                              'Título',
+                              style: new TextStyle(fontSize: 11.0),
+                            ),
+                            new Radio(
+                              value: 1,
+                              groupValue: _radioValue,
+                              onChanged: (val) {
+                                print(val);
+                                setState(() {
+                                  _radioValue = val;
+                                });
+                              },
+                            ),
+                            new Text(
+                              'Autor',
+                              style: new TextStyle(
+                                fontSize: 11.0,
+                              ),
+                            ),
                           ],
                         ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ]);
+                        Expanded(
+                          child: new ListView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            controller: _controller,
+                            children: snapshot.data.documents.map((document) {
+                              return new Card(
+                                shape: StadiumBorder(
+                                  side: BorderSide(
+                                    color: Colors.black,
+                                    width: 0.5,
+                                  ),
+                                ),
+                                child: Column(
+                                  children: <Widget>[
+                                    ListTile(
+                                        title: Text("Título: " +
+                                            document.data['titulo'].toString()),
+                                        subtitle: Text("Autor: " +
+                                            document.data['aluno'].toString()),
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(
+                                              '/visualizarTCC',
+                                              arguments: ScreenArgumentsTCC(
+                                                  url: document.data['url'],
+                                                  filename: document
+                                                      .data['filename']));
+                                        }),
+                                    SizedBox(
+                                      height: 12,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ]),
+                    );
             }));
   }
 }
