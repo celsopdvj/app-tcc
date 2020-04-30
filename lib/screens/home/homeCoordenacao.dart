@@ -58,6 +58,7 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
+                        SizedBox(height: 20.0),
                         ButtonTheme(
                           minWidth: 300.0,
                           height: 50.0,
@@ -114,7 +115,7 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                               var result = await getCsvOrientacao(
                                   widget.user.email, _scaffoldKey);
                               setState(() => loading = false);
-                              if(!result){
+                              if (!result) {
                                 showDialog(
                                     context: context,
                                     builder: (context) => new AlertDialog(
@@ -266,7 +267,7 @@ Future<bool> getCsvOrientacao(
       row.add(ori.nomeProfessor);
       row.add(ori.matriculaAluno);
       row.add(ori.nomeAluno);
-      row.add(ori.observacoes??"");
+      row.add(ori.observacoes ?? "");
       rows.add(row);
     }
 
@@ -288,7 +289,7 @@ Future<bool> getCsvOrientacao(
 
     emailTransport.send(envelope).then((envelope) {
       print('Email sent!');
-      
+
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         content: new Text("Planilha foi enviada!"),
         duration: Duration(seconds: 3),

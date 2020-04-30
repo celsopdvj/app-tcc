@@ -1,3 +1,4 @@
+import 'package:app_tcc/models/settingsEditarOrientacao.dart';
 import 'package:app_tcc/models/settingsFormDefesa.dart';
 import 'package:app_tcc/models/settingsFormOrientacao.dart';
 import 'package:app_tcc/models/settingsTCC.dart';
@@ -21,12 +22,14 @@ import 'package:app_tcc/screens/professor/convitesDefesa.dart';
 import 'package:app_tcc/screens/professor/defesasPendentes.dart';
 import 'package:app_tcc/screens/professor/editarDefesa.dart';
 import 'package:app_tcc/screens/professor/editarHorario.dart';
+import 'package:app_tcc/screens/professor/editarOrientacao.dart';
 import 'package:app_tcc/screens/professor/enviarTCC.dart';
 import 'package:app_tcc/screens/professor/escolherAlunoAgendarDefesa.dart';
 import 'package:app_tcc/screens/professor/formularioDeDefesa.dart';
 import 'package:app_tcc/screens/professor/formularioEnviarTCC.dart';
 import 'package:app_tcc/screens/professor/formularioOrientacao.dart';
 import 'package:app_tcc/screens/professor/gerarAtaDefesa.dart';
+import 'package:app_tcc/screens/professor/minhasOrientacoes.dart';
 import 'package:app_tcc/screens/professor/pedidosDeOrientacao.dart';
 import 'package:flutter/material.dart';
 
@@ -38,12 +41,15 @@ class Router {
     ScreenArguments args2;
     ScreenArgumentsTCC args3;
     ScreenArgumentsDefesa args4;
+    ScreenArgumentsEditarOrientacao args5;
     if(settings.name == '/formularioOrientacao' || settings.name == '/formularioDeDefesa' || settings.name == '/formularioEnviarTCC')
       args2 = settings.arguments;
     else if(settings.name == '/visualizarTCC')
       args3 = settings.arguments;
     else if(settings.name == '/editarDefesa')
       args4 = settings.arguments;
+    else if(settings.name == '/editarOrientacao')
+      args5 = settings.arguments;
     else
       args = settings.arguments;
 
@@ -102,6 +108,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => GerarAtaDefesa(user: args));
       case '/visualizarTCC':
         return MaterialPageRoute(builder: (_) => VisualizarTCC(url: args3.url, filename: args3.filename));
+      case '/minhasOrientacoes':
+        return MaterialPageRoute(builder: (_) => MinhasOrientacoes(user: args));
+      case '/editarOrientacao':
+        return MaterialPageRoute(builder: (_) => EditarOrientacao(user: args5.user,orientacao: args5.orientacao,));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

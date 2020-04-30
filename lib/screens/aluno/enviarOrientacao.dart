@@ -202,7 +202,7 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
     Widget botaoNao = RaisedButton(
       textColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
-      color: Colors.blue[300],
+      color: Colors.red,
       child: Text(
         "Não",
         style: TextStyle(color: Colors.white),

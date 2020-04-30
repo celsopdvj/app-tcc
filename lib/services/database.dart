@@ -157,6 +157,13 @@ class DatabaseService {
     usuario.document(uidAluno).updateData({'orientador': uidProfessor});
   }
 
+  void editarOrientacao(String uid, String dia, String horario) async {
+    orientacoes.document(uid).updateData({
+      'dia': dia,
+      'horario':horario
+    });
+  }
+
   void deletarPedido(String pedidoUid) async {
     final result = await pedidoPendente.document(pedidoUid).get();
     this
@@ -538,7 +545,8 @@ class DatabaseService {
     if (result.documents.length == 1) {
       // excluir documento antigo
       FirebaseStorage storage = FirebaseStorage.instance;
-      StorageReference storageReference = await storage.getReferenceFromUrl(result.documents.first.data['url']);
+      StorageReference storageReference =
+          await storage.getReferenceFromUrl(result.documents.first.data['url']);
       await storageReference.delete();
       tcc.document(result.documents.first.documentID).setData({
         'uidAluno': uidAluno,
@@ -660,7 +668,7 @@ class DatabaseService {
     return false;
   }
 
-  Future<bool> temOrientacao(String uid, String horario) async{
+  Future<bool> temOrientacao(String uid, String horario) async {
     double horarioAulaInicial;
     double horarioAulaFinal;
     double horarioOrientacaoInicial;
@@ -672,16 +680,15 @@ class DatabaseService {
     for (var orientacao in horarioOrientacoes.documents) {
       hora = orientacao.data["horario"].split("-")[0].split(":")[0];
       minuto = orientacao.data["horario"].split("-")[0].split(":")[1];
-      horarioOrientacaoInicial = double.parse(hora) + double.parse(minuto) / 60.0;
+      horarioOrientacaoInicial =
+          double.parse(hora) + double.parse(minuto) / 60.0;
       hora = orientacao.data["horario"].split("-")[1].split(":")[0];
       minuto = orientacao.data["horario"].split("-")[1].split(":")[1];
       horarioOrientacaoFinal = double.parse(hora) + double.parse(minuto) / 60.0;
-      horarioAulaInicial =
-          double.parse(horario.split("-")[0].split(":")[0]) +
-              double.parse(horario.split("-")[0].split(":")[1]) / 60.0;
-      horarioAulaFinal =
-          double.parse(horario.split("-")[1].split(":")[0]) +
-              double.parse(horario.split("-")[1].split(":")[1]) / 60.0;
+      horarioAulaInicial = double.parse(horario.split("-")[0].split(":")[0]) +
+          double.parse(horario.split("-")[0].split(":")[1]) / 60.0;
+      horarioAulaFinal = double.parse(horario.split("-")[1].split(":")[0]) +
+          double.parse(horario.split("-")[1].split(":")[1]) / 60.0;
       if (((horarioAulaInicial <= horarioOrientacaoFinal) &&
           (horarioAulaFinal >= horarioOrientacaoInicial))) return true;
     }
