@@ -55,7 +55,18 @@ class _MinhasOrientacoesState extends State<MinhasOrientacoes> {
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) return Loading();
           listaOrientacoes = criarListaOrientacoes(snapshot.data);
-          return ListView(
+          return snapshot.data.documents.length == 0
+              ? Column(children: <Widget>[
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                      child: Text(
+                    "Você não possui orientandos.",
+                    style: textStyle,
+                  ))
+                ])
+              : ListView(
             physics: const AlwaysScrollableScrollPhysics(),
             controller: _controller,
             children: snapshot.data.documents.map((document) {

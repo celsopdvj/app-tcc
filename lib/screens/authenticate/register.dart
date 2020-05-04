@@ -58,7 +58,7 @@ class _RegisterState extends State<Register> {
                           decoration: textInputDecoration.copyWith(
                               hintText: 'Matrícula'),
                           validator: (val) =>
-                              val.isEmpty ? 'Digite uma matrícula.' : null,
+                              val.isEmpty || val.length != 14 ? 'Digite uma matrícula com 14 dígitos.' : null,
                           onChanged: (val) {
                             setState(() => matricula = val);
                           }),
