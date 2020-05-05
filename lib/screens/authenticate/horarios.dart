@@ -621,7 +621,7 @@ class _HorariosState extends State<Horarios> {
                       shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(18.0),
                       ),
-                      color: Colors.blue,
+                      color: Colors.blue[300],
                       child: Text(
                         "Confirmar",
                         style: TextStyle(color: Colors.white),

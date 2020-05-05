@@ -36,8 +36,8 @@ class _EnviarTCCState extends State<EnviarTCC> {
                       'Já foi enviado o TCC deste(a) aluno(a). Deseja substituí-lo?'),
                   actions: <Widget>[
                     new FlatButton(
-                      textColor: Colors.white,
-                      color: Colors.red[300],
+                      textColor: Colors.red,
+                      color: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(18.0),
                       ),

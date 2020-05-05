@@ -1,4 +1,5 @@
 class Orientacao{
+  String idOrientacao;
   String curso;
   String disciplina;
   String turma;
@@ -10,5 +11,5 @@ class Orientacao{
   String observacoes;
   String uidOrientacao;
 
-  Orientacao({this.uidOrientacao,this.curso,this.disciplina,this.turma,this.matriculaAluno,this.observacoes,this.nomeAluno,this.nomeProfessor,this.dia,this.horario});
+  Orientacao({this.idOrientacao,uidOrientacao,this.curso,this.disciplina,this.turma,this.matriculaAluno,this.observacoes,this.nomeAluno,this.nomeProfessor,this.dia,this.horario});
 }

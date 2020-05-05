@@ -170,6 +170,24 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                             ),
                             color: Colors.blue[300],
                             child: Text(
+                              "Exibir defesas coordenação",
+                              style: textStyle2.copyWith(),
+                            ),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/exibirDefesasCoordenacao');
+                            },
+                          ),
+                        ),
+                        SizedBox(height: 20.0),
+                        ButtonTheme(
+                          minWidth: 300.0,
+                          height: 50.0,
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
+                            ),
+                            color: Colors.blue[300],
+                            child: Text(
                               "Gerar planilha de defesas",
                               style: textStyle2.copyWith(),
                             ),

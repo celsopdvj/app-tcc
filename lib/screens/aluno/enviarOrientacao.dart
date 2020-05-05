@@ -139,10 +139,10 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
     );
     Widget botaoCancelar = RaisedButton(
       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
-      color: Colors.red[300],
+      color: Colors.white,
       child: Text(
         "Cancelar",
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.red),
       ),
       onPressed: () {
         Navigator.of(context).pop();
@@ -174,7 +174,7 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
           Text(erro, style: TextStyle(color: Colors.red))
         ],
       ),
-      actions: <Widget>[botaoConfirmar, botaoCancelar],
+      actions: <Widget>[ botaoCancelar,botaoConfirmar,],
     );
 
     showDialog(
@@ -202,10 +202,10 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
     Widget botaoNao = RaisedButton(
       textColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
-      color: Colors.red,
+      color: Colors.white,
       child: Text(
         "Não",
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.red),
       ),
       onPressed: () {
         Navigator.of(context).pop();

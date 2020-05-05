@@ -157,6 +157,13 @@ class DatabaseService {
     usuario.document(uidAluno).updateData({'orientador': uidProfessor});
   }
 
+  void deletarOrientacao(String id) async{
+    var alunoDOC = await orientacoes.document(id).get();
+    String alunoID = alunoDOC.data['uidAluno'];
+    await orientacoes.document(id).delete();
+    await usuario.document(alunoID).updateData({'orientador': ""});
+  }
+
   void editarOrientacao(String uid, String dia, String horario) async {
     orientacoes.document(uid).updateData({
       'dia': dia,
@@ -661,7 +668,7 @@ class DatabaseService {
     var horarioOrientacoes =
         await orientacoes.where('uidProfessor', isEqualTo: uid).getDocuments();
     for (var orientacao in horarioOrientacoes.documents) {
-      if (horario == orientacao.data['horario']) {
+      if (diaDaSemana == orientacao.data['dia']  && horario == orientacao.data['horario']) {
         return true;
       }
     }

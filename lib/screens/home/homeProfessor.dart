@@ -39,7 +39,7 @@ class _HomeProfessorState extends State<HomeProfessor> {
         //Botões com funcionalidades dos professores
         body: Center(
           child: SingleChildScrollView(
-                    child: Container(
+            child: Container(
               alignment: Alignment.center,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -49,7 +49,7 @@ class _HomeProfessorState extends State<HomeProfessor> {
                     height: 50.0,
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(18.0),
+                        borderRadius: new BorderRadius.circular(18.0),
                       ),
                       color: Colors.blue[300],
                       child: Text(
@@ -68,7 +68,7 @@ class _HomeProfessorState extends State<HomeProfessor> {
                     height: 50.0,
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(18.0),
+                        borderRadius: new BorderRadius.circular(18.0),
                       ),
                       color: Colors.blue[300],
                       child: Text(
@@ -87,7 +87,7 @@ class _HomeProfessorState extends State<HomeProfessor> {
                     height: 50.0,
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(18.0),
+                        borderRadius: new BorderRadius.circular(18.0),
                       ),
                       color: Colors.blue[300],
                       child: Text(
@@ -105,7 +105,7 @@ class _HomeProfessorState extends State<HomeProfessor> {
                     height: 50.0,
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(18.0),
+                        borderRadius: new BorderRadius.circular(18.0),
                       ),
                       color: Colors.blue[300],
                       child: Text(
@@ -124,7 +124,7 @@ class _HomeProfessorState extends State<HomeProfessor> {
                     height: 50.0,
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(18.0),
+                        borderRadius: new BorderRadius.circular(18.0),
                       ),
                       color: Colors.blue[300],
                       child: Text(
@@ -143,7 +143,7 @@ class _HomeProfessorState extends State<HomeProfessor> {
                     height: 50.0,
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(18.0),
+                        borderRadius: new BorderRadius.circular(18.0),
                       ),
                       color: Colors.blue[300],
                       child: Text(
@@ -162,7 +162,7 @@ class _HomeProfessorState extends State<HomeProfessor> {
                     height: 50.0,
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(18.0),
+                        borderRadius: new BorderRadius.circular(18.0),
                       ),
                       color: Colors.blue[300],
                       child: Text(
@@ -181,7 +181,7 @@ class _HomeProfessorState extends State<HomeProfessor> {
                     height: 50.0,
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(18.0),
+                        borderRadius: new BorderRadius.circular(18.0),
                       ),
                       color: Colors.blue[300],
                       child: Text(

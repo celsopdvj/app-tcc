@@ -142,9 +142,9 @@ class _PedidosDeOrientacaoState extends State<PedidosDeOrientacao> {
                             shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(18.0),
                             ),
-                            color: Colors.red,
+                            color: Colors.white,
                             child: Text("Recusar",
-                                style: TextStyle(color: Colors.white)),
+                                style: TextStyle(color: Colors.red)),
                             onPressed: recusarPedido,
                           )
                         ],

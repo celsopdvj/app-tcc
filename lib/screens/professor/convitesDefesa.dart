@@ -128,8 +128,8 @@ class _ConvitesDefesaState extends State<ConvitesDefesa> {
                     ),
                     RaisedButton(
                       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
-                      color: Colors.red,
-                      child: Text("Recusar",style: TextStyle(color: Colors.white)),
+                      color: Colors.white,
+                      child: Text("Recusar",style: TextStyle(color: Colors.red)),
                       onPressed: (){
                         setState(() =>loading = true);
                         if(defesaEscolhida==""){
