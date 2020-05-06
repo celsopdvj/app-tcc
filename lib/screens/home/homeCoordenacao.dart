@@ -28,6 +28,27 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
 
+    showSimpleModal(String mensagem) {
+      showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+                content: new Text(mensagem),
+                actions: <Widget>[
+                  new FlatButton(
+                    textColor: Colors.white,
+                    color: Colors.blue[300],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(18.0),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                    child: new Text('Ok'),
+                  ),
+                ],
+              ));
+    }
+
     return loading
         ? Loading()
         : WillPopScope(
@@ -160,24 +181,25 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                             },
                           ),
                         ),
-                        SizedBox(height: 20.0),
-                        ButtonTheme(
-                          minWidth: 300.0,
-                          height: 50.0,
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(18.0),
-                            ),
-                            color: Colors.blue[300],
-                            child: Text(
-                              "Exibir defesas coordenação",
-                              style: textStyle2.copyWith(),
-                            ),
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/exibirDefesasCoordenacao');
-                            },
-                          ),
-                        ),
+                        // SizedBox(height: 20.0),
+                        // ButtonTheme(
+                        //   minWidth: 300.0,
+                        //   height: 50.0,
+                        //   child: RaisedButton(
+                        //     shape: RoundedRectangleBorder(
+                        //       borderRadius: new BorderRadius.circular(18.0),
+                        //     ),
+                        //     color: Colors.blue[300],
+                        //     child: Text(
+                        //       "Exibir defesas coordenação",
+                        //       style: textStyle2.copyWith(),
+                        //     ),
+                        //     onPressed: () {
+                        //       Navigator.pushNamed(
+                        //           context, '/exibirDefesasCoordenacao');
+                        //     },
+                        //   ),
+                        // ),
                         SizedBox(height: 20.0),
                         ButtonTheme(
                           minWidth: 300.0,
@@ -224,6 +246,68 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                           ),
                         ),
                         SizedBox(height: 20.0),
+                        ButtonTheme(
+                          minWidth: 300.0,
+                          height: 50.0,
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
+                            ),
+                            color: Colors.red[300],
+                            child: Text(
+                              "Deletar base de dados",
+                              style: textStyle2.copyWith(),
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => new AlertDialog(
+                                        content: new Text(
+                                            'Este comando irá deletar todas as informações das orientações,defesas e outros dados relacionados a elas. Tem certeza que deseja deletá-los?'),
+                                        actions: <Widget>[
+                                          new FlatButton(
+                                            textColor: Colors.red,
+                                            color: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  new BorderRadius.circular(
+                                                      18.0),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.of(context).pop(false);
+                                            },
+                                            child: new Text('Cancelar'),
+                                          ),
+                                          new FlatButton(
+                                            textColor: Colors.white,
+                                            color: Colors.blue[300],
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  new BorderRadius.circular(
+                                                      18.0),
+                                            ),
+                                            onPressed: () async {
+                                              setState(() {
+                                                loading = true;
+                                              });
+                                              try {
+                                                Navigator.of(context).pop(false);
+                                                await DatabaseService()
+                                                    .deletarBaseDados();
+                                                setState(() {loading = false;});
+                                                showSimpleModal("Dados deletados com sucesso!");
+                                              } catch (e) {
+                                                setState(() {loading = false;});
+                                                showSimpleModal("Houve um erro ao tentar deletar dados.");
+                                              }
+                                            },
+                                            child: new Text('Confirmar'),
+                                          )
+                                        ],
+                                      ));
+                            },
+                          ),
+                        ),
                       ],
                     ),
                   ),

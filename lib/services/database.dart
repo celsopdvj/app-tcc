@@ -116,18 +116,60 @@ class DatabaseService {
   }
 
   Future getTurma(String curso) async {
-    final snapShot = await orientacao.document('turmas').get();
+    // final snapShot = await orientacao.document('turmas').get();
+    // if (curso == 'Engenharia de Computação' ||
+    //     curso == 'Ciência da Computação') {
+    //   await orientacao
+    //       .document('turmas')
+    //       .updateData({'contadorA': FieldValue.increment(1)});
+    //   return "A" + snapShot.data['contadorA'].toString().padLeft(2, '0');
+    // } else {
+    //   await orientacao
+    //       .document('turmas')
+    //       .updateData({'contadorC': FieldValue.increment(1)});
+    //   return "C" + snapShot.data['contadorC'].toString().padLeft(2, '0');
+    // }
     if (curso == 'Engenharia de Computação' ||
         curso == 'Ciência da Computação') {
-      await orientacao
-          .document('turmas')
-          .updateData({'contadorA': FieldValue.increment(1)});
-      return "A" + snapShot.data['contadorA'].toString().padLeft(2, '0');
+      var result =
+          await orientacoes.where('curso', isEqualTo: curso).getDocuments();
+      if (result.documents.length == 0) {
+        return "A01";
+      } else {
+        String aux = "";
+        int i = 1;
+        bool achouTurma = false;
+        while (!achouTurma) {
+          aux = "A" + i.toString().padLeft(2, '0');
+          var result =
+              await orientacoes.where('turma', isEqualTo: aux).getDocuments();
+          if (result.documents.length == 0) {
+            return aux;
+          } else {
+            i++;
+          }
+        }
+      }
     } else {
-      await orientacao
-          .document('turmas')
-          .updateData({'contadorC': FieldValue.increment(1)});
-      return "C" + snapShot.data['contadorC'].toString().padLeft(2, '0');
+      var result =
+          await orientacoes.where('curso', isEqualTo: curso).getDocuments();
+      if (result.documents.length == 0) {
+        return "C01";
+      } else {
+        String aux = "";
+        int i = 1;
+        bool achouTurma = false;
+        while (!achouTurma) {
+          aux = "C" + i.toString().padLeft(2, '0');
+          var result =
+              await orientacoes.where('turma', isEqualTo: aux).getDocuments();
+          if (result.documents.length == 0) {
+            return aux;
+          } else {
+            i++;
+          }
+        }
+      }
     }
   }
 
@@ -157,7 +199,7 @@ class DatabaseService {
     usuario.document(uidAluno).updateData({'orientador': uidProfessor});
   }
 
-  void deletarOrientacao(String id) async{
+  void deletarOrientacao(String id) async {
     var alunoDOC = await orientacoes.document(id).get();
     String alunoID = alunoDOC.data['uidAluno'];
     await orientacoes.document(id).delete();
@@ -165,10 +207,7 @@ class DatabaseService {
   }
 
   void editarOrientacao(String uid, String dia, String horario) async {
-    orientacoes.document(uid).updateData({
-      'dia': dia,
-      'horario':horario
-    });
+    orientacoes.document(uid).updateData({'dia': dia, 'horario': horario});
   }
 
   void deletarPedido(String pedidoUid) async {
@@ -668,7 +707,8 @@ class DatabaseService {
     var horarioOrientacoes =
         await orientacoes.where('uidProfessor', isEqualTo: uid).getDocuments();
     for (var orientacao in horarioOrientacoes.documents) {
-      if (diaDaSemana == orientacao.data['dia']  && horario == orientacao.data['horario']) {
+      if (diaDaSemana == orientacao.data['dia'] &&
+          horario == orientacao.data['horario']) {
         return true;
       }
     }
@@ -727,5 +767,74 @@ class DatabaseService {
       return true;
     } else
       return false;
+  }
+
+  void deletarBaseDados() async {
+    await defesa.getDocuments().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.documents) {
+        ds.reference.delete();
+      }
+    });
+    await pedidoPendente.getDocuments().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.documents) {
+        ds.reference.delete();
+      }
+    });
+    await orientacoes.getDocuments().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.documents) {
+        ds.reference.delete();
+      }
+    });
+    await usuario.where('tipo',isEqualTo:'Professor').getDocuments().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.documents) {
+        usuario
+            .document(ds.documentID)
+            .collection('Convites')
+            .getDocuments()
+            .then((snapshot) {
+          for (DocumentSnapshot ds in snapshot.documents) {
+            ds.reference.delete();
+          }
+        });
+      }
+    });
+    await usuario.where('tipo',isEqualTo:'Aluno').getDocuments().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.documents) {
+        usuario.document(ds.documentID).updateData({
+          'defesaAgendada':"",
+          'defesaPendente':"",
+          'orientador':"",
+          'pedidoPendente':false
+        });
+      }
+    });
+  }
+
+  Future<int> qntOrientacao(String id,String dia) async{
+    var result = await orientacoes.where('uidProfessor',isEqualTo: id).where('dia',isEqualTo:dia).getDocuments();
+    int quantidadeDeOrientacoes = result.documents.length;
+    return quantidadeDeOrientacoes;
+  }
+
+  Future<int> horasDeTrabalho(String id) async{
+    int quantidadeAulas = 0;
+    int quantidadeDeOrientacoes =0;
+    var result = await usuario.document(id).collection("Segunda").where('possui',isEqualTo:true).getDocuments();
+    quantidadeAulas += result.documents.length;
+    result = await usuario.document(id).collection("Terça").where('possui',isEqualTo:true).getDocuments();
+    quantidadeAulas += result.documents.length;
+    result = await usuario.document(id).collection("Quarta").where('possui',isEqualTo:true).getDocuments();
+    quantidadeAulas += result.documents.length;
+    result = await usuario.document(id).collection("Quinta").where('possui',isEqualTo:true).getDocuments();
+    quantidadeAulas += result.documents.length;
+    result = await usuario.document(id).collection("Sexta").where('possui',isEqualTo:true).getDocuments();
+    quantidadeAulas += result.documents.length;
+    result = await usuario.document(id).collection("Sabado").where('possui',isEqualTo:true).getDocuments();
+    quantidadeAulas += result.documents.length;
+
+
+    result = await orientacoes.where('uidProfessor',isEqualTo: id).getDocuments();
+    quantidadeDeOrientacoes = result.documents.length;
+    return (quantidadeDeOrientacoes*45 + quantidadeAulas*90);
   }
 }

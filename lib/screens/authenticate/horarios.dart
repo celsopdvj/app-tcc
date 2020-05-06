@@ -14,8 +14,7 @@ class Horarios extends StatefulWidget {
 }
 
 class _HorariosState extends State<Horarios> {
-  final GlobalKey<ScaffoldState> _scaffoldKey =
-        new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool loading = false;
   String error = '';
   List<Horario> listaSegunda = new List<Horario>();
@@ -24,6 +23,19 @@ class _HorariosState extends State<Horarios> {
   List<Horario> listaQuinta = new List<Horario>();
   List<Horario> listaSexta = new List<Horario>();
   List<Horario> listaSabado = new List<Horario>();
+
+  bool fereInterJornadaSegundaTerca = false;
+  bool fereInterJornadaTercaQuarta = false;
+  bool fereInterJornadaQuartaQuinta = false;
+  bool fereInterJornadaQuintaSexta = false;
+  bool fereInterJornadaSextaSabado = false;
+
+  int quantidadeAulasSegunda = 0;
+  int quantidadeAulasTerca = 0;
+  int quantidadeAulasQuarta = 0;
+  int quantidadeAulasQuinta = 0;
+  int quantidadeAulasSexta = 0;
+  int quantidadeAulasSabado = 0;
   var diasDaSemana = [
     'Segunda',
     'Terça',
@@ -93,9 +105,8 @@ class _HorariosState extends State<Horarios> {
 
   BoxDecoration myBoxDecoration() {
     return BoxDecoration(
-      border: Border.all(),
-      borderRadius: BorderRadius.all(Radius.circular(18))
-    );
+        border: Border.all(),
+        borderRadius: BorderRadius.all(Radius.circular(18)));
   }
 
   @override
@@ -117,7 +128,9 @@ class _HorariosState extends State<Horarios> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  SizedBox(height: 12,),
+                  SizedBox(
+                    height: 12,
+                  ),
                   Container(
                     margin: new EdgeInsets.symmetric(horizontal: 20.0),
                     decoration: myBoxDecoration(),
@@ -131,6 +144,13 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSegunda[0].possui = val;
+                              if (val) {
+                                quantidadeAulasSegunda++;
+                                
+                              } else {
+                                quantidadeAulasSegunda--;
+                                
+                              }
                             });
                           },
                         ),
@@ -141,6 +161,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSegunda[1].possui = val;
+                              if (val) {
+                                quantidadeAulasSegunda++;
+                              } else {
+                                quantidadeAulasSegunda--;
+                              }
                             });
                           },
                         ),
@@ -151,6 +176,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSegunda[2].possui = val;
+                              if (val) {
+                                quantidadeAulasSegunda++;
+                              } else {
+                                quantidadeAulasSegunda--;
+                              }
                             });
                           },
                         ),
@@ -161,6 +191,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSegunda[3].possui = val;
+                              if (val) {
+                                quantidadeAulasSegunda++;
+                              } else {
+                                quantidadeAulasSegunda--;
+                              }
                             });
                           },
                         ),
@@ -171,6 +206,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSegunda[4].possui = val;
+                              if (val) {
+                                quantidadeAulasSegunda++;
+                              } else {
+                                quantidadeAulasSegunda--;
+                              }
                             });
                           },
                         ),
@@ -181,6 +221,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSegunda[5].possui = val;
+                              if (val) {
+                                quantidadeAulasSegunda++;
+                              } else {
+                                quantidadeAulasSegunda--;
+                              }
                             });
                           },
                         ),
@@ -191,6 +236,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSegunda[6].possui = val;
+                              if (val) {
+                                quantidadeAulasSegunda++;
+                              } else {
+                                quantidadeAulasSegunda--;
+                              }
                             });
                           },
                         ),
@@ -201,14 +251,26 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSegunda[7].possui = val;
+                              if (val) {
+                                quantidadeAulasSegunda++;
+                                if(listaTerca[0].possui){
+                                  fereInterJornadaSegundaTerca = true;
+                                }
+                              } else {
+                                quantidadeAulasSegunda--;
+                                if(fereInterJornadaSegundaTerca){
+                                  fereInterJornadaSegundaTerca =false;
+                                }
+                              }
                             });
                           },
                         ),
                       ],
                     ),
                   ),
-
-                  SizedBox(height: 12,),
+                  SizedBox(
+                    height: 12,
+                  ),
                   Container(
                     margin: new EdgeInsets.symmetric(horizontal: 20.0),
                     decoration: myBoxDecoration(),
@@ -222,6 +284,17 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaTerca[0].possui = val;
+                              if (val) {
+                                quantidadeAulasTerca++;
+                                if(listaSegunda[7].possui){
+                                  fereInterJornadaSegundaTerca = true;
+                                }
+                              } else {
+                                quantidadeAulasTerca--;
+                                if(fereInterJornadaSegundaTerca){
+                                  fereInterJornadaSegundaTerca =false;
+                                }
+                              }
                             });
                           },
                         ),
@@ -232,6 +305,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaTerca[1].possui = val;
+                              if (val) {
+                                quantidadeAulasTerca++;
+                              } else {
+                                quantidadeAulasTerca--;
+                              }
                             });
                           },
                         ),
@@ -242,6 +320,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaTerca[2].possui = val;
+                              if (val) {
+                                quantidadeAulasTerca++;
+                              } else {
+                                quantidadeAulasTerca--;
+                              }
                             });
                           },
                         ),
@@ -252,6 +335,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaTerca[3].possui = val;
+                              if (val) {
+                                quantidadeAulasTerca++;
+                              } else {
+                                quantidadeAulasTerca--;
+                              }
                             });
                           },
                         ),
@@ -262,6 +350,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaTerca[4].possui = val;
+                              if (val) {
+                                quantidadeAulasTerca++;
+                              } else {
+                                quantidadeAulasTerca--;
+                              }
                             });
                           },
                         ),
@@ -272,6 +365,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaTerca[5].possui = val;
+                              if (val) {
+                                quantidadeAulasTerca++;
+                              } else {
+                                quantidadeAulasTerca--;
+                              }
                             });
                           },
                         ),
@@ -282,6 +380,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaTerca[6].possui = val;
+                              if (val) {
+                                quantidadeAulasTerca++;
+                              } else {
+                                quantidadeAulasTerca--;
+                              }
                             });
                           },
                         ),
@@ -292,14 +395,26 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaTerca[7].possui = val;
+                              if (val) {
+                                quantidadeAulasTerca++;
+                                if(listaQuarta[0].possui){
+                                  fereInterJornadaTercaQuarta = true;
+                                }
+                              } else {
+                                quantidadeAulasTerca--;
+                                if(fereInterJornadaTercaQuarta){
+                                  fereInterJornadaTercaQuarta = false;
+                                }
+                              }
                             });
                           },
                         ),
                       ],
                     ),
                   ),
-
-                  SizedBox(height: 12,),
+                  SizedBox(
+                    height: 12,
+                  ),
                   Container(
                     margin: new EdgeInsets.symmetric(horizontal: 20.0),
                     decoration: myBoxDecoration(),
@@ -313,6 +428,17 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaQuarta[0].possui = val;
+                              if (val) {
+                                quantidadeAulasQuarta++;
+                                if(listaTerca[7].possui){
+                                  fereInterJornadaTercaQuarta = true;
+                                }
+                              } else {
+                                quantidadeAulasQuarta--;
+                                if(fereInterJornadaTercaQuarta){
+                                  fereInterJornadaTercaQuarta = false;
+                                }
+                              }
                             });
                           },
                         ),
@@ -323,6 +449,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaQuarta[1].possui = val;
+                              if (val) {
+                                quantidadeAulasQuarta++;
+                              } else {
+                                quantidadeAulasQuarta--;
+                              }
                             });
                           },
                         ),
@@ -333,6 +464,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaQuarta[2].possui = val;
+                              if (val) {
+                                quantidadeAulasQuarta++;
+                              } else {
+                                quantidadeAulasQuarta--;
+                              }
                             });
                           },
                         ),
@@ -343,6 +479,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaQuarta[3].possui = val;
+                              if (val) {
+                                quantidadeAulasQuarta++;
+                              } else {
+                                quantidadeAulasQuarta--;
+                              }
                             });
                           },
                         ),
@@ -353,6 +494,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaQuarta[4].possui = val;
+                              if (val) {
+                                quantidadeAulasQuarta++;
+                              } else {
+                                quantidadeAulasQuarta--;
+                              }
                             });
                           },
                         ),
@@ -363,6 +509,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaQuarta[5].possui = val;
+                              if (val) {
+                                quantidadeAulasQuarta++;
+                              } else {
+                                quantidadeAulasQuarta--;
+                              }
                             });
                           },
                         ),
@@ -373,6 +524,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaQuarta[6].possui = val;
+                              if (val) {
+                                quantidadeAulasQuarta++;
+                              } else {
+                                quantidadeAulasQuarta--;
+                              }
                             });
                           },
                         ),
@@ -383,14 +539,26 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaQuarta[7].possui = val;
+                              if (val) {
+                                quantidadeAulasQuarta++;
+                                if(listaQuinta[0].possui){
+                                  fereInterJornadaQuartaQuinta = true;
+                                }
+                              } else {
+                                quantidadeAulasQuarta--;
+                                if(fereInterJornadaQuartaQuinta){
+                                  fereInterJornadaQuartaQuinta = false;
+                                }
+                              }
                             });
                           },
                         ),
                       ],
                     ),
                   ),
-
-                  SizedBox(height: 12,),
+                  SizedBox(
+                    height: 12,
+                  ),
                   Container(
                     margin: new EdgeInsets.symmetric(horizontal: 20.0),
                     decoration: myBoxDecoration(),
@@ -404,6 +572,17 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaQuinta[0].possui = val;
+                              if (val) {
+                                quantidadeAulasQuinta++;
+                                if(listaQuarta[7].possui){
+                                  fereInterJornadaQuartaQuinta = true;
+                                }
+                              } else {
+                                quantidadeAulasQuinta--;
+                                if(fereInterJornadaQuartaQuinta){
+                                  fereInterJornadaQuartaQuinta = false;
+                                }
+                              }
                             });
                           },
                         ),
@@ -414,6 +593,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaQuinta[1].possui = val;
+                              if (val) {
+                                quantidadeAulasQuinta++;
+                              } else {
+                                quantidadeAulasQuinta--;
+                              }
                             });
                           },
                         ),
@@ -424,6 +608,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaQuinta[2].possui = val;
+                              if (val) {
+                                quantidadeAulasQuinta++;
+                              } else {
+                                quantidadeAulasQuinta--;
+                              }
                             });
                           },
                         ),
@@ -434,6 +623,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaQuinta[3].possui = val;
+                              if (val) {
+                                quantidadeAulasQuinta++;
+                              } else {
+                                quantidadeAulasQuinta--;
+                              }
                             });
                           },
                         ),
@@ -444,6 +638,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaQuinta[4].possui = val;
+                              if (val) {
+                                quantidadeAulasQuinta++;
+                              } else {
+                                quantidadeAulasQuinta--;
+                              }
                             });
                           },
                         ),
@@ -454,6 +653,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaQuinta[5].possui = val;
+                              if (val) {
+                                quantidadeAulasQuinta++;
+                              } else {
+                                quantidadeAulasQuinta--;
+                              }
                             });
                           },
                         ),
@@ -464,6 +668,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaQuinta[6].possui = val;
+                              if (val) {
+                                quantidadeAulasQuinta++;
+                              } else {
+                                quantidadeAulasQuinta--;
+                              }
                             });
                           },
                         ),
@@ -474,14 +683,26 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaQuinta[7].possui = val;
+                              if (val) {
+                                quantidadeAulasQuinta++;
+                                if(listaSexta[0].possui){
+                                  fereInterJornadaQuintaSexta = true;
+                                }
+                              } else {
+                                quantidadeAulasQuinta--;
+                                if(fereInterJornadaQuintaSexta){
+                                  fereInterJornadaQuintaSexta = false;
+                                }
+                              }
                             });
                           },
                         ),
                       ],
                     ),
                   ),
-                  
-                  SizedBox(height: 12,),
+                  SizedBox(
+                    height: 12,
+                  ),
                   Container(
                     margin: new EdgeInsets.symmetric(horizontal: 20.0),
                     decoration: myBoxDecoration(),
@@ -495,6 +716,17 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSexta[0].possui = val;
+                              if (val) {
+                                quantidadeAulasSexta++;
+                                if(listaQuinta[7].possui){
+                                  fereInterJornadaQuintaSexta = true;
+                                }
+                              } else {
+                                quantidadeAulasSexta--;
+                                if(fereInterJornadaQuintaSexta){
+                                  fereInterJornadaQuintaSexta = false;
+                                }
+                              }
                             });
                           },
                         ),
@@ -505,6 +737,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSexta[1].possui = val;
+                              if (val) {
+                                quantidadeAulasSexta++;
+                              } else {
+                                quantidadeAulasSexta--;
+                              }
                             });
                           },
                         ),
@@ -515,6 +752,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSexta[2].possui = val;
+                              if (val) {
+                                quantidadeAulasSexta++;
+                              } else {
+                                quantidadeAulasSexta--;
+                              }
                             });
                           },
                         ),
@@ -525,6 +767,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSexta[3].possui = val;
+                              if (val) {
+                                quantidadeAulasSexta++;
+                              } else {
+                                quantidadeAulasSexta--;
+                              }
                             });
                           },
                         ),
@@ -535,6 +782,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSexta[4].possui = val;
+                              if (val) {
+                                quantidadeAulasSexta++;
+                              } else {
+                                quantidadeAulasSexta--;
+                              }
                             });
                           },
                         ),
@@ -545,6 +797,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSexta[5].possui = val;
+                              if (val) {
+                                quantidadeAulasSexta++;
+                              } else {
+                                quantidadeAulasSexta--;
+                              }
                             });
                           },
                         ),
@@ -555,6 +812,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSexta[6].possui = val;
+                              if (val) {
+                                quantidadeAulasSexta++;
+                              } else {
+                                quantidadeAulasSexta--;
+                              }
                             });
                           },
                         ),
@@ -565,15 +827,26 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSexta[7].possui = val;
+                              if (val) {
+                                quantidadeAulasSexta++;
+                                if(listaSabado[0].possui){
+                                  fereInterJornadaSextaSabado = true;
+                                }
+                              } else {
+                                quantidadeAulasSexta--;
+                                if(fereInterJornadaSextaSabado){
+                                  fereInterJornadaSextaSabado = false;
+                                }
+                              }
                             });
                           },
                         ),
                       ],
                     ),
                   ),
-
-                  //REVER QUANTAS AULAS TEM
-                  SizedBox(height: 12,),
+                  SizedBox(
+                    height: 12,
+                  ),
                   Container(
                     margin: new EdgeInsets.symmetric(horizontal: 20.0),
                     decoration: myBoxDecoration(),
@@ -590,6 +863,17 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSabado[0].possui = val;
+                              if (val) {
+                                quantidadeAulasSabado++;
+                                if(listaSexta[7].possui){
+                                  fereInterJornadaSextaSabado = true;
+                                }
+                              } else {
+                                quantidadeAulasSabado--;
+                                if(fereInterJornadaSextaSabado){
+                                  fereInterJornadaSextaSabado = false;
+                                }
+                              }
                             });
                           },
                         ),
@@ -600,6 +884,11 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSabado[1].possui = val;
+                              if (val) {
+                                quantidadeAulasSabado++;
+                              } else {
+                                quantidadeAulasSabado--;
+                              }
                             });
                           },
                         ),
@@ -610,13 +899,17 @@ class _HorariosState extends State<Horarios> {
                           onChanged: (bool val) {
                             setState(() {
                               listaSabado[2].possui = val;
+                              if (val) {
+                                quantidadeAulasSabado++;
+                              } else {
+                                quantidadeAulasSabado--;
+                              }
                             });
                           },
                         ),
                       ],
                     ),
                   ),
-
                   RaisedButton(
                       shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(18.0),
@@ -630,40 +923,92 @@ class _HorariosState extends State<Horarios> {
                         setState(() {
                           loading = true;
                         });
-                        print(listaSegunda);
-                        dynamic result;
-                        result = await _auth.registroDeUsuario(
-                            widget.user.matricula,
-                            widget.user.senha,
-                            widget.user.nome,
-                            "",
-                            widget.user.email,
-                            widget.user.telefone,
-                            widget.user.tipoUsuario,
-                            widget.user.areaAtuacao,
-                            false);
-                        if (result == null) {
-                          setState(() {
-                            error = 'Erro ao registrar';
-                            loading = false;
-                          });
-                        } else if (result == 1) {
-                          setState(() {
-                            error = 'Matricula já cadastrada';
-                            loading = false;
-                          });
-                        } else {
-                          await DatabaseService().salvarHorario(
-                              result.uid,
-                              listaSegunda,
-                              listaTerca,
-                              listaQuarta,
-                              listaQuinta,
-                              listaSexta,
-                              listaSabado);
-                          Navigator.pushReplacementNamed(
-                              context, '/homeProfessor',
-                              arguments: result);
+                        
+                        if (quantidadeAulasSegunda > 5 || quantidadeAulasTerca > 5 || quantidadeAulasQuarta > 5 || quantidadeAulasQuinta > 5 || quantidadeAulasSexta > 5 ||quantidadeAulasSabado > 5 ) {
+                        setState(() {
+                          loading = false;
+                        });
+                          showDialog(
+                              context: context,
+                              builder: (context) => new AlertDialog(
+                                    content: new Text(
+                                        "Quantidade de aulas não está respeitando a jornada de trabalho."),
+                                    actions: <Widget>[
+                                      new FlatButton(
+                                        textColor: Colors.white,
+                                        color: Colors.blue[300],
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(18.0),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop(false);
+                                        },
+                                        child: new Text('Ok'),
+                                      ),
+                                    ],
+                                  ));
+                        } 
+                        else if(fereInterJornadaSegundaTerca || fereInterJornadaTercaQuarta || fereInterJornadaQuartaQuinta || fereInterJornadaQuintaSexta || fereInterJornadaSextaSabado){
+                        setState(() {
+                          loading = false;
+                        });
+                          showDialog(
+                              context: context,
+                              builder: (context) => new AlertDialog(
+                                    content: new Text(
+                                        "Possui aulas que não estão respeitando a interjornada de trabalho"),
+                                    actions: <Widget>[
+                                      new FlatButton(
+                                        textColor: Colors.white,
+                                        color: Colors.blue[300],
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(18.0),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop(false);
+                                        },
+                                        child: new Text('Ok'),
+                                      ),
+                                    ],
+                                  ));
+                        }
+                        else {
+                          dynamic result;
+                          result = await _auth.registroDeUsuario(
+                              widget.user.matricula,
+                              widget.user.senha,
+                              widget.user.nome,
+                              "",
+                              widget.user.email,
+                              widget.user.telefone,
+                              widget.user.tipoUsuario,
+                              widget.user.areaAtuacao,
+                              false);
+                          if (result == null) {
+                            setState(() {
+                              error = 'Erro ao registrar';
+                              loading = false;
+                            });
+                          } else if (result == 1) {
+                            setState(() {
+                              error = 'Matricula já cadastrada';
+                              loading = false;
+                            });
+                          } else {
+                            await DatabaseService().salvarHorario(
+                                result.uid,
+                                listaSegunda,
+                                listaTerca,
+                                listaQuarta,
+                                listaQuinta,
+                                listaSexta,
+                                listaSabado);
+                            Navigator.pushReplacementNamed(
+                                context, '/homeProfessor',
+                                arguments: result);
+                          }
                         }
                       }),
                   SizedBox(height: 12.0),
