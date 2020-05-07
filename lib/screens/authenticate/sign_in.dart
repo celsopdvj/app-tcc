@@ -28,8 +28,8 @@ Future<bool> _onWillPop() async {
         content: new Text('Deseja sair do aplicativo?'),
         actions: <Widget>[
           new FlatButton(
-            textColor: Colors.white,
-            color: Colors.blue[300],
+            textColor: Colors.red,
+            color: Colors.white,
             shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
             onPressed: () => Navigator.of(context).pop(false),
             child: new Text('Não'),
