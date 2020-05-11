@@ -165,7 +165,7 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                                     context: context,
                                     builder: (context) => new AlertDialog(
                                           content: new Text(
-                                              'Já existe uma conta com esta matricula.'),
+                                              'Matricula já cadastrada.'),
                                           actions: <Widget>[
                                             new FlatButton(
                                               textColor: Colors.white,
