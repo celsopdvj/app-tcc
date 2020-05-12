@@ -195,8 +195,8 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
       ),
       onPressed: () async {
         await DatabaseService().deletaPedidoPendenteDoAluno(widget.user.uid);
-        mostrarModalDisciplina();
         Navigator.of(context).pop();
+        mostrarModalDisciplina();
       },
     );
     Widget botaoNao = RaisedButton(

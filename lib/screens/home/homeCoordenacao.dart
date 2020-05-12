@@ -89,7 +89,7 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                             ),
                             color: Colors.blue[300],
                             child: Text(
-                              "Validar convites de orientação",
+                              "Validar pedidos de orientação",
                               style: textStyle2.copyWith(),
                             ),
                             onPressed: () {

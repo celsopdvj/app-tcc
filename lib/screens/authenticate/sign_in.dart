@@ -148,7 +148,7 @@ Future<bool> _onWillPop() async {
                                     result = await _auth.logInComMatriculaESenha(doc.documents.first.documentID, password);
                                     if(result == null){
                                       setState(() {
-                                        error = 'Usuário ou senha inválido.';
+                                        error = 'Senha inválida.';
                                         loading = false;
                                       });
                                     }
