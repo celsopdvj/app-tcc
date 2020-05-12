@@ -56,16 +56,21 @@ class _RegisterState extends State<Register> {
                       TextFormField(
                           keyboardType: TextInputType.number,
                           decoration: textInputDecoration.copyWith(
-                              hintText: 'Matrícula'),
-                          validator: (val) =>
-                              val.isEmpty || val.length != 14 ? 'Digite uma matrícula com 14 dígitos.' : null,
+                            labelText: "Matrícula",
+                            hintText: 'Digite sua matrícula',
+                          ),
+                          validator: (val) => val.isEmpty || val.length != 14
+                              ? 'Digite uma matrícula com 14 dígitos.'
+                              : null,
                           onChanged: (val) {
                             setState(() => matricula = val);
                           }),
                       SizedBox(height: 20.0),
                       TextFormField(
                           decoration:
-                              textInputDecoration.copyWith(hintText: 'Nome'),
+                              textInputDecoration.copyWith(
+                                labelText: "Nome",
+                                hintText: 'Digite seu nome completo'),
                           validator: (val) =>
                               val.isEmpty ? 'Digite um nome.' : null,
                           onChanged: (val) {
@@ -74,7 +79,9 @@ class _RegisterState extends State<Register> {
                       SizedBox(height: 20.0),
                       TextFormField(
                           decoration:
-                              textInputDecoration.copyWith(hintText: 'Senha'),
+                              textInputDecoration.copyWith(
+                                labelText: "Senha",
+                                hintText: 'Digite sua senha'),
                           validator: (val) => val.length < 6
                               ? 'Digite uma senha com mais de 6 caracteres.'
                               : null,
@@ -85,7 +92,8 @@ class _RegisterState extends State<Register> {
                       SizedBox(height: 20.0),
                       TextFormField(
                           decoration:
-                              textInputDecoration.copyWith(hintText: 'Email'),
+                              textInputDecoration.copyWith(labelText: 'Email',
+                              hintText: "Digite seu email"),
                           validator: (val) =>
                               val.isEmpty || !EmailValidator.validate(val)
                                   ? 'Digite um email válido.'
@@ -98,7 +106,8 @@ class _RegisterState extends State<Register> {
                           keyboardType: TextInputType.number,
                           inputFormatters: [maskFormatter],
                           decoration: textInputDecoration.copyWith(
-                              hintText: 'Telefone'),
+                              labelText: 'Telefone',
+                              hintText: "Digite seu telefone"),
                           validator: (val) => val.isEmpty ||
                                   maskFormatter.getUnmaskedText().length != 11
                               ? 'Digite um telefone válido.'
@@ -132,7 +141,9 @@ class _RegisterState extends State<Register> {
                       ),
                       SizedBox(height: 20.0),
                       RaisedButton(
-                          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(18.0),
+                          ),
                           color: Colors.blue,
                           child: Text(
                             "Confirmar",
@@ -159,7 +170,11 @@ class _RegisterState extends State<Register> {
                                               new FlatButton(
                                                 textColor: Colors.white,
                                                 color: Colors.blue[300],
-                                                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          18.0),
+                                                ),
                                                 onPressed: () {
                                                   Navigator.of(context)
                                                       .pop(false);

@@ -68,7 +68,8 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                       TextFormField(
                           keyboardType: TextInputType.number,
                           decoration: textInputDecoration.copyWith(
-                              hintText: 'Matrícula'),
+                              labelText: 'Matrícula',
+                              hintText: "Digite sua matrícula"),
                           validator: (val) =>
                               val.isEmpty ? 'Digite uma matrícula.' : null,
                           onChanged: (val) {
@@ -77,7 +78,8 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                       SizedBox(height: 20.0),
                       TextFormField(
                           decoration:
-                              textInputDecoration.copyWith(hintText: 'Nome'),
+                              textInputDecoration.copyWith(labelText: 'Nome',
+                              hintText: "Digite seu nome completo"),
                           validator: (val) =>
                               val.isEmpty ? 'Digite um nome.' : null,
                           onChanged: (val) {
@@ -86,7 +88,8 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                       SizedBox(height: 20.0),
                       TextFormField(
                           decoration:
-                              textInputDecoration.copyWith(hintText: 'Senha'),
+                              textInputDecoration.copyWith(labelText: 'Senha',
+                              hintText: "Digite sua senha"),
                           validator: (val) => val.length < 6
                               ? 'Digite uma senha com mais de 6 caracteres.'
                               : null,
@@ -97,7 +100,8 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                       SizedBox(height: 20.0),
                       TextFormField(
                           decoration:
-                              textInputDecoration.copyWith(hintText: 'Email'),
+                              textInputDecoration.copyWith(labelText: 'Email',
+                              hintText: "Digite seu email"),
                           validator: (val) =>
                               val.isEmpty || !EmailValidator.validate(val)
                                   ? 'Digite um email válido.'
@@ -110,7 +114,8 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                           keyboardType: TextInputType.number,
                           inputFormatters: [maskFormatter],
                           decoration: textInputDecoration.copyWith(
-                              hintText: 'Telefone'),
+                              labelText: 'Telefone',
+                              hintText: "Digite seu telefone"),
                           validator: (val) => val.isEmpty ||
                                   maskFormatter.getUnmaskedText().length != 11
                               ? 'Digite um telefone válido.'
@@ -121,7 +126,8 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                       SizedBox(height: 20.0),
                       TextFormField(
                           decoration: textInputDecoration.copyWith(
-                              hintText: 'Área de atuação'),
+                              labelText: 'Área de atuação',
+                              hintText: "Digite sua área de atuação"),
                           validator: (val) => val.isEmpty
                               ? 'Digite uma área de atuação.'
                               : null,
