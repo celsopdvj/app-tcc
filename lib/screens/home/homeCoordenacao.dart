@@ -255,7 +255,7 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                             ),
                             color: Colors.red[300],
                             child: Text(
-                              "Deletar base de dados",
+                              "Deletar dados de orientações e defesas",
                               style: textStyle2.copyWith(),
                             ),
                             onPressed: () {
@@ -263,7 +263,7 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                                   context: context,
                                   builder: (context) => new AlertDialog(
                                         content: new Text(
-                                            'Este comando irá deletar todas as informações das orientações,defesas e outros dados relacionados a elas. Tem certeza que deseja deletá-los?'),
+                                            'Tem certeza que deseja deletá esses dados?'),
                                         actions: <Widget>[
                                           new FlatButton(
                                             textColor: Colors.red,

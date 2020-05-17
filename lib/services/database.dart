@@ -804,7 +804,8 @@ class DatabaseService {
           'defesaAgendada':"",
           'defesaPendente':"",
           'orientador':"",
-          'pedidoPendente':false
+          'pedidoPendente':false,
+          'disciplina':""
         });
       }
     });

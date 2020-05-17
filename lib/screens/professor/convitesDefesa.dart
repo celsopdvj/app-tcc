@@ -27,7 +27,7 @@ class _ConvitesDefesaState extends State<ConvitesDefesa> {
     return loading ? Loading() : Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Convites de defesa'),
+        title: Text('Convites para banca'),
         elevation: 0.0,
         actions: <Widget>[
           FlatButton.icon(
@@ -45,7 +45,18 @@ class _ConvitesDefesaState extends State<ConvitesDefesa> {
       stream: Firestore.instance.collection('usuario').document(widget.user.uid).collection("Convites").snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Loading();
-        return Column(
+        return snapshot.data.documents.length == 0
+              ? Column(children: <Widget>[
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                      child: Text(
+                    "Não há convites para banca!",
+                    style: textStyle,
+                  ))
+                ])
+              :  Column(
           children: <Widget>[
             Expanded(
                 child: new ListView(
