@@ -40,7 +40,7 @@ class _ExibirDefesasState extends State<ExibirDefesas> {
             shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
             onPressed: () async {
               var aux = data.split('-');
-              var aux2 = aux[2]+'-'+aux[1]+'-'+aux[0] + " " +horario.padLeft(5,'0');;
+              var aux2 = aux[2]+'-'+aux[1]+'-'+aux[0] + " " +horario.padLeft(5,'0');
               print(aux2);
               DateTime datetime = DateTime.parse(aux2.toString());
               print(datetime);

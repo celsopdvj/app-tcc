@@ -112,8 +112,6 @@ class _HorariosState extends State<Horarios> {
   @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
-    bool val = false;
-    ScrollController _controller = new ScrollController(keepScrollOffset: true);
     //colocar no init
 
     return loading

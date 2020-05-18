@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:app_tcc/services/database.dart';
 import 'package:app_tcc/shared/constants.dart';
 import 'package:app_tcc/shared/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:app_tcc/services/auth.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../../models/user.dart';
 import 'package:email_validator/email_validator.dart';
@@ -15,7 +12,6 @@ class RegisterProfessor extends StatefulWidget {
 }
 
 class _RegisterProfessorState extends State<RegisterProfessor> {
-  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 

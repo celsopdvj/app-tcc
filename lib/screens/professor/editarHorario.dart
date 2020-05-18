@@ -1,5 +1,4 @@
 import 'package:app_tcc/models/horario.dart';
-import 'package:app_tcc/services/auth.dart';
 import 'package:app_tcc/shared/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +24,6 @@ class _EditarHorarioState extends State<EditarHorario> {
   List<Horario> listaSabado = new List<Horario>();
   ScrollController _controller = new ScrollController(keepScrollOffset: true);
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final AuthService _auth = AuthService();
 
   bool fereInterJornadaSegundaTerca = false;
   bool fereInterJornadaTercaQuarta = false;
@@ -180,9 +178,6 @@ class _EditarHorarioState extends State<EditarHorario> {
 
   @override
   Widget build(BuildContext context) {
-    bool val = false;
-    //colocar no init
-
     return loading
         ? Loading()
         : Scaffold(

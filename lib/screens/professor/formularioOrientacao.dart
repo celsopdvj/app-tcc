@@ -1,6 +1,5 @@
 import 'package:app_tcc/models/user.dart';
 import 'package:app_tcc/services/database.dart';
-import 'package:app_tcc/shared/constants.dart';
 import 'package:app_tcc/shared/loading.dart';
 import 'package:flutter/material.dart';
 

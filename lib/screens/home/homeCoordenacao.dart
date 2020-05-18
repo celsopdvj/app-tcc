@@ -81,7 +81,7 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                       children: <Widget>[
                         SizedBox(height: 20.0),
                         ButtonTheme(
-                          minWidth: 300.0,
+                          minWidth: 350.0,
                           height: 50.0,
                           child: RaisedButton(
                             shape: RoundedRectangleBorder(
@@ -101,7 +101,7 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                         ),
                         SizedBox(height: 20.0),
                         ButtonTheme(
-                          minWidth: 300.0,
+                          minWidth: 350.0,
                           height: 50.0,
                           child: RaisedButton(
                             shape: RoundedRectangleBorder(
@@ -120,7 +120,7 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                         ),
                         SizedBox(height: 20.0),
                         ButtonTheme(
-                          minWidth: 300.0,
+                          minWidth: 350.0,
                           height: 50.0,
                           child: RaisedButton(
                             shape: RoundedRectangleBorder(
@@ -165,7 +165,7 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                         ),
                         SizedBox(height: 20.0),
                         ButtonTheme(
-                          minWidth: 300.0,
+                          minWidth: 350.0,
                           height: 50.0,
                           child: RaisedButton(
                             shape: RoundedRectangleBorder(
@@ -181,28 +181,9 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                             },
                           ),
                         ),
-                        // SizedBox(height: 20.0),
-                        // ButtonTheme(
-                        //   minWidth: 300.0,
-                        //   height: 50.0,
-                        //   child: RaisedButton(
-                        //     shape: RoundedRectangleBorder(
-                        //       borderRadius: new BorderRadius.circular(18.0),
-                        //     ),
-                        //     color: Colors.blue[300],
-                        //     child: Text(
-                        //       "Exibir defesas coordenação",
-                        //       style: textStyle2.copyWith(),
-                        //     ),
-                        //     onPressed: () {
-                        //       Navigator.pushNamed(
-                        //           context, '/exibirDefesasCoordenacao');
-                        //     },
-                        //   ),
-                        // ),
                         SizedBox(height: 20.0),
                         ButtonTheme(
-                          minWidth: 300.0,
+                          minWidth: 350.0,
                           height: 50.0,
                           child: RaisedButton(
                             shape: RoundedRectangleBorder(
@@ -247,7 +228,7 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                         ),
                         SizedBox(height: 20.0),
                         ButtonTheme(
-                          minWidth: 300.0,
+                          minWidth: 350.0,
                           height: 50.0,
                           child: RaisedButton(
                             shape: RoundedRectangleBorder(
@@ -255,7 +236,7 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                             ),
                             color: Colors.red[300],
                             child: Text(
-                              "Deletar dados de orientações e defesas",
+                              "Deletar dados de orientações e defesas.",
                               style: textStyle2.copyWith(),
                             ),
                             onPressed: () {
@@ -263,7 +244,7 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                                   context: context,
                                   builder: (context) => new AlertDialog(
                                         content: new Text(
-                                            'Tem certeza que deseja deletá esses dados?'),
+                                            'Você está prestes a deletar todas as informações de orientações e defesas.Tem certeza que deseja deletar esses dados?'),
                                         actions: <Widget>[
                                           new FlatButton(
                                             textColor: Colors.red,

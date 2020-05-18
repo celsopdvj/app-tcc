@@ -26,15 +26,18 @@ class _DigitarEmailState extends State<DigitarEmail> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            TextFormField(
-                decoration:
-                    textInputDecoration.copyWith(hintText: 'Digite seu email'),
-                validator: (val) => val.isEmpty ? 'Digite seu email.' : null,
-                onChanged: (val) {
-                  setState(() {
-                    email = val;
-                  });
-                }),
+            Padding(
+              padding: EdgeInsets.all(10),
+                          child: TextFormField(
+                  decoration:
+                      textInputDecoration.copyWith(hintText: 'Digite seu email'),
+                  validator: (val) => val.isEmpty ? 'Digite seu email.' : null,
+                  onChanged: (val) {
+                    setState(() {
+                      email = val;
+                    });
+                  }),
+            ),
             RaisedButton(
                 shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                 color: Colors.blue[300],

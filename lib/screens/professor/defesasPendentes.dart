@@ -1,6 +1,5 @@
 import 'package:app_tcc/models/defesas.dart';
 import 'package:app_tcc/models/settingsFormDefesa.dart';
-import 'package:app_tcc/models/settingsFormOrientacao.dart';
 import 'package:app_tcc/models/user.dart';
 import 'package:app_tcc/services/auth.dart';
 import 'package:app_tcc/services/database.dart';
@@ -20,7 +19,6 @@ class _DefesasAgendadasState extends State<DefesasAgendadas> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   ScrollController _controller = new ScrollController(keepScrollOffset: true);
   DatabaseService banco = new DatabaseService();
-  String _alunoUid = '';
   Defesa defesa = new Defesa();
 
   void agendarDefesa() async {

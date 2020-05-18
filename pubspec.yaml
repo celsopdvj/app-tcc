@@ -38,8 +38,6 @@ dependencies:
   url_launcher: ^5.4.2
   flutter_plugin_pdf_viewer: ^1.0.7
   dio: ^3.0.9
-  flutter_downloader: ^1.4.1
-  downloads_path_provider: ^0.1.0
   open_file: ^3.0.1
   flutter_local_notifications: ^1.3.0
   pdf: ^1.6.0

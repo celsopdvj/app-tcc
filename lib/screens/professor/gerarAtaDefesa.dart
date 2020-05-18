@@ -1,4 +1,3 @@
-import 'package:app_tcc/models/settingsFormOrientacao.dart';
 import 'package:app_tcc/models/user.dart';
 import 'package:app_tcc/services/auth.dart';
 import 'package:app_tcc/services/database.dart';
@@ -23,7 +22,6 @@ class GerarAtaDefesa extends StatefulWidget {
 class _GerarAtaDefesaState extends State<GerarAtaDefesa> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   DatabaseService banco = new DatabaseService();
-  String _alunoUid = '';
 
   int getQuantidadeMembrosBanca(DocumentSnapshot document) {
     int qntMembros = 2;

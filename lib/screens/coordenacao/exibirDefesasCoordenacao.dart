@@ -51,10 +51,7 @@ class _ExibirDefesasCoordenacaoState extends State<ExibirDefesasCoordenacao> {
                         aux[0] +
                         " " +
                         horario.padLeft(5, '0');
-                    ;
-                    print(aux2);
                     DateTime datetime = DateTime.parse(aux2.toString());
-                    print(datetime);
                     var android = new AndroidNotificationDetails(
                         'channel id', 'channel NAME', 'CHANNEL DESCRIPTION',
                         importance: Importance.Max, priority: Priority.High);

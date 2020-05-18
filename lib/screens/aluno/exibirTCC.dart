@@ -16,7 +16,6 @@ class ExibirTCC extends StatefulWidget {
 
 class _ExibirTCCState extends State<ExibirTCC> {
   String _searchText = "";
-  String _searchFilter = "";
   int _radioValue = -1;
 
   void _launchURL(url) async {

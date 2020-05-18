@@ -1,9 +1,7 @@
-import 'package:app_tcc/models/conviteDefesa.dart';
 import 'package:app_tcc/models/user.dart';
 import 'package:app_tcc/services/database.dart';
 import 'package:app_tcc/shared/constants.dart';
 import 'package:app_tcc/shared/loading.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 
