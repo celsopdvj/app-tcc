@@ -43,7 +43,7 @@ class _RegisterState extends State<Register> {
             appBar: AppBar(
               backgroundColor: Colors.blue,
               elevation: 0.0,
-              title: Text('Cadastro no App TCC'),
+              title: Text('Cadastre-se'),
             ),
             body: SingleChildScrollView(
               child: Container(

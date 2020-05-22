@@ -52,7 +52,7 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
             appBar: AppBar(
                 backgroundColor: Colors.blue,
                 elevation: 0.0,
-                title: Text('Cadastro no App TCC')),
+                title: Text('Cadastre-se')),
             body: SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),

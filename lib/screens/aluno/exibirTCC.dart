@@ -91,13 +91,6 @@ class _ExibirTCCState extends State<ExibirTCC> {
                                     setState(() => _searchText = val);
                                   }),
                             ),
-                            IconButton(
-                              icon: Icon(Icons.search),
-                              onPressed: () {
-                                print(_searchText);
-                                print(_radioValue);
-                              },
-                            )
                           ],
                         )),
                         Row(
@@ -146,23 +139,28 @@ class _ExibirTCCState extends State<ExibirTCC> {
                                   ),
                                 ),
                                 child: Column(
+                                  
                                   children: <Widget>[
-                                    ListTile(
-                                        title: Text("Título: " +
-                                            document.data['titulo'].toString()),
-                                        subtitle: Text("Autor: " +
-                                            document.data['aluno'].toString()),
-                                        onTap: () {
-                                          Navigator.of(context).pushNamed(
-                                              '/visualizarTCC',
-                                              arguments: ScreenArgumentsTCC(
-                                                  url: document.data['url'],
-                                                  filename: document
-                                                      .data['filename']));
-                                        }),
-                                    SizedBox(
-                                      height: 12,
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ListTile(
+                                        isThreeLine: true,
+                                          title: Text("Título: " +
+                                              document.data['titulo'].toString()),
+                                          subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[Text("Autor: " +
+                                              document.data['aluno'].toString()),
+                                              Text("Área: " +
+                                              document.data['area'].toString())],),
+                                          onTap: () {
+                                            Navigator.of(context).pushNamed(
+                                                '/visualizarTCC',
+                                                arguments: ScreenArgumentsTCC(
+                                                    url: document.data['url'],
+                                                    filename: document
+                                                        .data['filename']));
+                                          }),
                                     ),
+                                    
                                   ],
                                 ),
                               );

@@ -112,7 +112,7 @@ class _GerarAtaDefesaState extends State<GerarAtaDefesa> {
           ]));
     }
     membros.add(pw.Column(children: <pw.Widget>[
-      pw.Text('_____________  '),
+      pw.Text('____________  '),
       pw.Text('(Média Final)'),
       pw.Padding(padding: pw.EdgeInsets.only(bottom:15)),
     ]));
@@ -188,14 +188,14 @@ class _GerarAtaDefesaState extends State<GerarAtaDefesa> {
                     pw.Paragraph(text: "Considerações: "),
                     pw.Paragraph(
                         text:
-                            "___________________________________________________________________")
+                            "___________________________________________________________")
                   ]),
               pw.Paragraph(
                   text:
-                      "________________________________________________________________________________"),
+                      "________________________________________________________________________"),
               pw.Paragraph(
                   text:
-                      "________________________________________________________________________________"),
+                      "________________________________________________________________________"),
               pw.Paragraph(
                   text:
                       "A banca examinadora indica o trabalho para publicação: (   ) Sim    (   ) Não"),

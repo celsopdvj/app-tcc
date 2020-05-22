@@ -119,7 +119,7 @@ class _HorariosState extends State<Horarios> {
         : Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
-              title: Text('Horários'),
+              title: Text('Horários de aulas'),
               elevation: 0.0,
             ),
             body: SingleChildScrollView(
@@ -147,7 +147,6 @@ class _HorariosState extends State<Horarios> {
                                 
                               } else {
                                 quantidadeAulasSegunda--;
-                                
                               }
                             });
                           },

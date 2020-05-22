@@ -60,7 +60,7 @@ class _DigitarEmailState extends State<DigitarEmail> {
                     }
                     else{
                       setState(() {
-                        error = 'Email inválido';
+                        error = 'E-mail inválido';
                       });
                     }
                   }
