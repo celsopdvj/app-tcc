@@ -72,23 +72,23 @@ class _EditarHorarioState extends State<EditarHorario> {
         await DatabaseService().getAulas('Quarta', widget.user.uid);
     for (DocumentSnapshot aula in aulasQuarta) {
       var indx =
-          aulasQuarta.indexWhere((horario) => horario.nome == aula.documentID);
-      aulasQuarta[indx].possui = true;
+          listaQuarta.indexWhere((horario) => horario.nome == aula.documentID);
+      listaQuarta[indx].possui = true;
     }
 
     var aulasQuinta =
         await DatabaseService().getAulas('Quinta', widget.user.uid);
     for (DocumentSnapshot aula in aulasQuinta) {
       var indx =
-          aulasQuinta.indexWhere((horario) => horario.nome == aula.documentID);
-      aulasQuinta[indx].possui = true;
+          listaQuinta.indexWhere((horario) => horario.nome == aula.documentID);
+      listaQuinta[indx].possui = true;
     }
 
     var aulasSexta = await DatabaseService().getAulas('Sexta', widget.user.uid);
     for (DocumentSnapshot aula in aulasSexta) {
       var indx =
-          aulasSexta.indexWhere((horario) => horario.nome == aula.documentID);
-      aulasSexta[indx].possui = true;
+          listaSexta.indexWhere((horario) => horario.nome == aula.documentID);
+      listaSexta[indx].possui = true;
     }
 
     var aulasSabado =
@@ -829,7 +829,7 @@ class _EditarHorarioState extends State<EditarHorario> {
                                   " - " +
                                   horario.horarioFinal.toString();
                           if (await DatabaseService()
-                              .temOrientacao(widget.user.uid, auxHorario)) {
+                              .temOrientacao(widget.user.uid, auxHorario,"Segunda")) {
                             temOrientacao = true;
                           }
                           quantidadeAulasSegunda++;
@@ -842,7 +842,7 @@ class _EditarHorarioState extends State<EditarHorario> {
                                   " - " +
                                   horario.horarioFinal.toString();
                           if (await DatabaseService()
-                              .temOrientacao(widget.user.uid, auxHorario)) {
+                              .temOrientacao(widget.user.uid, auxHorario,"Terça")) {
                             temOrientacao = true;
                           }
                           quantidadeAulasTerca++;
@@ -855,7 +855,7 @@ class _EditarHorarioState extends State<EditarHorario> {
                                   " - " +
                                   horario.horarioFinal.toString();
                           if (await DatabaseService()
-                              .temOrientacao(widget.user.uid, auxHorario)) {
+                              .temOrientacao(widget.user.uid, auxHorario,"Quarta")) {
                             temOrientacao = true;
                           }
                           quantidadeAulasQuarta++;
@@ -868,7 +868,7 @@ class _EditarHorarioState extends State<EditarHorario> {
                                   " - " +
                                   horario.horarioFinal.toString();
                           if (await DatabaseService()
-                              .temOrientacao(widget.user.uid, auxHorario)) {
+                              .temOrientacao(widget.user.uid, auxHorario,"Quinta")) {
                             temOrientacao = true;
                           }
                           quantidadeAulasQuinta++;
@@ -881,7 +881,7 @@ class _EditarHorarioState extends State<EditarHorario> {
                                   " - " +
                                   horario.horarioFinal.toString();
                           if (await DatabaseService()
-                              .temOrientacao(widget.user.uid, auxHorario)) {
+                              .temOrientacao(widget.user.uid, auxHorario,"Sexta")) {
                             temOrientacao = true;
                           }
                           quantidadeAulasSexta++;
@@ -894,7 +894,7 @@ class _EditarHorarioState extends State<EditarHorario> {
                                   " - " +
                                   horario.horarioFinal.toString();
                           if (await DatabaseService()
-                              .temOrientacao(widget.user.uid, auxHorario)) {
+                              .temOrientacao(widget.user.uid, auxHorario,"Sábado")) {
                             temOrientacao = true;
                           }
                           quantidadeAulasSabado++;

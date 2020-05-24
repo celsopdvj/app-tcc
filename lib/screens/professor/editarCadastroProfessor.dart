@@ -1,50 +1,80 @@
+import 'package:app_tcc/models/user.dart';
 import 'package:app_tcc/services/database.dart';
 import 'package:app_tcc/shared/constants.dart';
 import 'package:app_tcc/shared/loading.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:app_tcc/services/auth.dart';
+import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import '../../models/user.dart';
 import 'package:email_validator/email_validator.dart';
 
-class RegisterProfessor extends StatefulWidget {
+class EditarCadastroProfessor extends StatefulWidget {
+  final User user;
+  EditarCadastroProfessor({Key key, @required this.user}) : super(key: key);
   @override
-  _RegisterProfessorState createState() => _RegisterProfessorState();
+  _EditarCadastroProfessorState createState() =>
+      _EditarCadastroProfessorState();
 }
 
-class _RegisterProfessorState extends State<RegisterProfessor> {
+class _EditarCadastroProfessorState extends State<EditarCadastroProfessor> {
+  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
-
+  FirebaseUser firebaseUser;
   String matricula = '';
   String nome = '';
   String password = '';
-  String confirmPassword = '';
   String email = '';
+  String confirmPassword = '';
   String telefone = '';
-  String tipoUsuario = 'Professor';
+  String tipoUsuario = 'Aluno';
   String areaAtuacao = '';
-  bool _obscurePassword = true;
   String error = '';
+  bool _obscurePassword = true;
+
   var maskFormatter = new MaskTextInputFormatter(
       mask: '(##) #####-####', filter: {"#": RegExp(r'[0-9]')});
-  var horarios = [
-    "7:15 - 8:00",
-    "8:00 - 8:45",
-    "9:00 - 9:45",
-    "9:45 - 10:30",
-    "10:45 - 11:30",
-    "11:30 - 12:15",
-    "13:30 - 14:15",
-    "14:15 - 15:00",
-    "15:15 - 16:00",
-    "16:00 - 16:45",
-    "17:00 - 17:45",
-    "17:45 - 18:30",
-    "18:45 - 19:30",
-    "19:30 - 20:15",
-    "20:30 - 21:15",
-    "21:15 - 22:00"
-  ];
+
+  Future getUser() async {
+    return await FirebaseAuth.instance.currentUser();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUser().then((onValue) => firebaseUser = onValue);
+    matricula = widget.user.matricula;
+    nome = widget.user.nome;
+    email = widget.user.email;
+    telefone = widget.user.telefone;
+    password = widget.user.senha;
+    areaAtuacao = widget.user.areaAtuacao;
+  }
+
+  Future<void> trocarEmail() async {
+    if (this.email != widget.user.email) {
+      FirebaseUser user = await FirebaseAuth.instance.currentUser();
+      await user.updateEmail(email).then((onValue) {
+        var result = EmailAuthProvider.getCredential(
+            email: email, password: widget.user.senha);
+        user.reauthenticateWithCredential(result);
+      });
+      widget.user.email = email;
+    }
+  }
+
+  Future<void> trocarPassword() async {
+    if (this.password != widget.user.senha) {
+      FirebaseUser user = await FirebaseAuth.instance.currentUser();
+      await user.updatePassword(password).then((onValue) {
+        var result = EmailAuthProvider.getCredential(
+            email: widget.user.email, password: password);
+        user.reauthenticateWithCredential(result);
+      });
+      widget.user.senha = password;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +82,10 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
         ? Loading()
         : Scaffold(
             appBar: AppBar(
-                backgroundColor: Colors.blue,
-                elevation: 0.0,
-                title: Text('Cadastre-se')),
+              backgroundColor: Colors.blue,
+              elevation: 0.0,
+              title: Text('Editar perfil'),
+            ),
             body: SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
@@ -64,20 +95,23 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                     children: <Widget>[
                       SizedBox(height: 20.0),
                       TextFormField(
+                          initialValue: matricula,
                           keyboardType: TextInputType.number,
                           decoration: textInputDecoration.copyWith(
-                              labelText: 'Matrícula',
-                              hintText: "Digite sua matrícula"),
+                            labelText: "Matrícula",
+                            hintText: 'Digite sua matrícula',
+                          ),
                           validator: (val) =>
-                              val.isEmpty ? 'Digite uma matrícula.' : null,
+                              val.isEmpty ? 'Digite uma matrícula .' : null,
                           onChanged: (val) {
                             setState(() => matricula = val);
                           }),
                       SizedBox(height: 20.0),
                       TextFormField(
+                          initialValue: nome,
                           decoration: textInputDecoration.copyWith(
-                              labelText: 'Nome',
-                              hintText: "Digite seu nome completo"),
+                              labelText: "Nome",
+                              hintText: 'Digite seu nome completo'),
                           validator: (val) =>
                               val.isEmpty ? 'Digite um nome.' : null,
                           onChanged: (val) {
@@ -85,6 +119,7 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                           }),
                       SizedBox(height: 20.0),
                       TextFormField(
+                          initialValue: password,
                           decoration: textInputDecoration.copyWith(
                               suffixIcon: IconButton(
                                 onPressed: () => setState(() {
@@ -98,8 +133,8 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                                   color: Theme.of(context).primaryColorDark,
                                 ),
                               ),
-                              labelText: 'Senha',
-                              hintText: "Digite sua senha"),
+                              labelText: "Senha",
+                              hintText: 'Digite sua senha'),
                           validator: (val) => val.length < 6
                               ? 'Digite uma senha com mais de 6 caracteres.'
                               : null,
@@ -109,6 +144,7 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                           }),
                       SizedBox(height: 20.0),
                       TextFormField(
+                          initialValue: password,
                           decoration: textInputDecoration.copyWith(
                               suffixIcon: IconButton(
                                 onPressed: () => setState(() {
@@ -133,6 +169,7 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                           }),
                       SizedBox(height: 20.0),
                       TextFormField(
+                          initialValue: email,
                           decoration: textInputDecoration.copyWith(
                               labelText: 'Email', hintText: "Digite seu email"),
                           validator: (val) =>
@@ -144,13 +181,16 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                           }),
                       SizedBox(height: 20.0),
                       TextFormField(
+                          initialValue: telefone,
                           keyboardType: TextInputType.number,
                           inputFormatters: [maskFormatter],
                           decoration: textInputDecoration.copyWith(
                               labelText: 'Telefone',
                               hintText: "Digite seu telefone"),
-                          validator: (val) => val.isEmpty ||
-                                  maskFormatter.getUnmaskedText().length != 11
+                          validator: (val) => (telefone != val) &&
+                                  (val.isEmpty ||
+                                      maskFormatter.getUnmaskedText().length !=
+                                          11)
                               ? 'Digite um telefone válido.'
                               : null,
                           onChanged: (val) {
@@ -158,6 +198,7 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                           }),
                       SizedBox(height: 20.0),
                       TextFormField(
+                          initialValue: areaAtuacao,
                           decoration: textInputDecoration.copyWith(
                               labelText: 'Área de atuação',
                               hintText: "Digite sua área de atuação"),
@@ -179,9 +220,11 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                           ),
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
-                              //sleep(const Duration(seconds: 2));
+                              setState(() => loading = true);
                               if (await DatabaseService()
-                                  .checarEmailCadastrado(email)) {
+                                      .checarEmailCadastrado(email) &&
+                                  email != widget.user.email) {
+                                setState(() => loading = false);
                                 showDialog(
                                     context: context,
                                     builder: (context) => new AlertDialog(
@@ -204,42 +247,85 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                                             ),
                                           ],
                                         ));
-                              } else if (await DatabaseService()
-                                  .checarMatriculaCadastrada(matricula)) {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => new AlertDialog(
-                                          content: new Text(
-                                              'Matricula já cadastrada.'),
-                                          actions: <Widget>[
-                                            new FlatButton(
-                                              textColor: Colors.white,
-                                              color: Colors.blue[300],
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    new BorderRadius.circular(
-                                                        18.0),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.of(context)
-                                                    .pop(false);
-                                              },
-                                              child: new Text('Ok'),
-                                            ),
-                                          ],
-                                        ));
                               } else {
-                                User us = new User(
-                                    nome: nome,
-                                    matricula: matricula,
-                                    curso: "",
-                                    email: email,
-                                    telefone: telefone,
-                                    tipoUsuario: tipoUsuario,
-                                    areaAtuacao: areaAtuacao,
-                                    senha: password);
-                                Navigator.pushNamed(context, '/horarios',
-                                    arguments: us);
+                                print("ok");
+                                try {
+                                  await trocarEmail();
+                                  await trocarPassword();
+                                  
+
+                                  DatabaseService().editarCadastroProfessor(
+                                      widget.user.uid,
+                                      matricula,
+                                      nome,
+                                      telefone,
+                                      email,
+                                      areaAtuacao);
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => new AlertDialog(
+                                            content:
+                                                new Text('Dados alterados!'),
+                                            actions: <Widget>[
+                                              new FlatButton(
+                                                textColor: Colors.white,
+                                                color: Colors.blue[300],
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          18.0),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(false);
+                                                  widget.user.matricula =
+                                                      matricula;
+                                                  widget.user.nome = nome;
+                                                  widget.user.email = email;
+                                                  widget.user.telefone =
+                                                      telefone;
+                                                  widget.user.areaAtuacao =
+                                                      areaAtuacao;
+                                                  Navigator.of(context)
+                                                      .pushNamedAndRemoveUntil(
+                                                          '/homeProfessor',
+                                                          (Route<dynamic>
+                                                                  route) =>
+                                                              false,
+                                                          arguments:
+                                                              widget.user);
+                                                },
+                                                child: new Text('Ok'),
+                                              ),
+                                            ],
+                                          ));
+                                } catch (e) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => new AlertDialog(
+                                            content: new Text(
+                                                'Houve um erro ao alterar os dados.'),
+                                            actions: <Widget>[
+                                              new FlatButton(
+                                                textColor: Colors.white,
+                                                color: Colors.blue[300],
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          18.0),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(false);
+                                                },
+                                                child: new Text('Ok'),
+                                              ),
+                                            ],
+                                          ));
+                                }
                               }
                             }
                           }),

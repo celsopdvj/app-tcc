@@ -144,7 +144,6 @@ class _HorariosState extends State<Horarios> {
                               listaSegunda[0].possui = val;
                               if (val) {
                                 quantidadeAulasSegunda++;
-                                
                               } else {
                                 quantidadeAulasSegunda--;
                               }
@@ -250,13 +249,13 @@ class _HorariosState extends State<Horarios> {
                               listaSegunda[7].possui = val;
                               if (val) {
                                 quantidadeAulasSegunda++;
-                                if(listaTerca[0].possui){
+                                if (listaTerca[0].possui) {
                                   fereInterJornadaSegundaTerca = true;
                                 }
                               } else {
                                 quantidadeAulasSegunda--;
-                                if(fereInterJornadaSegundaTerca){
-                                  fereInterJornadaSegundaTerca =false;
+                                if (fereInterJornadaSegundaTerca) {
+                                  fereInterJornadaSegundaTerca = false;
                                 }
                               }
                             });
@@ -283,13 +282,13 @@ class _HorariosState extends State<Horarios> {
                               listaTerca[0].possui = val;
                               if (val) {
                                 quantidadeAulasTerca++;
-                                if(listaSegunda[7].possui){
+                                if (listaSegunda[7].possui) {
                                   fereInterJornadaSegundaTerca = true;
                                 }
                               } else {
                                 quantidadeAulasTerca--;
-                                if(fereInterJornadaSegundaTerca){
-                                  fereInterJornadaSegundaTerca =false;
+                                if (fereInterJornadaSegundaTerca) {
+                                  fereInterJornadaSegundaTerca = false;
                                 }
                               }
                             });
@@ -394,12 +393,12 @@ class _HorariosState extends State<Horarios> {
                               listaTerca[7].possui = val;
                               if (val) {
                                 quantidadeAulasTerca++;
-                                if(listaQuarta[0].possui){
+                                if (listaQuarta[0].possui) {
                                   fereInterJornadaTercaQuarta = true;
                                 }
                               } else {
                                 quantidadeAulasTerca--;
-                                if(fereInterJornadaTercaQuarta){
+                                if (fereInterJornadaTercaQuarta) {
                                   fereInterJornadaTercaQuarta = false;
                                 }
                               }
@@ -427,12 +426,12 @@ class _HorariosState extends State<Horarios> {
                               listaQuarta[0].possui = val;
                               if (val) {
                                 quantidadeAulasQuarta++;
-                                if(listaTerca[7].possui){
+                                if (listaTerca[7].possui) {
                                   fereInterJornadaTercaQuarta = true;
                                 }
                               } else {
                                 quantidadeAulasQuarta--;
-                                if(fereInterJornadaTercaQuarta){
+                                if (fereInterJornadaTercaQuarta) {
                                   fereInterJornadaTercaQuarta = false;
                                 }
                               }
@@ -538,12 +537,12 @@ class _HorariosState extends State<Horarios> {
                               listaQuarta[7].possui = val;
                               if (val) {
                                 quantidadeAulasQuarta++;
-                                if(listaQuinta[0].possui){
+                                if (listaQuinta[0].possui) {
                                   fereInterJornadaQuartaQuinta = true;
                                 }
                               } else {
                                 quantidadeAulasQuarta--;
-                                if(fereInterJornadaQuartaQuinta){
+                                if (fereInterJornadaQuartaQuinta) {
                                   fereInterJornadaQuartaQuinta = false;
                                 }
                               }
@@ -571,12 +570,12 @@ class _HorariosState extends State<Horarios> {
                               listaQuinta[0].possui = val;
                               if (val) {
                                 quantidadeAulasQuinta++;
-                                if(listaQuarta[7].possui){
+                                if (listaQuarta[7].possui) {
                                   fereInterJornadaQuartaQuinta = true;
                                 }
                               } else {
                                 quantidadeAulasQuinta--;
-                                if(fereInterJornadaQuartaQuinta){
+                                if (fereInterJornadaQuartaQuinta) {
                                   fereInterJornadaQuartaQuinta = false;
                                 }
                               }
@@ -682,12 +681,12 @@ class _HorariosState extends State<Horarios> {
                               listaQuinta[7].possui = val;
                               if (val) {
                                 quantidadeAulasQuinta++;
-                                if(listaSexta[0].possui){
+                                if (listaSexta[0].possui) {
                                   fereInterJornadaQuintaSexta = true;
                                 }
                               } else {
                                 quantidadeAulasQuinta--;
-                                if(fereInterJornadaQuintaSexta){
+                                if (fereInterJornadaQuintaSexta) {
                                   fereInterJornadaQuintaSexta = false;
                                 }
                               }
@@ -715,12 +714,12 @@ class _HorariosState extends State<Horarios> {
                               listaSexta[0].possui = val;
                               if (val) {
                                 quantidadeAulasSexta++;
-                                if(listaQuinta[7].possui){
+                                if (listaQuinta[7].possui) {
                                   fereInterJornadaQuintaSexta = true;
                                 }
                               } else {
                                 quantidadeAulasSexta--;
-                                if(fereInterJornadaQuintaSexta){
+                                if (fereInterJornadaQuintaSexta) {
                                   fereInterJornadaQuintaSexta = false;
                                 }
                               }
@@ -826,12 +825,12 @@ class _HorariosState extends State<Horarios> {
                               listaSexta[7].possui = val;
                               if (val) {
                                 quantidadeAulasSexta++;
-                                if(listaSabado[0].possui){
+                                if (listaSabado[0].possui) {
                                   fereInterJornadaSextaSabado = true;
                                 }
                               } else {
                                 quantidadeAulasSexta--;
-                                if(fereInterJornadaSextaSabado){
+                                if (fereInterJornadaSextaSabado) {
                                   fereInterJornadaSextaSabado = false;
                                 }
                               }
@@ -862,12 +861,12 @@ class _HorariosState extends State<Horarios> {
                               listaSabado[0].possui = val;
                               if (val) {
                                 quantidadeAulasSabado++;
-                                if(listaSexta[7].possui){
+                                if (listaSexta[7].possui) {
                                   fereInterJornadaSextaSabado = true;
                                 }
                               } else {
                                 quantidadeAulasSabado--;
-                                if(fereInterJornadaSextaSabado){
+                                if (fereInterJornadaSextaSabado) {
                                   fereInterJornadaSextaSabado = false;
                                 }
                               }
@@ -920,11 +919,16 @@ class _HorariosState extends State<Horarios> {
                         setState(() {
                           loading = true;
                         });
-                        
-                        if (quantidadeAulasSegunda > 5 || quantidadeAulasTerca > 5 || quantidadeAulasQuarta > 5 || quantidadeAulasQuinta > 5 || quantidadeAulasSexta > 5 ||quantidadeAulasSabado > 5 ) {
-                        setState(() {
-                          loading = false;
-                        });
+
+                        if (quantidadeAulasSegunda > 5 ||
+                            quantidadeAulasTerca > 5 ||
+                            quantidadeAulasQuarta > 5 ||
+                            quantidadeAulasQuinta > 5 ||
+                            quantidadeAulasSexta > 5 ||
+                            quantidadeAulasSabado > 5) {
+                          setState(() {
+                            loading = false;
+                          });
                           showDialog(
                               context: context,
                               builder: (context) => new AlertDialog(
@@ -945,11 +949,14 @@ class _HorariosState extends State<Horarios> {
                                       ),
                                     ],
                                   ));
-                        } 
-                        else if(fereInterJornadaSegundaTerca || fereInterJornadaTercaQuarta || fereInterJornadaQuartaQuinta || fereInterJornadaQuintaSexta || fereInterJornadaSextaSabado){
-                        setState(() {
-                          loading = false;
-                        });
+                        } else if (fereInterJornadaSegundaTerca ||
+                            fereInterJornadaTercaQuarta ||
+                            fereInterJornadaQuartaQuinta ||
+                            fereInterJornadaQuintaSexta ||
+                            fereInterJornadaSextaSabado) {
+                          setState(() {
+                            loading = false;
+                          });
                           showDialog(
                               context: context,
                               builder: (context) => new AlertDialog(
@@ -970,8 +977,7 @@ class _HorariosState extends State<Horarios> {
                                       ),
                                     ],
                                   ));
-                        }
-                        else {
+                        } else {
                           dynamic result;
                           result = await _auth.registroDeUsuario(
                               widget.user.matricula,
@@ -1002,9 +1008,10 @@ class _HorariosState extends State<Horarios> {
                                 listaQuinta,
                                 listaSexta,
                                 listaSabado);
-                            Navigator.pushReplacementNamed(
-                                context, '/homeProfessor',
-                                arguments: result);
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                '/homeProfessor',
+                                (Route<dynamic> route) => false,
+                                arguments: widget.user);
                           }
                         }
                       }),

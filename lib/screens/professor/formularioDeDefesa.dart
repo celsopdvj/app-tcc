@@ -75,18 +75,15 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
 
   int getQuantidadeMembrosBanca() {
     int qntMembros = 1;
-    if (membroDaBanca2.nome != 'Selecione...') {
+    if (membroDaBanca2.nome != 'Selecione...') 
       qntMembros++;
-      if (membroDaBanca3.nome != 'Selecione...') {
-        qntMembros++;
-        if (membroDaBanca4.nome != 'Selecione...') {
-          qntMembros++;
-          if (membroDaBanca5.nome != 'Selecione...') {
-            qntMembros++;
-          }
-        }
-      }
-    }
+    if (membroDaBanca3.nome != 'Selecione...') 
+      qntMembros++;
+    if (membroDaBanca4.nome != 'Selecione...') 
+      qntMembros++;
+    if (membroDaBanca5.nome != 'Selecione...') 
+      qntMembros++;
+      
     return qntMembros;
   }
 
@@ -259,9 +256,15 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                         }).toList(),
                         onChanged: (val) {
                           setState(() {
-                            professores.remove(val);
-                            if (membroDaBanca2.nome != 'Selecione...')
-                              professores.add(membroDaBanca2);
+                            if(!(val.nome =="Selecione..."))
+                              professores.remove(val);
+                            if(membroDaBanca2.nome != "Selecione..." || professores.indexWhere((user)=>user.nome=="Selecione...") < 0) {
+                              if(membroDaBanca2.nome == "Selecione...")
+                                professores.insert(0, membroDaBanca2);
+                              else
+                                professores.add(membroDaBanca2);
+                            }
+                              
                             membroDaBanca2 = val;
                           });
                         },
@@ -271,18 +274,21 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                         hint: Text(membroDaBanca3.nome,style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.black)),
-                        items: membroDaBanca2.nome == "Selecione..."
-                            ? null
-                            : professores.map((membroEscolhido) {
+                        items: professores.map((membroEscolhido) {
                                 return DropdownMenuItem<User>(
                                     value: membroEscolhido,
                                     child: Text(membroEscolhido.nome));
                               }).toList(),
                         onChanged: (val) {
                           setState(() {
-                            professores.remove(val);
-                            if (membroDaBanca3.nome != 'Selecione...')
-                              professores.add(membroDaBanca3);
+                            if(!(val.nome =="Selecione..."))
+                              professores.remove(val);
+                            if(membroDaBanca3.nome != "Selecione..." || professores.indexWhere((user)=>user.nome=="Selecione...") < 0) {
+                              if(membroDaBanca3.nome == "Selecione...")
+                                professores.insert(0, membroDaBanca3);
+                              else
+                                professores.add(membroDaBanca3);
+                            }
                             membroDaBanca3 = val;
                           });
                         },
@@ -292,18 +298,21 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                         hint: Text(membroDaBanca4.nome,style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.black)),
-                        items: membroDaBanca3.nome == "Selecione..."
-                            ? null
-                            : professores.map((membroEscolhido) {
+                        items:professores.map((membroEscolhido) {
                                 return DropdownMenuItem<User>(
                                     value: membroEscolhido,
                                     child: Text(membroEscolhido.nome));
                               }).toList(),
                         onChanged: (val) {
                           setState(() {
-                            professores.remove(val);
-                            if (membroDaBanca4.nome != 'Selecione...')
-                              professores.add(membroDaBanca4);
+                            if(!(val.nome =="Selecione..."))
+                              professores.remove(val);
+                            if(membroDaBanca4.nome != "Selecione..." || professores.indexWhere((user)=>user.nome=="Selecione...") < 0) {
+                              if(membroDaBanca4.nome == "Selecione...")
+                                professores.insert(0, membroDaBanca4);
+                              else
+                                professores.add(membroDaBanca4);
+                            }
                             membroDaBanca4 = val;
                           });
                         },
@@ -313,18 +322,21 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                         hint: Text(membroDaBanca5.nome,style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.black)),
-                        items: membroDaBanca4.nome == "Selecione..."
-                            ? null
-                            : professores.map((membroEscolhido) {
+                        items: professores.map((membroEscolhido) {
                                 return DropdownMenuItem<User>(
                                     value: membroEscolhido,
                                     child: Text(membroEscolhido.nome));
                               }).toList(),
                         onChanged: (val) {
                           setState(() {
-                            professores.remove(val);
-                            if (membroDaBanca5.nome != 'Selecione...')
-                              professores.add(membroDaBanca5);
+                            if(!(val.nome =="Selecione..."))
+                              professores.remove(val);
+                            if(membroDaBanca5.nome != "Selecione..." || professores.indexWhere((user)=>user.nome=="Selecione...") < 0) {
+                              if(membroDaBanca5.nome == "Selecione...")
+                                professores.insert(0, membroDaBanca5);
+                              else
+                                professores.add(membroDaBanca5);
+                            }
                             membroDaBanca5 = val;
                           });
                         },

@@ -131,11 +131,28 @@ class Home extends StatelessWidget {
                         style: textStyle2.copyWith(),
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/exibirTCC');
+                        Navigator.pushNamed(context, '/exibirTCC',arguments: user);
                       },
                     ),
                   ),
                   SizedBox(height: 20.0),
+                  ButtonTheme(
+                    minWidth: 300.0,
+                    height: 50.0,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(18.0),
+                      ),
+                      color: Colors.blue[300],
+                      child: Text(
+                        "Editar perfil",
+                        style: textStyle2.copyWith(),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/editarCadastroAluno', arguments: user);
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),

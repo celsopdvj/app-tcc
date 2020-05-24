@@ -234,6 +234,26 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                             shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(18.0),
                             ),
+                            color: Colors.blue[300],
+                            child: Text(
+                              "Editar perfil",
+                              style: textStyle2.copyWith(),
+                            ),
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, '/editarCadastroCoordenacao',
+                                  arguments: widget.user);
+                            },
+                          ),
+                        ),
+                        SizedBox(height: 20.0),
+                        ButtonTheme(
+                          minWidth: 350.0,
+                          height: 50.0,
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
+                            ),
                             color: Colors.red[300],
                             child: Text(
                               "Deletar dados de orientações e defesas.",
@@ -365,7 +385,7 @@ Future<bool> getCsvOrientacao(
 
     var envelope = new Envelope()
       ..from = 'puc.go.apptcc@gmail.com'
-      ..recipients.add('gjorgec@gmail.com')
+      ..recipients.add(email)
       ..subject = 'Planilha de Orientações'
       ..attachments.add(new Attachment(file: myFile))
       ..text = 'Planilha de Orientações no anexo';
@@ -449,7 +469,7 @@ Future<bool> getCsvDefesas(
 
     var envelope = new Envelope()
       ..from = 'puc.go.apptcc@gmail.com'
-      ..recipients.add('gjorgec@gmail.com')
+      ..recipients.add(email)
       ..subject = 'Planilha de Defesas'
       ..attachments.add(new Attachment(file: myFile))
       ..text = 'Planilha de Defesas no anexo';

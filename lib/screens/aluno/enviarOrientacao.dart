@@ -88,7 +88,7 @@ class _EnviarOrientacaoState extends State<EnviarOrientacao> {
               backgroundColor: Colors.green,
             )
           );
-          DatabaseService().updatePedidoPendente(widget.user.uid, _professorAtual, widget.user.nome, nomeProfessor, widget.user.disciplina);
+          DatabaseService().updatePedidoPendente(widget.user.uid, _professorAtual, widget.user.nome, nomeProfessor, "MAF1149");
           _professorAtual = '';
       }
       

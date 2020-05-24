@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:app_tcc/models/user.dart';
 import 'package:app_tcc/services/database.dart';
 import 'package:app_tcc/shared/loading.dart';
@@ -209,45 +211,102 @@ class _FormularioOrientacaoState extends State<FormularioOrientacao> {
                                 //metodo do database para salvar orientação
                                 //passar uid do pedido para remove-lo (excluido = 1)
                                 try {
-                                  banco.salvarOrientacao(
-                                      curso,
-                                      disciplina,
-                                      turma,
-                                      diaDaSemana,
-                                      horario,
-                                      professor,
-                                      matriculaAluno,
-                                      nomeAluno,
-                                      widget.aluno.uid,
-                                      widget.user.uid);
-                                  banco.deletarPedido(widget.pedidoUid);
-                                  banco.atualizarDisciplina(
-                                      widget.aluno.uid, disciplina);
-                                  setState(() => loading = false);
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => new AlertDialog(
-                                            content: new Text(
-                                                'Orientação registrada com sucesso!'),
-                                            actions: <Widget>[
-                                              new FlatButton(
-                                                textColor: Colors.white,
-                                                color: Colors.blue[300],
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      new BorderRadius.circular(
-                                                          18.0),
+                                  print(await banco.horasDeTrabalho(
+                                      widget.user.uid, diaDaSemana));
+                                  if (await banco.horasDeTrabalho(
+                                              widget.user.uid, diaDaSemana) +
+                                          45 >
+                                      450) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => new AlertDialog(
+                                              content:
+                                                  new Text('Não pode aceitar mais orientandos, pois estará ferindo a jornada de 8 horas de trabalho.'),
+                                              actions: <Widget>[
+                                                new FlatButton(
+                                                  textColor: Colors.white,
+                                                  color: Colors.blue[300],
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        new BorderRadius
+                                                            .circular(18.0),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pop(false);
+                                                  },
+                                                  child: new Text('Ok'),
                                                 ),
-                                                onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop(false);
-                                                  Navigator.of(context)
-                                                      .pop(false);
-                                                },
-                                                child: new Text('Ok'),
-                                              ),
-                                            ],
-                                          ));
+                                              ],
+                                            ));
+                                    setState(() => loading = false);
+                                  } 
+                                  else if((horario.split(' - ')[0] == "7:15" || horario.split(' - ')[1] == "22:00")&& await banco.checarInterjornadaOrientacao(widget.user.uid, horario, diaDaSemana)){
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => new AlertDialog(
+                                              content:
+                                                  new Text('Não pode aceitar orientando nesse horário, pois estará ferindo a interjornada de trabalho.'),
+                                              actions: <Widget>[
+                                                new FlatButton(
+                                                  textColor: Colors.white,
+                                                  color: Colors.blue[300],
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        new BorderRadius
+                                                            .circular(18.0),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pop(false);
+                                                  },
+                                                  child: new Text('Ok'),
+                                                ),
+                                              ],
+                                            ));
+                                    setState(() => loading = false);
+                                  }
+                                  else {
+                                    banco.salvarOrientacao(
+                                        curso,
+                                        disciplina,
+                                        turma,
+                                        diaDaSemana,
+                                        horario,
+                                        professor,
+                                        matriculaAluno,
+                                        nomeAluno,
+                                        widget.aluno.uid,
+                                        widget.user.uid);
+                                    banco.deletarPedido(widget.pedidoUid);
+                                    banco.atualizarDisciplina(
+                                        widget.aluno.uid, disciplina);
+                                    setState(() => loading = false);
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => new AlertDialog(
+                                              content: new Text(
+                                                  'Orientação registrada com sucesso!'),
+                                              actions: <Widget>[
+                                                new FlatButton(
+                                                  textColor: Colors.white,
+                                                  color: Colors.blue[300],
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        new BorderRadius
+                                                            .circular(18.0),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pop(false);
+                                                    Navigator.of(context)
+                                                        .pop(false);
+                                                  },
+                                                  child: new Text('Ok'),
+                                                ),
+                                              ],
+                                            ));
+                                  }
                                 } catch (e) {
                                   setState(() {
                                     error = 'Erro ao salvar orientação!';

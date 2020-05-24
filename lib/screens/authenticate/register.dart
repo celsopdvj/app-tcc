@@ -15,10 +15,11 @@ class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
-
+  bool _obscurePassword = false;
   String matricula = '';
   String nome = '';
   String password = '';
+  String confirmPassword = '';
   String curso = 'Selecione...';
   String email = '';
   String telefone = '';
@@ -80,14 +81,53 @@ class _RegisterState extends State<Register> {
                       TextFormField(
                           decoration:
                               textInputDecoration.copyWith(
+                                suffixIcon: IconButton(
+                                onPressed: () => setState(() {
+                                  _obscurePassword =
+                                      !_obscurePassword;
+                                }),
+                                icon: Icon(
+                                  // Based on passwordVisible state choose the icon
+                                  _obscurePassword
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Theme.of(context).primaryColorDark,
+                                ),
+                              ),
                                 labelText: "Senha",
                                 hintText: 'Digite sua senha'),
                           validator: (val) => val.length < 6
                               ? 'Digite uma senha com mais de 6 caracteres.'
                               : null,
-                          obscureText: true,
+                          obscureText: _obscurePassword,
                           onChanged: (val) {
                             setState(() => password = val);
+                          }),
+                      SizedBox(height: 20.0),
+                      TextFormField(
+                          decoration:
+                              textInputDecoration.copyWith(
+                                suffixIcon: IconButton(
+                                onPressed: () => setState(() {
+                                  _obscurePassword =
+                                      !_obscurePassword;
+                                }),
+                                icon: Icon(
+                                  // Based on passwordVisible state choose the icon
+                                  _obscurePassword
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Theme.of(context).primaryColorDark,
+                                ),
+                              ),
+                                labelText: "Confirmar senha",
+                                hintText: 'Digite sua senha novamente'),
+                          validator: (val) => val != password
+                              ? 'Senhas não estão iguais.'
+                              : null,
+                          obscureText: _obscurePassword,
+                          onChanged: (val) {
+                            setState(() => confirmPassword = val);
                           }),
                       SizedBox(height: 20.0),
                       TextFormField(
@@ -206,9 +246,14 @@ class _RegisterState extends State<Register> {
                                       loading = false;
                                     });
                                   } else
-                                    Navigator.pushReplacementNamed(
-                                        context, '/home',
-                                        arguments: result);
+                                    Navigator.of(context)
+                                                      .pushNamedAndRemoveUntil(
+                                                          '/homeProfessor',
+                                                          (Route<dynamic>
+                                                                  route) =>
+                                                              false,
+                                                          arguments:
+                                                              result);
                                 }
                               }
                             }

@@ -252,6 +252,7 @@ class DatabaseService {
       User membroDaBanca3,
       User membroDaBanca4,
       User membroDaBanca5) async {
+        
     var result = await defesa.add({
       'nomeAluno': nomeAluno,
       'matriculaAluno': matriculaAluno,
@@ -291,7 +292,7 @@ class DatabaseService {
       //-1 não existe o membro
       //0 ele não aceitou o convite
       //1 ele aceitou
-      //2 ele recusou
+      //-2 ele recusou
     });
     await usuario
         .document(uidAluno)
@@ -435,8 +436,8 @@ class DatabaseService {
           .delete();
 
       await defesa.document(d.id).updateData({
-        'membroDaBanca2': d.membroDaBanca3,
-        'nomeMembroDaBanca2': d.nomeMembroDaBanca3,
+        'membroDaBanca2': d.membroDaBanca2,
+        'nomeMembroDaBanca2': d.nomeMembroDaBanca2,
         'statusConvite2': 0,
       });
 
@@ -714,7 +715,7 @@ class DatabaseService {
     return false;
   }
 
-  Future<bool> temOrientacao(String uid, String horario) async {
+  Future<bool> temOrientacao(String uid, String horario,String diaDaSemana) async {
     double horarioAulaInicial;
     double horarioAulaFinal;
     double horarioOrientacaoInicial;
@@ -722,7 +723,7 @@ class DatabaseService {
     String hora;
     String minuto;
     var horarioOrientacoes =
-        await orientacoes.where('uidProfessor', isEqualTo: uid).getDocuments();
+        await orientacoes.where('uidProfessor', isEqualTo: uid).where('dia',isEqualTo:diaDaSemana).getDocuments();
     for (var orientacao in horarioOrientacoes.documents) {
       hora = orientacao.data["horario"].split("-")[0].split(":")[0];
       minuto = orientacao.data["horario"].split("-")[0].split(":")[1];
@@ -737,6 +738,54 @@ class DatabaseService {
           double.parse(horario.split("-")[1].split(":")[1]) / 60.0;
       if (((horarioAulaInicial <= horarioOrientacaoFinal) &&
           (horarioAulaFinal >= horarioOrientacaoInicial))) return true;
+    }
+    return false;
+  }
+
+  Future<bool> checarInterjornadaOrientacao(String uid, String horario, String diaDaSemana) async{
+
+
+    if(diaDaSemana == "Segunda"){
+      if(horario.split(' - ')[1]=="22:00" && (await usuario.document(uid).collection("Terça").where('possui',isEqualTo:true).where('horarioInicial',isEqualTo:"7:15").getDocuments()).documents.length >0){
+        return true;
+      }
+    }
+    if(diaDaSemana == "Terça"){
+      if(horario.split(' - ')[0]=="7:15" && (await usuario.document(uid).collection("Segunda").where('possui',isEqualTo:true).where('horarioFinal',isEqualTo:"22:00").getDocuments()).documents.length >0){
+        return true;
+      }
+      else if(horario.split(' - ')[1]=="22:00" && (await usuario.document(uid).collection("Quarta").where('possui',isEqualTo:true).where('horarioInicial',isEqualTo:"7:15").getDocuments()).documents.length >0){
+        return true;
+      }
+    }
+    if(diaDaSemana == "Quarta"){
+      if(horario.split(' - ')[0]=="7:15" && (await usuario.document(uid).collection("Terça").where('possui',isEqualTo:true).where('horarioFinal',isEqualTo:"22:00").getDocuments()).documents.length >0){
+        return true;
+      }
+      else if(horario.split(' - ')[1]=="22:00" && (await usuario.document(uid).collection("Quinta").where('possui',isEqualTo:true).where('horarioInicial',isEqualTo:"7:15").getDocuments()).documents.length >0){
+        return true;
+      }
+    }
+    if(diaDaSemana == "Quinta"){
+      if(horario.split(' - ')[0]=="7:15" && (await usuario.document(uid).collection("Quarta").where('possui',isEqualTo:true).where('horarioFinal',isEqualTo:"22:00").getDocuments()).documents.length >0){
+        return true;
+      }
+      else if(horario.split(' - ')[1]=="22:00" && (await usuario.document(uid).collection("Sexta").where('possui',isEqualTo:true).where('horarioInicial',isEqualTo:"7:15").getDocuments()).documents.length >0){
+        return true;
+      }
+    }
+    if(diaDaSemana == "Sexta"){
+      if(horario.split(' - ')[0]=="7:15" && (await usuario.document(uid).collection("Quinta").where('possui',isEqualTo:true).where('horarioFinal',isEqualTo:"22:00").getDocuments()).documents.length >0){
+        return true;
+      }
+      else if(horario.split(' - ')[1]=="22:00" && (await usuario.document(uid).collection("Sábado").where('possui',isEqualTo:true).where('horarioInicial',isEqualTo:"7:15").getDocuments()).documents.length >0){
+        return true;
+      }
+    }
+    if(diaDaSemana == "Sábado"){
+      if(horario.split(' - ')[0]=="7:15" && (await usuario.document(uid).collection("Sábado").where('possui',isEqualTo:true).where('horarioFinal',isEqualTo:"22:00").getDocuments()).documents.length >0){
+        return true;
+      }
     }
     return false;
   }
@@ -816,25 +865,61 @@ class DatabaseService {
     return quantidadeDeOrientacoes;
   }
 
-  Future<int> horasDeTrabalho(String id) async{
+  Future<int> horasDeTrabalho(String id,String dia) async{
     int quantidadeAulas = 0;
     int quantidadeDeOrientacoes =0;
-    var result = await usuario.document(id).collection("Segunda").where('possui',isEqualTo:true).getDocuments();
-    quantidadeAulas += result.documents.length;
-    result = await usuario.document(id).collection("Terça").where('possui',isEqualTo:true).getDocuments();
-    quantidadeAulas += result.documents.length;
-    result = await usuario.document(id).collection("Quarta").where('possui',isEqualTo:true).getDocuments();
-    quantidadeAulas += result.documents.length;
-    result = await usuario.document(id).collection("Quinta").where('possui',isEqualTo:true).getDocuments();
-    quantidadeAulas += result.documents.length;
-    result = await usuario.document(id).collection("Sexta").where('possui',isEqualTo:true).getDocuments();
-    quantidadeAulas += result.documents.length;
-    result = await usuario.document(id).collection("Sabado").where('possui',isEqualTo:true).getDocuments();
-    quantidadeAulas += result.documents.length;
-
-
-    result = await orientacoes.where('uidProfessor',isEqualTo: id).getDocuments();
-    quantidadeDeOrientacoes = result.documents.length;
+    var result;
+    if(dia == "Segunda"){
+      result = await usuario.document(id).collection("Segunda").where('possui',isEqualTo:true).getDocuments();
+      quantidadeAulas += result.documents.length;
+    }
+    if(dia == "Terça"){
+      result = await usuario.document(id).collection("Segunda").where('possui',isEqualTo:true).getDocuments();
+      quantidadeAulas += result.documents.length;
+    }
+    if(dia == "Quarta"){
+      result = await usuario.document(id).collection("Segunda").where('possui',isEqualTo:true).getDocuments();
+      quantidadeAulas += result.documents.length;
+    }
+    if(dia == "Quinta"){
+      result = await usuario.document(id).collection("Segunda").where('possui',isEqualTo:true).getDocuments();
+      quantidadeAulas += result.documents.length;
+    }
+    if(dia == "Sexta"){
+      result = await usuario.document(id).collection("Segunda").where('possui',isEqualTo:true).getDocuments();
+      quantidadeAulas += result.documents.length;
+    }
+    if(dia == "Sábado"){
+      result = await usuario.document(id).collection("Segunda").where('possui',isEqualTo:true).getDocuments();
+      quantidadeAulas += result.documents.length;
+    }
     return (quantidadeDeOrientacoes*45 + quantidadeAulas*90);
   }
+
+  void editarCadastroAluno(String id, String matricula, String nome, String telefone, String email){
+    usuario.document(id).updateData({
+      'matricula': matricula,
+      'nome':nome,
+      'telefone':telefone,
+      'email':email
+    });
+  }
+
+  void editarCadastroProfessor(String id, String matricula, String nome, String telefone, String email, String areaAtuacao){
+    usuario.document(id).updateData({
+      'matricula': matricula,
+      'nome':nome,
+      'telefone':telefone,
+      'email':email,
+      'areaAtuacao':areaAtuacao
+    });
+  }
+  void editarCadastroCoordenacao(String id, String matricula,  String email){
+    usuario.document(id).updateData({
+      'matricula': matricula,
+      'email':email,
+    });
+  }
+
+
 }

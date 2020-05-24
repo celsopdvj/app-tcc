@@ -238,7 +238,7 @@ class _EditarDefesaState extends State<EditarDefesa> {
                       SizedBox(height: 20.0),
                       DropdownButton(
                         hint: Text(membroDaBanca3.nome == null?"Selecione...":membroDaBanca3.nome),
-                        items: membroDaBanca2.nome == "Selecione..." ? null : professores.map((membroEscolhido){
+                        items: professores.map((membroEscolhido){
                           return DropdownMenuItem<User>(
                             value: membroEscolhido,
                             child: Text(membroEscolhido.nome)
@@ -258,7 +258,7 @@ class _EditarDefesaState extends State<EditarDefesa> {
                       SizedBox(height: 20.0),
                       DropdownButton(
                         hint: Text(membroDaBanca4.nome == null?"Selecione...":membroDaBanca4.nome),
-                        items: membroDaBanca3.nome == "Selecione..." ? null : professores.map((membroEscolhido){
+                        items: professores.map((membroEscolhido){
                           return DropdownMenuItem<User>(
                             value: membroEscolhido,
                             child: Text(membroEscolhido.nome)
@@ -278,7 +278,7 @@ class _EditarDefesaState extends State<EditarDefesa> {
                       SizedBox(height: 20.0),
                       DropdownButton(
                         hint: Text(membroDaBanca5.nome == null?"Selecione...":membroDaBanca5.nome),
-                        items: membroDaBanca4.nome == "Selecione..." ? null : professores.map((membroEscolhido){
+                        items: professores.map((membroEscolhido){
                           return DropdownMenuItem<User>(
                             value: membroEscolhido,
                             child: Text(membroEscolhido.nome)

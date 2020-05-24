@@ -11,9 +11,12 @@ String matricula = '';
 String curso = '';
 String email = '';
 String disciplina = '';
+String telefone = '';
+String senha = '';
+String areaAtuacao = '';
 
 User _userFromFireBase(FirebaseUser user){
-  return user != null ? User(uid: user.uid, nome: nome, matricula: matricula, curso: curso, email: email, disciplina: disciplina) : null;
+  return user != null ? User(uid: user.uid, nome: nome, matricula: matricula, curso: curso, email: email, disciplina: disciplina,telefone: telefone ,senha: senha,areaAtuacao: areaAtuacao) : null;
 }
   //auth change user stream
 
@@ -31,6 +34,9 @@ User _userFromFireBase(FirebaseUser user){
       matricula = snapShot.data['matricula'];
       curso = snapShot.data['curso'];
       disciplina = snapShot.data['disciplina'];
+      telefone = snapShot.data['telefone'];
+      areaAtuacao = snapShot.data['areaAtuacao'];
+      this.senha = senha;
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: senha);
       FirebaseUser user = result.user;
       return _userFromFireBase(user);

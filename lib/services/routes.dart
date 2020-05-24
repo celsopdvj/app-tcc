@@ -2,6 +2,7 @@ import 'package:app_tcc/models/settingsEditarOrientacao.dart';
 import 'package:app_tcc/models/settingsFormDefesa.dart';
 import 'package:app_tcc/models/settingsFormOrientacao.dart';
 import 'package:app_tcc/models/settingsTCC.dart';
+import 'package:app_tcc/screens/aluno/editarCadastroAluno.dart';
 import 'package:app_tcc/screens/aluno/enviarOrientacao.dart';
 import 'package:app_tcc/screens/aluno/exibirTCC.dart';
 import 'package:app_tcc/screens/aluno/visualizarTCC.dart';
@@ -11,6 +12,7 @@ import 'package:app_tcc/screens/authenticate/register.dart';
 import 'package:app_tcc/screens/authenticate/registerProfessor.dart';
 import 'package:app_tcc/screens/authenticate/sign_in.dart';
 import 'package:app_tcc/screens/authenticate/tipoUsuario.dart';
+import 'package:app_tcc/screens/coordenacao/editarCadastroCoordenacao.dart';
 import 'package:app_tcc/screens/coordenacao/exibirDefesasCoordenacao.dart';
 import 'package:app_tcc/screens/coordenacao/exibirOrientacoes.dart';
 import 'package:app_tcc/screens/coordenacao/novoValidarPedidoOrientacao.dart';
@@ -21,6 +23,7 @@ import 'package:app_tcc/screens/home/homeCoordenacao.dart';
 import 'package:app_tcc/screens/home/homeProfessor.dart';
 import 'package:app_tcc/screens/professor/convitesDefesa.dart';
 import 'package:app_tcc/screens/professor/defesasPendentes.dart';
+import 'package:app_tcc/screens/professor/editarCadastroProfessor.dart';
 import 'package:app_tcc/screens/professor/editarDefesa.dart';
 import 'package:app_tcc/screens/professor/editarHorario.dart';
 import 'package:app_tcc/screens/professor/editarOrientacao.dart';
@@ -69,6 +72,12 @@ class Router {
         return MaterialPageRoute(builder: (_) => Horarios(user: args));
       case '/home':
         return MaterialPageRoute(builder: (_) => Home(user: args));
+      case '/editarCadastroAluno':
+        return MaterialPageRoute(builder: (_) => EditarCadastroAluno(user: args));
+      case '/editarCadastroProfessor':
+        return MaterialPageRoute(builder: (_) => EditarCadastroProfessor(user: args));
+      case '/editarCadastroCoordenacao':
+        return MaterialPageRoute(builder: (_) => EditarCadastroCoordenacao(user: args));
       case '/homeCoordenacao':
         return MaterialPageRoute(builder: (_) => HomeCoordenacao(user: args));
       case '/homeProfessor':
