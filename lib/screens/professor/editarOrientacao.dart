@@ -205,7 +205,33 @@ class _EditarOrientacaoState extends State<EditarOrientacao> {
                                     'Você possui aula no horário escolhido! Escolha outro horário.';
                                 loading = false;
                               });
-                            } else {
+                            } 
+                            else if((horario.split(' - ')[0] == "7:15" || horario.split(' - ')[1] == "22:00")&& await banco.checarInterjornadaOrientacao(widget.user.uid, horario, diaDaSemana)){
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => new AlertDialog(
+                                              content:
+                                                  new Text('Não pode aceitar orientando nesse horário, pois estará ferindo a interjornada de trabalho.'),
+                                              actions: <Widget>[
+                                                new FlatButton(
+                                                  textColor: Colors.white,
+                                                  color: Colors.blue[300],
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        new BorderRadius
+                                                            .circular(18.0),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pop(false);
+                                                  },
+                                                  child: new Text('Ok'),
+                                                ),
+                                              ],
+                                            ));
+                                    setState(() => loading = false);
+                                  }
+                            else {
                               setState(() => loading = true);
                               try {
                                 print(widget.orientacao.uidOrientacao);
