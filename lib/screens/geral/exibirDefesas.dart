@@ -156,7 +156,7 @@ class _ExibirDefesasState extends State<ExibirDefesas> {
                         datetime.subtract(Duration(minutes: 30));
                     await flutterLocalNotificationsPlugin.schedule(
                         0,
-                        'A defesa de: ' + nomeAluno + " vai começar!",
+                        'A defesa de: ' + nomeAluno + " vai começar em meia hora!",
                         'Local: ' + sala,
                         scheduledNotificationDateTime,
                         plataform,
