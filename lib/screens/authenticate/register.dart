@@ -15,7 +15,7 @@ class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
-  bool _obscurePassword = false;
+  bool _obscurePassword = true;
   String matricula = '';
   String nome = '';
   String password = '';
@@ -248,7 +248,7 @@ class _RegisterState extends State<Register> {
                                   } else
                                     Navigator.of(context)
                                                       .pushNamedAndRemoveUntil(
-                                                          '/homeProfessor',
+                                                          '/home',
                                                           (Route<dynamic>
                                                                   route) =>
                                                               false,

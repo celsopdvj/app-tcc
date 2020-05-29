@@ -256,7 +256,7 @@ class _HomeCoordenacaoState extends State<HomeCoordenacao> {
                             ),
                             color: Colors.red[300],
                             child: Text(
-                              "Deletar dados de orientações e defesas.",
+                              "Deletar dados de orientações e defesas",
                               style: textStyle2.copyWith(),
                             ),
                             onPressed: () {
