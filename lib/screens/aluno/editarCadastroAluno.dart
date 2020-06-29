@@ -90,20 +90,20 @@ class _EditarCadastroAlunoState extends State<EditarCadastroAluno> {
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
-                      SizedBox(height: 20.0),
-                      TextFormField(
-                          initialValue: matricula,
-                          keyboardType: TextInputType.number,
-                          decoration: textInputDecoration.copyWith(
-                            labelText: "Matrícula",
-                            hintText: 'Digite sua matrícula',
-                          ),
-                          validator: (val) => val.isEmpty || val.length != 14
-                              ? 'Digite uma matrícula com 14 dígitos.'
-                              : null,
-                          onChanged: (val) {
-                            setState(() => matricula = val);
-                          }),
+                      // SizedBox(height: 20.0),
+                      // TextFormField(
+                      //     initialValue: matricula,
+                      //     keyboardType: TextInputType.number,
+                      //     decoration: textInputDecoration.copyWith(
+                      //       labelText: "Matrícula",
+                      //       hintText: 'Digite sua matrícula',
+                      //     ),
+                      //     validator: (val) => val.isEmpty || val.length != 14
+                      //         ? 'Digite uma matrícula com 14 dígitos.'
+                      //         : null,
+                      //     onChanged: (val) {
+                      //       setState(() => matricula = val);
+                      //     }),
                       SizedBox(height: 20.0),
                       TextFormField(
                           initialValue: nome,

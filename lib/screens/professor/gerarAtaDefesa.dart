@@ -166,7 +166,12 @@ class _GerarAtaDefesaState extends State<GerarAtaDefesa> {
               pw.Text('Curso: ' + document['curso']),
               pw.Text('Título do trabalho: ' + document['titulo']),
               pw.Text('Disciplina: ' + document['disciplina']),
-              pw.Text('Orientador(a): ' + document['orientador']),
+              document['coOrientador'] == "" ? pw.Text('Orientador(a): ' + document['orientador']): pw.Column(
+                mainAxisAlignment: pw.MainAxisAlignment.start,
+                crossAxisAlignment: pw.CrossAxisAlignment.start,children: <pw.Widget>[
+                  pw.Text('Orientador(a): ' + document['orientador']),
+                  pw.Text('Coorientador(a): ' + document['coOrientador'])
+              ]),
               pw.Row(children: <pw.Widget>[
                 pw.Text('Data: ' +
                     document['data'].toString().replaceAll('-', '/') +

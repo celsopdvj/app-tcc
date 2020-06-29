@@ -85,7 +85,15 @@ class _MinhasOrientacoesState extends State<MinhasOrientacoes> {
                       title: Text("Orientando: " +
                           document.data['nomeAluno'].toString()),
                       subtitle:
-                          Text("Turma: " + document.data['turma'].toString()),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text("Turma: " + document.data['turma'].toString()),
+                              Text("Horário: "+ document.data['dia']+" " +document.data['horario'])
+                            ],
+                          ),
+                      isThreeLine: true,
                       onTap: (){
                         Orientacao orientacao = new Orientacao();
                         orientacao.curso = document['curso'];

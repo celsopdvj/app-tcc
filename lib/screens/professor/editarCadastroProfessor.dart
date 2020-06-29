@@ -93,19 +93,19 @@ class _EditarCadastroProfessorState extends State<EditarCadastroProfessor> {
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
-                      SizedBox(height: 20.0),
-                      TextFormField(
-                          initialValue: matricula,
-                          keyboardType: TextInputType.number,
-                          decoration: textInputDecoration.copyWith(
-                            labelText: "Matrícula",
-                            hintText: 'Digite sua matrícula',
-                          ),
-                          validator: (val) =>
-                              val.isEmpty ? 'Digite uma matrícula .' : null,
-                          onChanged: (val) {
-                            setState(() => matricula = val);
-                          }),
+                      // SizedBox(height: 20.0),
+                      // TextFormField(
+                      //     initialValue: matricula,
+                      //     keyboardType: TextInputType.number,
+                      //     decoration: textInputDecoration.copyWith(
+                      //       labelText: "Matrícula",
+                      //       hintText: 'Digite sua matrícula',
+                      //     ),
+                      //     validator: (val) =>
+                      //         val.isEmpty ? 'Digite uma matrícula .' : null,
+                      //     onChanged: (val) {
+                      //       setState(() => matricula = val);
+                      //     }),
                       SizedBox(height: 20.0),
                       TextFormField(
                           initialValue: nome,

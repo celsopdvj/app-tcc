@@ -394,7 +394,7 @@ Future<bool> getCsvOrientacao(
       print('Email sent!');
 
       _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: new Text("Planilha foi enviada!"),
+        content: new Text("Planilha foi enviada ao seu e-mail!"),
         duration: Duration(seconds: 3),
         backgroundColor: Colors.green,
       ));
@@ -477,7 +477,7 @@ Future<bool> getCsvDefesas(
     emailTransport.send(envelope).then((envelope) {
       print('Email sent!');
       _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: new Text("Planilha foi enviada!"),
+        content: new Text("Planilha foi enviada ao seu e-mail!"),
         duration: Duration(seconds: 3),
         backgroundColor: Colors.green,
       ));

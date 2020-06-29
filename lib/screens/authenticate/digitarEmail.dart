@@ -30,8 +30,8 @@ class _DigitarEmailState extends State<DigitarEmail> {
               padding: EdgeInsets.all(10),
                           child: TextFormField(
                   decoration:
-                      textInputDecoration.copyWith(hintText: 'Digite seu email'),
-                  validator: (val) => val.isEmpty ? 'Digite seu email.' : null,
+                      textInputDecoration.copyWith(hintText: 'Digite seu e-mail'),
+                  validator: (val) => val.isEmpty ? 'Digite seu e-mail.' : null,
                   onChanged: (val) {
                     setState(() {
                       email = val;

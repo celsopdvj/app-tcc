@@ -69,7 +69,7 @@ class _RegisterProfessorState extends State<RegisterProfessor> {
                               labelText: 'Matrícula',
                               hintText: "Digite sua matrícula"),
                           validator: (val) =>
-                              val.isEmpty ? 'Digite uma matrícula.' : null,
+                              val.isEmpty || val.length > 7 ? 'Digite uma matrícula com até 7 digitos.' : null,
                           onChanged: (val) {
                             setState(() => matricula = val);
                           }),

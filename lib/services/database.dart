@@ -874,23 +874,23 @@ class DatabaseService {
       quantidadeAulas += result.documents.length;
     }
     if(dia == "Terça"){
-      result = await usuario.document(id).collection("Segunda").where('possui',isEqualTo:true).getDocuments();
+      result = await usuario.document(id).collection("Terça").where('possui',isEqualTo:true).getDocuments();
       quantidadeAulas += result.documents.length;
     }
     if(dia == "Quarta"){
-      result = await usuario.document(id).collection("Segunda").where('possui',isEqualTo:true).getDocuments();
+      result = await usuario.document(id).collection("Quarta").where('possui',isEqualTo:true).getDocuments();
       quantidadeAulas += result.documents.length;
     }
     if(dia == "Quinta"){
-      result = await usuario.document(id).collection("Segunda").where('possui',isEqualTo:true).getDocuments();
+      result = await usuario.document(id).collection("Quinta").where('possui',isEqualTo:true).getDocuments();
       quantidadeAulas += result.documents.length;
     }
     if(dia == "Sexta"){
-      result = await usuario.document(id).collection("Segunda").where('possui',isEqualTo:true).getDocuments();
+      result = await usuario.document(id).collection("Sexta").where('possui',isEqualTo:true).getDocuments();
       quantidadeAulas += result.documents.length;
     }
     if(dia == "Sábado"){
-      result = await usuario.document(id).collection("Segunda").where('possui',isEqualTo:true).getDocuments();
+      result = await usuario.document(id).collection("Sábado").where('possui',isEqualTo:true).getDocuments();
       quantidadeAulas += result.documents.length;
     }
     return (quantidadeDeOrientacoes*45 + quantidadeAulas*90);

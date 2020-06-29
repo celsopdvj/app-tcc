@@ -1,3 +1,4 @@
+import 'package:app_tcc/main.dart';
 import 'package:app_tcc/models/defesas.dart';
 import 'package:app_tcc/services/auth.dart';
 import 'package:app_tcc/shared/constants.dart';
@@ -14,8 +15,6 @@ class ExibirDefesas extends StatefulWidget {
 class _ExibirDefesasState extends State<ExibirDefesas> {
   final AuthService _auth = AuthService();
   List<Defesa> listaDefesas = new List<Defesa>();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
   bool listaCriada = false;
   bool _sortNomeAlunoAsc = true;
   bool _sortOrientadorAsc = true;
@@ -113,7 +112,7 @@ class _ExibirDefesasState extends State<ExibirDefesas> {
   }
 
   showNotification(
-      String horario, String data, String nomeAluno, String sala) async {
+      String horario, String data, String nomeAluno, String sala,String titulo) async {
     showDialog(
         context: context,
         builder: (context) => new AlertDialog(
@@ -136,7 +135,8 @@ class _ExibirDefesasState extends State<ExibirDefesas> {
                     borderRadius: new BorderRadius.circular(18.0),
                   ),
                   onPressed: () async {
-                    var aux = data.split('-');
+                    try{
+                      var aux = data.split('-');
                     var aux2 = aux[2] +
                         '-' +
                         aux[1] +
@@ -144,20 +144,21 @@ class _ExibirDefesasState extends State<ExibirDefesas> {
                         aux[0] +
                         " " +
                         horario.padLeft(5, '0');
-                    print(aux2);
+
                     DateTime datetime = DateTime.parse(aux2.toString());
-                    print(datetime);
+
                     var android = new AndroidNotificationDetails(
                         'channel id', 'channel NAME', 'CHANNEL DESCRIPTION',
-                        importance: Importance.Max, priority: Priority.High);
+                        importance: Importance.Max, priority: Priority.High,style: AndroidNotificationStyle.BigText,styleInformation: BigTextStyleInformation(""));
                     var iOS = new IOSNotificationDetails();
                     var plataform = new NotificationDetails(android, iOS);
                     var scheduledNotificationDateTime =
                         datetime.subtract(Duration(minutes: 30));
                     await flutterLocalNotificationsPlugin.schedule(
                         0,
-                        'A defesa de: ' + nomeAluno + " vai começar em meia hora!",
-                        'Local: ' + sala,
+                        'A defesa de: ' + nomeAluno + " vai começar em 30min!",
+                        "Local: " + sala+
+                        "\nTítulo: "+titulo,
                         scheduledNotificationDateTime,
                         plataform,
                         androidAllowWhileIdle: true);
@@ -181,6 +182,30 @@ class _ExibirDefesasState extends State<ExibirDefesas> {
                                 ),
                               ],
                             ));
+                    }catch(e){
+
+                      showDialog(
+                        context: context,
+                        builder: (context) => new AlertDialog(
+                              content: new Text('Houve um erro ao gerar a notificação!' + e),
+                              actions: <Widget>[
+                                new FlatButton(
+                                  textColor: Colors.white,
+                                  color: Colors.blue[300],
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(18.0),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false);
+                                    Navigator.of(context).pop(false);
+                                  },
+                                  child: new Text('Ok'),
+                                ),
+                              ],
+                            ));
+                    }
+                    
                   },
                   child: new Text('Sim'),
                 ),
@@ -238,7 +263,7 @@ class _ExibirDefesasState extends State<ExibirDefesas> {
       )));
       newListCell.add(DataCell(IconButton(
         onPressed: () async => showNotification(
-            defesas.horario, defesas.data, defesas.nomeAluno, defesas.local),
+            defesas.horario, defesas.data, defesas.nomeAluno, defesas.local,defesas.titulo),
         icon: Icon(Icons.add_alert),
       )));
       newlist.add(DataRow(cells: newListCell));

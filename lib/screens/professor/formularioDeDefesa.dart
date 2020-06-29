@@ -343,7 +343,7 @@ class _FormularioDeDefesaState extends State<FormularioDeDefesa> {
                       ),
                       SizedBox(height: 20.0),
                       RaisedButton(
-                        padding: EdgeInsets.only(left:100,right:100),
+                        
                         shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(18.0),),
                           color: Colors.blue,
                           child: Text(

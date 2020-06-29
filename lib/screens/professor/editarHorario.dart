@@ -95,8 +95,8 @@ class _EditarHorarioState extends State<EditarHorario> {
         await DatabaseService().getAulas('Sabado', widget.user.uid);
     for (DocumentSnapshot aula in aulasSabado) {
       var indx =
-          aulasSabado.indexWhere((horario) => horario.nome == aula.documentID);
-      aulasSabado[indx].possui = true;
+          listaSabado.indexWhere((horario) => horario.nome == aula.documentID);
+      listaSabado[indx].possui = true;
     }
     return true;
   }
